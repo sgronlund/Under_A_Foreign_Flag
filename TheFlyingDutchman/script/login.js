@@ -2,9 +2,9 @@
 
 function show_login(arg) {
     if (arg === "show") {
-        $("#login-form").css("display", "flex");
+        $(".login").css("display", "flex");
     } else {
-        $("#login-form").css("display", "none");
+        $(".login").css("display", "none");
     }
 }
 

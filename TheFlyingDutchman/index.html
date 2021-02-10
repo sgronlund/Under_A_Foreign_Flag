@@ -35,12 +35,21 @@
 </main>
 
 
-<div id="login">
-    <div id="login-form">
-        <input id="username" type="text" placeholder="Username">
-        <input id="password" type="password" placeholder="Password">
-        <button id="submit" type="submit" onclick="login()" ></button>
-        <button id="close" type="button" onclick="show_login('hide')">Close</button>
+<div class="login" id="login_background">
+    <div class="login" id="login_form">
+        <div id="login_form_header">
+			<p class="login_form_text">Login</p>
+			
+            <button id="x-button" type="button" onclick="show_login('hide')">&#x2613;</button>
+		</div>
+		
+		<div id="login_form_body">
+			<input id="username" type="text" placeholder="Username">
+			<input id="password" type="password" placeholder="Password">
+
+
+			<button id="submit" type="submit" onclick="login()" ></button>
+        </div>
     </div>
 </div>
 
