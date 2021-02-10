@@ -58,7 +58,7 @@ header > h1 {
     font-family: 'New Rocker', cursive; /* TODO: Change font */
 }
 
-#login {
+#loginform {
     position: absolute;
     top: 50%;
     left: 50%;

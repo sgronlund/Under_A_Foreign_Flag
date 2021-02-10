@@ -1,8 +1,12 @@
+
+
 function show_login(arg) {
     if (arg === "show") {
-        $("#login").css("display", "flex");
+        $("#loginform").css("display", "flex"); 
     } else {
-        $("#login").css("display", "none");
+        $("#loginform").css("display", "none");
     }
 }
+
+
 
