@@ -33,12 +33,15 @@
 </main>
 
 <div id="login">
-    <form onsubmit="login()">
-    <input id="usr" type="text" placeholder="Username"> 
-    <input id="pass" type="password" placeholder="Password">
-    <input value="Login" type="submit">
-    <button id="close" type="button" onclick="show_login('hide')">Close</button>
-    </form>
+    <div id="login_form">
+
+        <form onsubmit="login()">
+            <input id="usr" type="text" placeholder="Username">
+            <input id="pass" type="password" placeholder="Password">
+            <input value="Login" type="submit">
+            <button id="close" type="button" onclick="show_login('hide')">Close</button>
+        </form>
+    </div>
 </div>
 
 </body>

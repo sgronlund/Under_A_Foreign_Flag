@@ -58,11 +58,22 @@ header > h1 {
     font-family: 'New Rocker', cursive; /* TODO: Change font */
 }
 
-#login {
+#login_form {
+    background-color: white;
+    width: 20%;
+    height: 20%;
     position: absolute;
     top: 50%;
     left: 50%;
     z-index: 10;
     transform: translate(-50%, -50%);
+}
+
+#login{
+    z-index: 9;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
     display: none;
+    background-color: rgba(0,0,0, 50%);
 }
