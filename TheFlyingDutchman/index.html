@@ -11,31 +11,33 @@
     <script type="text/javascript" src="DB/Beverages.js"></script>
     <script type="text/javascript" src="DB/DBLoaded.js"></script>
     <script type="text/javascript" src="DB/loader.js"></script>
+    <script type="text/javascript" src="script/localization/index.js"></script>
+    <script type="text/javascript" src="script/localization.js"></script>
     <script type="text/javascript" src="script/login.js"></script>
     <link href="css/main.css" rel="stylesheet" type="text/css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Molle:ital@1&family=New+Rocker&display=swap" rel="stylesheet">  
+    <link href="https://fonts.googleapis.com/css2?family=Molle:ital@1&family=New+Rocker&display=swap" rel="stylesheet">
 </head>
 
 <body>
 <header>
-    <h1>The Flying Dutchman</h1>
+    <h1 onclick="change_lang()">The Flying Dutchman</h1>
 </header>
 <main>
     <div class="customer">
-    
-    <button type="button" onclick="location.href='regcustom.html';">Guest</button>
-    <button class="vip" type="button" onclick="show_login('show')">Login</button>
-    
-    </div>  
-    <img id="start" alt="Two sausages and a egg on a plate" src="bilder/undraw_breakfast_psiw.svg"> 
+
+    <button id="guest" type="button" onclick="location.href='regcustom.html';"></button>
+    <button id="login" class="vip" type="button" onclick="show_login('show')"></button>
+
+    </div>
+    <img id="start" src="bilder/undraw_breakfast_psiw.svg">
 
 </main>
 
-<div id="login">
-    <input id="usr" type="text" placeholder="Username">
-    <input id="pass" type="password" placeholder="Password">
-    <button type="button" onclick="login()">Login</button>
+<div id="login-form">
+    <input id="username" type="text" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button id="submit" type="submit" onclick="login()" ></button>
     <button id="close" type="button" onclick="show_login('hide')">Close</button>
 </div>
 
