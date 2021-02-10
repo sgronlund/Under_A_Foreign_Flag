@@ -1,0 +1,46 @@
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=New+Rocker&family=Noto+Sans:wght@400;700&display=swap');
+
+:root {
+    --brand-color: #FFCC4A;
+    --background: #764A32;
+    --background-light: #976245;
+    --background-extra-light: #FFE3D3;
+
+    --border-color: #EEEEEE;
+    --text-color: #333;
+    --text-color-brand: #563E00;
+    --price-color: #008253;
+    --error-color: #8B0000;
+
+    --border-radius: 5px;
+}
+
+body {
+    font-size: 1rem;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+button {
+    font-size: 1.3rem;
+    text-decoration: none;
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.6rem;
+    background-color: white;
+    border-radius: var(--border-radius);
+    border: none;
+}
+
+button.brand {
+    background-color: var(--brand-color);
+}
+
+button.light {
+    background-color: var(--light-brown);
+    color: white;
+}
+
+button.white {
+    background-color: white;
+    color: var(--text-color);
+}
