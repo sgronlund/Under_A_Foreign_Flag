@@ -44,3 +44,5 @@ button.white {
     background-color: white;
     color: var(--text-color);
 }
+
+/* TODO: Add default styling for input and text */
