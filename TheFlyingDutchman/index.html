@@ -11,6 +11,7 @@
     <script type="text/javascript" src="DB/Beverages.js"></script>
     <script type="text/javascript" src="DB/DBLoaded.js"></script>
     <script type="text/javascript" src="DB/loader.js"></script>
+    <script type="text/javascript" src="script/login.js"></script>
     <link href="css/main.css" rel="stylesheet" type="text/css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Molle:ital@1&family=New+Rocker&display=swap" rel="stylesheet">  
@@ -24,7 +25,7 @@
     <div class="customer">
     
     <button type="button" onclick="location.href='regcustom.html';">Guest</button>
-    <button class="vip" type="button" onclick="show_login()">Login</button>
+    <button class="vip" type="button" onclick="show_login('show')">Login</button>
     
     </div>  
     <img id="start" alt="Two sausages and a egg on a plate" src="bilder/undraw_breakfast_psiw.svg"> 
@@ -36,6 +37,7 @@
     <input id="usr" type="text" placeholder="Username"> 
     <input id="pass" type="password" placeholder="Password">
     <input value="Login" type="submit">
+    <button id="close" type="button" onclick="show_login('hide')">Close</button>
     </form>
 </div>
 
