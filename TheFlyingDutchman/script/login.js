@@ -6,3 +6,15 @@ function show_login(arg) {
     }
 }
 
+
+/*
+    Simple login function
+ */
+function login(){
+    let user_in = $('#usr').val(); // Get username from input in html
+    let password_in = $('#pass').val(); // Get password from input in html
+    let details = userDetails(user_in); // Get user details from DB, if username does not exist in DB will return nothing
+    if(details.password === password_in){ // Compares password
+        window.location.href = "vipcustom.html"; // Redirect
+    }
+}
