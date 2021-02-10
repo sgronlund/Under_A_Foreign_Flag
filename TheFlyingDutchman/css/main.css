@@ -5,13 +5,13 @@
     --light-brown: #976245;
 }
 
-main { 
+main {
     height: 100%;
     justify-content: space-around;
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
 }
 #start {
     width: 30%;
@@ -58,7 +58,7 @@ header > h1 {
     font-family: 'New Rocker', cursive; /* TODO: Change font */
 }
 
-#loginform {
+#login-form {
     position: absolute;
     top: 50%;
     left: 50%;
