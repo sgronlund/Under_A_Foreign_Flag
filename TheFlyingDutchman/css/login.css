@@ -38,6 +38,7 @@
     /* CHILD POSITIONING */
     display: inline;
     padding: 0.1rem 0;
+    margin-bottom: 0.2rem;
 
     /* BORDER STYLE */
     border-bottom: 1px solid black;
