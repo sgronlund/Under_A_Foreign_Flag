@@ -15,10 +15,12 @@ function login() {
 
   if (details.password === password_in) { // Compares password
     login_error('hide');
+    ///myWindow = window.sessionStorage;
+    sessionStorage.setItem('user', details.username);
     // Checks credentials and redirects to the right side
-    if (details.credentials == 0) {
+    if (details.credentials == 3) {
       window.location.href = 'vipcustom.html'; // Redirect
-    } else if (details.credentials > 0) {
+    } else if (details.credentials < 3) {
       window.location.href = 'staff.html'; // Redirect
     }
   } else {
@@ -34,4 +36,12 @@ function login_error(arg) {
     $('#username').removeClass('login_error');
     $('#password').removeClass('login_error');
   }
+}
+
+
+function get_name() {
+  var name = sessionStorage.getItem('user');
+  var details = userDetails(name);
+  var fullname = details.first_name + " " +  details.last_name;
+  $('#welcome').text(fullname);
 }
