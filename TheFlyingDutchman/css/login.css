@@ -92,6 +92,11 @@
     height: 100%;
 }
 
+.login_error {
+    /* LOGIN ERROR, added to elements when a login failed */
+    box-shadow: 0 0 3px 1px red;
+}
+
 #submit {
     background-color: #FFE3D3;
 }
