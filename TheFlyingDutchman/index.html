@@ -3,38 +3,64 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>The Flying Dutchman</title>
-    <script type="text/javascript" src="script/jquery-3.3.1.min.js"></script>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>The Flying Dutchman</title>
 
-    <script type="text/javascript" src="DB/Beverages.js"></script>
-    <script type="text/javascript" src="DB/DBLoaded.js"></script>
-    <script type="text/javascript" src="DB/loader.js"></script>
-    <script type="text/javascript" src="script/localization/index.js"></script>
-    <script type="text/javascript" src="script/localization.js"></script>
-    <script type="text/javascript" src="script/login.js"></script>
-    <link href="css/pages/index.css" rel="stylesheet" type="text/css">
+  <!-- JQUERY -->
+  <script type="text/javascript" src="script/jquery-3.3.1.min.js"></script>
+
+  <!-- DATA BASE -->
+  <script type="text/javascript" src="DB/Beverages.js"></script>
+  <script type="text/javascript" src="DB/DBLoaded.js"></script>
+  <script type="text/javascript" src="DB/loader.js"></script>
+
+  <!-- LOCALIZATION -->
+  <script type="text/javascript" src="script/localization/index.js"></script>
+  <script type="text/javascript" src="script/localization.js"></script>
+
+  <!-- LOGIN -->
+  <script type="text/javascript" src="script/login.js"></script>
+
+  <!-- CSS -->
+  <link href="css/base.css" rel="stylesheet" type="text/css">
+  <link href="css/pages/index.css" rel="stylesheet" type="text/css">
+  <link href="css/login.css" rel="stylesheet" type="text/css">
+
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Molle:ital@1&family=New+Rocker&display=swap" rel="stylesheet">
 </head>
 
 <body>
-<header>
+  <header>
     <h1 onclick="change_lang()">The Flying Dutchman</h1>
-</header>
-<main>
-    <div class="customer">
-        <button id="guest" class="white" type="button" onclick="location.href='regcustom.html';"></button>
-        <button id="login" class="brand" type="button" onclick="show_login('show')"></button>
-    </div>
-    <img id="start" src="bilder/undraw_breakfast_psiw.svg">
-</main>
+  </header>
+  <main>
+      <div class="customer">
+          <button id="guest" class="white" type="button" onclick="location.href='regcustom.html';"></button>
+          <button id="login" class="brand" type="button" onclick="show_login('show')"></button>
+      </div>
+      <img id="start" src="bilder/undraw_breakfast_psiw.svg">
+  </main>
 
-<div id="login-form">
-    <input id="username" type="text" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
-    <button id="submit" type="submit" onclick="login()" ></button>
-    <button id="close" type="button" onclick="show_login('hide')">Close</button>
-</div>
+
+  <div class="login" id="login_background">
+    <div class="login" id="login_form">
+      <div id="login_form_header">
+        <p class="login_form_text">Login</p>
+
+        <button id="x-button" type="button" onclick="show_login('hide')">&#x2613;</button>
+      </div>
+
+      <div id="login_form_body">
+        <input id="username" type="text" placeholder="Username">
+        <input id="password" type="password" placeholder="Password">
+
+        <button id="submit" type="submit" onclick="login()"></button>
+      </div>
+    </div>
+  </div>
 
 </body>
 
