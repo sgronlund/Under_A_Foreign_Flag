@@ -19,7 +19,7 @@ function login() {
     if (details.credentials == 0) {
       window.location.href = 'vipcustom.html'; // Redirect
     } else if (details.credentials > 0) {
-      window.location.href = 'vipcustom.html'; // Redirect
+      window.location.href = 'staff.html'; // Redirect
     }
   } else {
     login_error('show');
