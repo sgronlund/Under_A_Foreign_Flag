@@ -21,6 +21,16 @@ body {
     font-family: 'Noto Sans', sans-serif;
 }
 
+img#flag {
+    min-width: 2rem;
+    min-height: 2rem;
+    width: 3.5%;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    z-index: 11;
+}
+
 button {
     font-size: 1.3rem;
     text-decoration: none;

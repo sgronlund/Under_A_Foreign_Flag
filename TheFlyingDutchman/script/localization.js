@@ -21,6 +21,14 @@ function update_view() {
         const key = content.placeholder_keys[idx];
         $('#' + key).attr('placeholder', get_placeholder_string(key)); // jQuery function to update any attribute given its name and a value
     }
+    
+    for (const idx in content.img_src) {
+        console.log("hej");
+        const key = content.img_src[idx];
+        $('#' + key).attr('src', get_src_string(key));
+
+    }
+    
 }
 
 // Get the actual string content of a specific id.
@@ -36,6 +44,10 @@ function get_alt_string(key) {
 // Get the placeholder text for an input element
 function get_placeholder_string(key) {
     return content[language]['placeholder'][key]; // Returns the string content of a placeholder based on the currently chose language, i.e. Swedish or English
+}
+
+function get_src_string(key) {
+    return content[language]['img_src'][key];
 }
 
 // Switches between english and swedish and updates the view.
