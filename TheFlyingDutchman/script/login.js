@@ -15,7 +15,12 @@ function login() {
 
   if (details.password === password_in) { // Compares password
     login_error('hide');
-    window.location.href = 'vipcustom.html'; // Redirect
+    // Checks credentials and redirects to the right side
+    if (details.credentials == 0) {
+      window.location.href = 'vipcustom.html'; // Redirect
+    } else if (details.credentials > 0) {
+      window.location.href = 'vipcustom.html'; // Redirect
+    }
   } else {
     login_error('show');
   }
