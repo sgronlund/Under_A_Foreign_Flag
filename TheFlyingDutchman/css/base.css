@@ -233,8 +233,7 @@ button.lang > span {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-sm) var(--spacing);
-    padding-right: 0;
+    padding: var(--spacing-sm) var(--spacing-lg);
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -245,9 +244,12 @@ button.lang > span {
 
 .modal-close {
     height: 100%;
-    padding: 0 var(--spacing);
-    padding-right: var(--spacing-lg);
+    width: 1.6rem;
+    line-height: 1.6rem;
+    padding: 0;
     color: var(--text-color);
+    font-weight: bold;
+    font-size: 1.4rem;
 }
 
 .modal-close:hover {
@@ -255,8 +257,8 @@ button.lang > span {
 }
 
 .modal-content {
-    padding: var(--spacing-sm) var(--spacing);
-    padding-bottom: var(--spacing);
+    padding: var(--spacing-lg);
+    padding-top: var(--spacing);
 }
 
 .modal-content > input {
