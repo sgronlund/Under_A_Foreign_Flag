@@ -1,13 +1,15 @@
 const content = {
     // Element ids for text elements
-    keys: ['login','guest', 'close', 'submit'],       
+    keys: ['login','guest', 'close', 'submit'],
 
     // Element ids for images and their alt-text
-    img_keys: ['start'], 
+    img_keys: ['start'],
 
     // Element ids for input elements (e.g placeholders)
     placeholder_keys: ['username', 'password'],
-    
+
+    img_src: ['flag'],
+
     // We use one JSON substructure for each language. If we have
     // many different languages and a large set of strings we might
     // need to store a JSON file for each language to be loaded on
@@ -27,6 +29,9 @@ const content = {
             username: 'Username',
             password: 'Password',
         },
+        img_src: {
+            flag: 'bilder/eng.svg'
+        }
     },
     sv : {
         default: {
@@ -42,5 +47,8 @@ const content = {
             username: 'Användarnamn',
             password: 'Lösenord',
         },
+        img_src: {
+            flag: 'bilder/sv.svg'
+        }
     }
 };

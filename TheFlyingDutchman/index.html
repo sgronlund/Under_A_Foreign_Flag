@@ -29,8 +29,11 @@
 
 <body>
   <header>
-    <h1 class="logo margin-top" onclick="change_lang()">The Flying Dutchman</h1>
+    <h1 class="logo margin-top">The Flying Dutchman</h1>
   </header>
+  <button class="lang" id="btn-lang" onclick="change_lang()">
+    <img id="flag" src="">
+  </button>
   <main>
       <div class="customer">
           <button id="guest" class="white large margin-bottom" type="button" onclick="location.href='customer.html';"></button>
@@ -38,7 +41,6 @@
       </div>
       <img id="start" src="bilder/undraw_breakfast_psiw.svg">
   </main>
-
 
   <div class="login" id="login_background">
     <div class="login" id="login_form">

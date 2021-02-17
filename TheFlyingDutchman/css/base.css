@@ -52,6 +52,7 @@ button {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
 }
 
@@ -91,6 +92,19 @@ button.large {
     height: auto;
     font-size: var(--font-size-lg);
     padding: var(--spacing) var(--spacing-lg);
+}
+
+button.lang {
+    background-color: var(--background-color-light);
+}
+
+button.lang > img {
+    height: 90%;
+}
+
+button.lang > span {
+    text-transform: uppercase;
+    margin-left: var(--spacing-sm);
 }
 
 /* SPACING */
