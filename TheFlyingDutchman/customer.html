@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>The Flying Dutchman - Customer</title>
+        <title id="title"></title>
 
         <!-- JQUERY -->
         <script type="text/javascript" src="script/jquery-3.3.1.min.js"></script>
@@ -30,7 +30,7 @@
                 <section class="box row v-center space-between padding-lg">
                     <div class="box v-center">
                         <h1 class="logo">The Dutchman</h1>
-                        <h3 class="slogan">Pub and restaurant</h3>
+                        <h3 id="slogan" class="slogan"></h3>
                     </div>
                     <div class="box row v-center">
                         <button class="lang" id="btn-lang" onclick="change_lang()">
@@ -40,12 +40,13 @@
                 </section>
                 <section class="sub-header box row v-center space-between">
                     <nav class="box row v-center fill fill-height">
-                        <button id="btn-drinks" class="underline selected margin-right">Drinks</button>
-                        <button id="btn-food" class="underline" type="button">Food</button>
+                        <button id="btn_drinks" class="underline selected margin-right"></button>
+                        <button id="btn_food" class="underline" type="button"></button>
                     </nav>
                     <div class="box row v-center fill-height">
-                        <p id="total-products" class="margin-right">107 items</p>
-                        <button id="btn-filter" class="brand no-radius fill-height">Filter</button>
+                        <p id="total-products" class="margin-right"></p>
+                        <!-- TODO: Hardcoded amounts of items--->
+                        <button id="btn-filter" class="brand no-radius fill-height"></button>
                     </div>
                 </section>
             </div>
