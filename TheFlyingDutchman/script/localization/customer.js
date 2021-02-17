@@ -27,7 +27,7 @@ const content = {
         },
 
         alt: {
-            flag: 'English',
+            flag: 'The english flag',
         },
 
 
@@ -47,7 +47,7 @@ const content = {
         },
 
         alt: {
-            flag: 'Svenska',
+            flag: 'Den svenska flaggan',
         },
 
         img_src: {
