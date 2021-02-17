@@ -53,6 +53,7 @@ body {
     font-family: 'Noto Sans', sans-serif;
     margin: 0;
     padding: 0;
+    min-width: var(--content-min-width);
 }
 
 /* BUTTONS */
@@ -125,6 +126,7 @@ button.lang > span {
     text-transform: uppercase;
     margin-left: var(--spacing-sm);
 }
+
 
 /* SPACING */
 .margin-top {
@@ -273,6 +275,7 @@ button.lang > span {
     align-items: center;
     padding-top: 20vh;
     box-sizing: border-box;
+    min-width: var(--content-min-width);
 }
 
 .overlay.show {
