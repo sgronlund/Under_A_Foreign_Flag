@@ -15,8 +15,11 @@
     --error-color: #8B0000;
 
     --border-radius: 5px;
+    --modal-width: 300px;
+    --modal-width-lg: 400px;
     --content-width: 1200px;
     --content-min-width: 400px;
+    --lang-button-width: 4.5rem;
     --sub-header-height: 3.2rem;
 
     --spacing-sm: 0.5rem;
@@ -95,6 +98,7 @@ button.large {
 }
 
 button.lang {
+    width: var(--lang-button-width);
     background-color: var(--background-color-light);
 }
 

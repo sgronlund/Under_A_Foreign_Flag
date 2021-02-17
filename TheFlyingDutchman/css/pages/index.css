@@ -15,11 +15,6 @@ header {
     text-align: center;
 }
 
-#start {
-    width: 30%;
-    min-width: calc(var(--content-min-width) * 0.9);
-}
-
 body {
     height: 100vh;
     font-size: 1rem;
@@ -37,6 +32,15 @@ body {
     z-index: 11;
 }
 
+.start-buttons {
+    width: var(--modal-width);
+}
+
+#start {
+    width: 30%;
+    min-width: calc(var(--content-min-width) * 0.9);
+}
+
 #login-form {
     position: absolute;
     top: 50%;
@@ -44,9 +48,4 @@ body {
     z-index: 10;
     transform: translate(-50%, -50%);
     display: none;
-}
-
-.customer {
-    display: flex;
-    flex-direction: column;
 }
