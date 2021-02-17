@@ -23,19 +23,18 @@
   <script type="text/javascript" src="script/login.js"></script>
 
   <!-- CSS -->
-  <link href="css/base.css" rel="stylesheet" type="text/css">
   <link href="css/pages/index.css" rel="stylesheet" type="text/css">
   <link href="css/login.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
   <header>
-    <h1 onclick="change_lang()">The Flying Dutchman</h1>
+    <h1 class="logo margin-top" onclick="change_lang()">The Flying Dutchman</h1>
   </header>
   <main>
       <div class="customer">
-          <button id="guest" class="white" type="button" onclick="location.href='customer.html';"></button>
-          <button id="login" class="brand" type="button" onclick="show_login('show')"></button>
+          <button id="guest" class="white large margin-bottom" type="button" onclick="location.href='customer.html';"></button>
+          <button id="login" class="brand large" type="button" onclick="show_login('show')"></button>
       </div>
       <img id="start" src="bilder/undraw_breakfast_psiw.svg">
   </main>
@@ -53,7 +52,7 @@
         <input id="username" type="text" placeholder="Username">
         <input id="password" type="password" placeholder="Password">
 
-        <button id="submit" type="submit" onclick="login()"></button>
+        <button id="submit" class="extra-light" type="submit" onclick="login()"></button>
       </div>
     </div>
   </div>

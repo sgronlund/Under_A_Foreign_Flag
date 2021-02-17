@@ -1,3 +1,6 @@
+/* Import base styles */
+@import url('../base.css');
+
 header {
     width: 100%;
     box-sizing: border-box;
@@ -5,84 +8,21 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    padding-top: 1rem;
-    background-color: var(--background);
+    background-color: var(--background-color);
+    box-shadow: var(--box-shadow-header);
 }
 
-.header_top, .header_nav {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.sub-header {
     width: 100%;
-    box-sizing: border-box;
+    height: var(--sub-header-height);
+    border-top: 1px solid var(--background-color-light);
+    padding-left: var(--spacing);
 }
 
-.header_top {
-    flex: 1;
-    padding: 1.6rem 1.5rem;
+#total-products {
+    color: var(--text-color-light);
 }
 
-.header_nav {
-    border-top: 1px solid var(--background-light);
-}
-
-.header_nav_buttons {
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    padding-right: 1.5rem;
-}
-
-nav {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex: 1;
-    padding: 0;
-    padding-left: 1.5rem;
-}
-
-#btn_drinks {
-    margin-right: 0.5rem;
-}
-
-#logo, #slogan {
-    color: white;
-    margin: 0;
-}
-
-#logo {
-    font-size: 2rem;
-    font-family: 'New Rocker', serif;
-}
-
-#slogan {
-    font-size: 1rem;
-}
-
-.header_nav_btn {
-    height: 100%;
-    background-color: transparent;    
-    color: white; 
-    font-weight: bold;
-    border-radius: 0;
-    border-top: 0.4rem solid transparent;
-    border-bottom: 0.4rem solid transparent;
-    font-size: 1rem;
-}
-
-.header_nav_btn.selected {
-    border-bottom-color: var(--brand-color);
-}
-
-#btn_filter {
-    border-radius: 0;    
-    height: 100%;
-}
-
-#total_products {
-    margin-right: 1rem;
-    color: white;
+#btn-filter {
+    padding: 0 1.6rem;
 }

@@ -10,8 +10,14 @@ main {
 
 }
 
+header {
+    margin-top: 5rem;
+    text-align: center;
+}
+
 #start {
     width: 30%;
+    min-width: calc(var(--content-min-width) * 0.9);
 }
 
 body {
@@ -21,13 +27,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: var(--background);
-}
-
-header > h1 {
-    color: white;
-    text-align: center;
-    font-family: 'New Rocker', cursive;
+    background-color: var(--background-color);
 }
 
 #login-form {
@@ -39,7 +39,6 @@ header > h1 {
     display: none;
 }
 
-/* TODO: Add helper classes for flexbox positioning */
 .customer {
     display: flex;
     flex-direction: column;
