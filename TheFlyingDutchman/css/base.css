@@ -12,6 +12,7 @@
     --border-color: #EEEEEE;
     --border-color-dark: #c6c6c6;
     --text-color: #333;
+    --text-color-gray: #5e5e5e;
     --text-color-brand: #563E00;
     --text-color-light: var(--background-color-extra-light);
     --price-color: #008253;
@@ -271,6 +272,7 @@ button.lang > span {
     flex-direction: column;
     align-items: center;
     padding-top: 20vh;
+    box-sizing: border-box;
 }
 
 .overlay.show {
@@ -285,19 +287,28 @@ input {
     color: var(--text-color);
     padding: var(--spacing-md) var(--spacing-sm);
     box-sizing: border-box;
-    border: 1px solid var(--border-color-dark);
+    border: 2px solid var(--border-color-dark);
     border-radius: var(--border-radius);
 }
 
-input.error {
-    border-color: var(--error-color);
+input:focus, input:active {
+    outline: none;
+    border-color: var(--text-color);
 }
 
 label {
     font-size: var(--font-size-xsm);
     margin-bottom: var(--spacing-xsm);
     display: inline-block;
-    color: inherit;
+    color: var(--text-color);
+}
+
+.error input {
+    border-color: var(--error-color);
+}
+
+.error label {
+    color: var(--error-color);
 }
 
 /* TEXT */

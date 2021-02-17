@@ -35,10 +35,8 @@ function login() {
 
 function login_error(arg) {
     if (arg == 'show') {
-        $('#username').addClass('error');
-        $('#password').addClass('error');
+        $('#login_background').addClass('error');
     } else {
-        $('#username').removeClass('error');
-        $('#password').removeClass('error');
+        $('#login_background').removeClass('error');
     }
 }
