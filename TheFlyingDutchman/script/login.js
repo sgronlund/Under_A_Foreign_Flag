@@ -6,9 +6,9 @@ function save_user_details(details) {
 // Shows or hides the login menu
 function show_login(arg) {
     if (arg === 'show') {
-        $(".login").css("display", "flex"); // jQuery function for updating CSS declaration of a specific element based on the rule and the value
+        $(".login").addClass("show"); // jQuery function for updating CSS declaration of a specific element based on the rule and the value
     } else {
-        $(".login").css("display", "none"); // jQuery function for updating CSS declaration of a specific element based on the rule and the value
+        $(".login").removeClass("show"); // jQuery function for updating CSS declaration of a specific element based on the rule and the value
     }
 }
 
@@ -35,10 +35,10 @@ function login() {
 
 function login_error(arg) {
     if (arg == 'show') {
-        $('#username').addClass('login_error');
-        $('#password').addClass('login_error');
+        $('#username').addClass('error');
+        $('#password').addClass('error');
     } else {
-        $('#username').removeClass('login_error');
-        $('#password').removeClass('login_error');
+        $('#username').removeClass('error');
+        $('#password').removeClass('error');
     }
 }

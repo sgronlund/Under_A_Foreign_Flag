@@ -42,19 +42,21 @@
       <img id="start" src="bilder/undraw_breakfast_psiw.svg">
   </main>
 
-  <div class="login" id="login_background">
-    <div class="login" id="login_form">
-      <div id="login_form_header">
-        <p class="login_form_text">Login</p>
+  <div class="login overlay" id="login_background">
+    <div class="card modal" id="login_form">
+      <div class="modal-top">
+        <p id="login_form_text" class="modal-title">Login</p>
 
-        <button id="x-button" type="button" onclick="show_login('hide')">&#x2613;</button>
+        <button id="x-button" class="modal-close" type="button" onclick="show_login('hide')">X</button>
       </div>
 
-      <div id="login_form_body">
-        <input id="username" type="text" placeholder="Username">
-        <input id="password" type="password" placeholder="Password">
+      <div class="modal-content">
+          <label id="username_label" for="username"></label>
+         <input id="username" type="text" placeholder="Username" class="margin-bottom" />
+          <label id="password_label" for="username"></label>
+         <input id="password" type="password" placeholder="Password" class="margin-bottom-lg" />
 
-        <button id="submit" class="extra-light" type="submit" onclick="login()"></button>
+        <button id="submit" class="fill-width extra-light" type="submit" onclick="login()"></button>
       </div>
     </div>
   </div>

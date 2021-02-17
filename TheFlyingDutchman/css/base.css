@@ -7,27 +7,34 @@
     --background-color-light: #976245;
     --background-color-extra-light: #FFE3D3;
     --background-color-gray: #EEE;
+    --background-color-overlay: rgba(0, 0, 0, 50%);
 
     --border-color: #EEEEEE;
+    --border-color-dark: #c6c6c6;
     --text-color: #333;
     --text-color-brand: #563E00;
     --text-color-light: var(--background-color-extra-light);
     --price-color: #008253;
     --error-color: #8B0000;
+    --error-color-light: #FF4949;
 
     --border-radius: 5px;
     --modal-width: 300px;
     --modal-width-lg: 400px;
     --content-width: 1200px;
     --content-min-width: 400px;
-    --lang-button-width: 4.5rem;
+    --lang-button-width: 4.2rem;
     --sub-header-height: 3.2rem;
+    --button-height: 2.7rem;
 
+    --spacing-xsm: 0.3rem;
     --spacing-sm: 0.5rem;
+    --spacing-md: 0.7rem;
     --spacing: 0.8rem;
     --spacing-lg: 1.1rem;
     --spacing-xlg: 1.4rem;
 
+    --font-size-xsm: 0.88rem;
     --font-size-sm: 0.93rem;
     --font-size: 1rem;
     --font-size-lg: 1.2rem;
@@ -35,6 +42,9 @@
     --box-shadow-header: 0px 4px 20px rgba(0, 0, 0, 0.22);
     --box-shadow-footer: 0px -4px 20px rgba(0, 0, 0, 0.22);
     --box-shadow-card: 1px 2px 10px rgba(0, 0, 0, 0.08);
+
+    --overlay-z-index: 9;
+    --lang-button-z-index: 11;
 }
 
 body {
@@ -46,7 +56,7 @@ body {
 
 /* BUTTONS */
 button {
-    height: 2.8rem;
+    height: var(--button-height);
     font-size: var(--font-size);
     font-weight: bold;
     text-decoration: none;
@@ -132,6 +142,10 @@ button.lang > span {
     margin-right: var(--spacing);
 }
 
+.margin-bottom-lg {
+    margin-bottom: var(--spacing-lg);
+}
+
 .padding-lg {
     padding: var(--spacing-lg);
 }
@@ -177,6 +191,10 @@ button.lang > span {
     height: 100%;
 }
 
+.fill-width {
+    width: 100%;
+}
+
 .container-wrapper {
     width: 100%;
     display: flex;
@@ -198,6 +216,88 @@ button.lang > span {
     box-shadow: var(--box-shadow-card);
     padding: var(--spacing-lg) var(--spacing-xlg);
     border-radius: var(--border-radius);
+}
+
+.card.modal {
+    padding: 0;
+    width: var(--modal-width);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing);
+    padding-right: 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+    font-size: var(--font-size);
+    font-weight: bold;
+}
+
+.modal-close {
+    height: 100%;
+    padding: 0 var(--spacing);
+    padding-right: var(--spacing-lg);
+    color: var(--text-color);
+}
+
+.modal-close:hover {
+    color: var(--error-color-light);
+}
+
+.modal-content {
+    padding: var(--spacing-sm) var(--spacing);
+    padding-bottom: var(--spacing);
+}
+
+.modal-content > input {
+    width: 100%;
+}
+
+/* OVERLAYS */
+.overlay {
+    z-index: var(--overlay-z-index);
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background-color-overlay);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20vh;
+}
+
+.overlay.show {
+    display: flex;
+}
+
+/* INPUTS */
+input {
+    height: var(--button-height);
+    font-family: 'Noto Sans', sans-serif;
+    font-size: var(--font-size-sm);
+    color: var(--text-color);
+    padding: var(--spacing-md) var(--spacing-sm);
+    box-sizing: border-box;
+    border: 1px solid var(--border-color-dark);
+    border-radius: var(--border-radius);
+}
+
+input.error {
+    border-color: var(--error-color);
+}
+
+label {
+    font-size: var(--font-size-xsm);
+    margin-bottom: var(--spacing-xsm);
+    display: inline-block;
+    color: inherit;
 }
 
 /* TEXT */
