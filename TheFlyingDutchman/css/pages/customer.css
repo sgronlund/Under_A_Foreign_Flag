@@ -1,13 +1,12 @@
 /* Import base styles */
 @import url('../base.css');
 
+body {
+    background-color: var(--background-color-gray);
+}
+
 header {
     width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     background-color: var(--background-color);
     box-shadow: var(--box-shadow-header);
 }

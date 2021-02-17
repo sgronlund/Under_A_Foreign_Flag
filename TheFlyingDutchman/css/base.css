@@ -6,6 +6,7 @@
     --background-color: #764A32;
     --background-color-light: #976245;
     --background-color-extra-light: #FFE3D3;
+    --background-color-gray: #EEE;
 
     --border-color: #EEEEEE;
     --text-color: #333;
@@ -25,6 +26,7 @@
     --spacing-sm: 0.5rem;
     --spacing: 0.8rem;
     --spacing-lg: 1.1rem;
+    --spacing-xlg: 1.4rem;
 
     --font-size-sm: 0.9rem;
     --font-size: 1rem;
@@ -173,11 +175,27 @@ button.lang > span {
     height: 100%;
 }
 
+.container-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .container {
     width: 100%;
     max-width: var(--content-width);
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* CARDS */
+.card {
+    background-color: white;
+    box-shadow: var(--box-shadow-card);
+    padding: var(--spacing-lg) var(--spacing-xlg);
+    border-radius: var(--border-radius);
 }
 
 /* TEXT */
