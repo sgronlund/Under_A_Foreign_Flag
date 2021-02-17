@@ -23,7 +23,6 @@ function update_view() {
     }
     
     for (const idx in content.img_src) {
-        console.log("hej");
         const key = content.img_src[idx];
         $('#' + key).attr('src', get_src_string(key));
 

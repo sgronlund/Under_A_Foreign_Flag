@@ -25,7 +25,6 @@ function login() {
     }
   } else {
     login_error('show');
-    localStorage.removeItem('user');
   }
 }
 
