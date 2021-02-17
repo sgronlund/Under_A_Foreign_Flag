@@ -19,6 +19,7 @@ header {
 
 #total-products {
     color: var(--text-color-light);
+    font-size: var(--font-size-sm);
 }
 
 #btn-filter {

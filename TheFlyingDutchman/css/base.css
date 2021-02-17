@@ -28,7 +28,7 @@
     --spacing-lg: 1.1rem;
     --spacing-xlg: 1.4rem;
 
-    --font-size-sm: 0.9rem;
+    --font-size-sm: 0.93rem;
     --font-size: 1rem;
     --font-size-lg: 1.2rem;
 
@@ -201,23 +201,23 @@ button.lang > span {
 }
 
 /* TEXT */
-p {
+h1, h2, h3, h4, p {
     margin: 0;
     color: inherit;
 }
 
-.logo, .slogan {
-    color: white;
-    margin: 0;
-}
-
 .logo {
     font-size: 2rem;
+    color: white;
     font-family: 'New Rocker', serif;
 }
 
 .slogan {
+    color: var(--text-color-light);
     font-size: var(--font-size-sm);
+    font-weight: normal;
+    line-height: 0.8rem;
+    margin-left: 0.2rem;
 }
 
 /* UTILS */
