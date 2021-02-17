@@ -15,7 +15,6 @@ header {
     width: 100%;
     height: var(--sub-header-height);
     border-top: 1px solid var(--background-color-light);
-    padding-left: var(--spacing);
 }
 
 #total-products {

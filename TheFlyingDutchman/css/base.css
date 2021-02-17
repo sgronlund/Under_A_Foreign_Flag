@@ -87,6 +87,8 @@ button.underline {
     border-radius: 0;
     border-top: 0.3rem solid transparent;
     border-bottom: 0.3rem solid transparent;
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
 }
 
 button.underline.selected {
