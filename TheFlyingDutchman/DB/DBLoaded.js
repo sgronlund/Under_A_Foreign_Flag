@@ -899,6 +899,10 @@ var DB = {
     }],
     "account": [
         {
+           "user_id": "2222",
+           "creditSEK" : "6000000000000000000"
+        },  
+        {
             "user_id": "2",
             "creditSEK" : "300"
         },
