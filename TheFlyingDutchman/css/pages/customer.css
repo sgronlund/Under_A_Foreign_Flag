@@ -38,6 +38,10 @@ body.logged-in #vip_footer, body.logged-in #btn_vip_logout {
     display: flex;
 }
 
+.credit-container {
+    background-color: var(--price-color);
+}
+
 footer {
     width: 100%;
     position: fixed;

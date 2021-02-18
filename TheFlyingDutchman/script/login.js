@@ -1,3 +1,35 @@
+$(function () {
+    const user = window.sessionStorage.getItem('user');
+    
+    // Extract html page from current location.
+    // window.location.href contains the entire URL, including the domain name
+    const href = window.location.href;
+    const page_index = href.lastIndexOf('/');
+    const current_page = href.substring(page_index + 1, href.length);
+    
+    // Guests should only be allowed on the index and customer page
+    if (!user) {
+        if (current_page != 'index.html' && current_page != 'customer.html') {
+            window.location.href = 'index.html';
+        }
+        
+        return;
+    }
+    
+    const credential = userDetails(user).credentials;
+    
+    // Redirects the user to the right page according to their credentials
+    if (credential == 3) {
+        if (current_page != 'customer.html') {
+            window.location.href = 'customer.html';
+        }
+    } else {
+        if (current_page != 'staff.html') {
+            window.location.href = 'staff.html';   
+        }
+    }
+});
+
 // Shows or hides the login menu
 function show_login(arg) {
     if (arg === 'show') {
@@ -21,11 +53,16 @@ function login(redirect) {
         if (details.credentials == 3) {
             // Only redirect to customer page if we are on the start page
             if (redirect) {
+                // Do not clear session storage on redirect.
+                // Otherwise, the user will not be logged in after the redirect
                 window.location.href = 'customer.html'; // Redirect
             } else {
                 // If we do not redirect, we must hide the login overlay
                 show_login('hide');
-                greet();
+                
+                // Trigger event that can be handled by the page to
+                // display 
+                $(document).trigger('login');
             }
         } else if (details.credentials < 3) {
             window.location.href = 'staff.html'; // Redirect

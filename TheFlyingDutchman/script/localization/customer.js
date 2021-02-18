@@ -12,6 +12,7 @@ add_localization_data('customer', {
         'btn_menu',
         'btn_vip_login',
         'btn_vip_logout',
+        'vip_credit_text',
     ],
 
     // Element ids for images and their alt-text
@@ -40,6 +41,7 @@ add_localization_data('customer', {
             btn_menu: 'Menu',
             btn_vip_login: 'Login',
             btn_vip_logout: 'Logout',
+            vip_credit_text: 'Available credits:'
         },
         alt: {
             flag: 'The english flag',
@@ -61,6 +63,7 @@ add_localization_data('customer', {
             btn_menu: 'Meny',
             btn_vip_login: 'Logga in',
             btn_vip_logout: 'Logga ut',
+            vip_credit_text: 'Nuvarande saldo:'
         },
         alt: {
             flag: 'Den svenska flaggan',
