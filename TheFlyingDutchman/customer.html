@@ -10,7 +10,7 @@
         <script type="text/javascript" src="script/jquery-3.3.1.min.js"></script>
 
         <!-- DATA BASE -->
-        <script type="text/javascript" src="DB/Beverages.js"></script>
+        <!--<script type="text/javascript" src="DB/Beverages.js"></script>-->
         <script type="text/javascript" src="DB/DBLoaded.js"></script>
         <script type="text/javascript" src="DB/loader.js"></script>
 
@@ -44,9 +44,9 @@
                         <button id="btn_food" class="underline" type="button"></button>
                     </nav>
                     <div class="box row v-center fill-height">
-                        <p id="total-products" class="margin-right"></p>
+                        <p id="total_products" class="margin-right"></p>
                         <!-- TODO: Hardcoded amounts of items--->
-                        <button id="btn-filter" class="brand no-radius fill-height"></button>
+                        <button id="btn_filter" class="brand no-radius fill-height"></button>
                     </div>
                 </section>
             </div>
@@ -54,12 +54,32 @@
         <main class="container-wrapper">
             <section id="menu" class="container padding-lg">
                 <article class="card">
-                    I am a card
+                    I am a card test
                 </article>
             </section>
         </main>
         <footer>
-            <p></p>
+            <section id="vip_footer" class="container-wrapper text-white">
+                <div class="container">
+                    <section class="box row center padding-v-sm">
+                        <div id="welcome" class="box row text-center">
+                            <p id="welcome_text" class="margin-right-sm"></p>
+                            <p id="welcome_name" class="bold"></p>
+                        </div>
+                        <p class="credit-container text-center"><span id="" class="bold"></span></p>
+                    </section>
+                </div>
+            </section>
+            <nav class="container-wrapper">
+                <div class="container">
+                    <div class="box row center padding-v-sm">
+                        <button class="menu-item">My order</button>
+                        <button class="menu-item">Menu</button>
+                        <button id="vip_login" class="menu-item" onclick="">Login</button>
+                        <button id="vip_logout" class="menu-item" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+            </nav>
         </footer>
     </body>
 </html>

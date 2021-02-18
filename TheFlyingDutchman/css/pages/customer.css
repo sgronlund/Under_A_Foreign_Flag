@@ -17,11 +17,27 @@ header {
     border-top: 1px solid var(--background-color-light);
 }
 
-#total-products {
+#total_products {
     color: var(--text-color-light);
     font-size: var(--font-size-sm);
 }
 
-#btn-filter {
+#btn_filter {
     padding: 0 1.6rem;
+}
+
+#vip_footer {
+    background-color: var(--background-color); 
+}
+
+body.logged-in #vip_login, #vip_footer, #vip_logout {
+    display: none;
+}
+
+body.logged-in #vip_footer, body.logged-in #vip_logout {
+    display: flex;
+}
+
+footer {
+    background-color: white;
 }

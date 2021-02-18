@@ -145,6 +145,10 @@ button.lang > span {
     margin-right: var(--spacing);
 }
 
+.margin-right-sm {
+    margin-right: var(--spacing-sm);
+}
+
 .margin-bottom-lg {
     margin-bottom: var(--spacing-lg);
 }
@@ -161,6 +165,11 @@ button.lang > span {
 .padding-h-lg {
     padding-left: var(--spacing-lg);
     padding-right: var(--spacing-lg);
+}
+
+.padding-v-sm {
+    padding-top: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
 }
 
 /* LAYOUT */
@@ -196,6 +205,14 @@ button.lang > span {
 
 .fill-width {
     width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
 }
 
 .container-wrapper {
