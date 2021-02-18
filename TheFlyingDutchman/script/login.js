@@ -16,7 +16,7 @@ function login() {
   if (details.password === password_in) { // Compares password
     login_error('hide');
     ///myWindow = window.sessionStorage;
-    localStorage.setItem('user', details.username);
+    window.sessionStorage.setItem('user', details.username);
     // Checks credentials and redirects to the right side
     if (details.credentials == 3) {
       window.location.href = 'vipcustom.html'; // Redirect

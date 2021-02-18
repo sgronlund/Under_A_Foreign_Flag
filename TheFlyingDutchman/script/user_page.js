@@ -1,5 +1,5 @@
 function greet() {
-    var username = localStorage.getItem('user');
+    var username = window.sessionStorage.getItem('user');
     if (username) {
         var details = userDetails(username);
         var fullname = details.first_name + " " + details.last_name;
