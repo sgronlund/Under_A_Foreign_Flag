@@ -45,12 +45,14 @@
     --box-shadow-card: 1px 2px 10px rgba(0, 0, 0, 0.08);
 
     --overlay-z-index: 9;
+    --footer-z-index: 11;
     --lang-button-z-index: 11;
 }
 
 body {
     font-size: var(--font-size);
     font-family: 'Noto Sans', sans-serif;
+    color: var(--text-color);
     margin: 0;
     padding: 0;
     min-width: var(--content-min-width);
@@ -116,6 +118,7 @@ button.large {
 button.lang {
     width: var(--lang-button-width);
     background-color: var(--background-color-light);
+    z-index: var(--lang-button-z-index);
 }
 
 button.lang > img {
@@ -284,6 +287,8 @@ button.lang > span {
 
 /* OVERLAYS */
 .overlay {
+    top: 0;
+    left: 0;
     z-index: var(--overlay-z-index);
     position: absolute;
     width: 100vw;

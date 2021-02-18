@@ -39,5 +39,10 @@ body.logged-in #vip_footer, body.logged-in #vip_logout {
 }
 
 footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
     background-color: white;
+    box-shadow: var(--box-shadow-footer);
+    z-index: var(--footer-z-index);
 }

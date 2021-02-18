@@ -1,8 +1,3 @@
-function save_user_details(details) {
-    // Save the user details so that they can be used on the customer pages
-    localStorage.setItem('user_details', JSON.stringify(details));
-}
-
 // Shows or hides the login menu
 function show_login(arg) {
     if (arg === 'show') {
@@ -13,7 +8,7 @@ function show_login(arg) {
 }
 
 // Simple login function
-function login() {
+function login(redirect) {
     let user_in = $('#username').val(); // Get username from input in html
     let password_in = $('#password').val(); // Get password from input in html
     let details = userDetails(user_in); // Get user details from DB, if username does not exist in DB will return nothing 
@@ -24,7 +19,14 @@ function login() {
         window.sessionStorage.setItem('user', details.username);
         // Checks credentials and redirects to the right side
         if (details.credentials == 3) {
-            window.location.href = 'customer.html'; // Redirect
+            // Only redirect to customer page if we are on the start page
+            if (redirect) {
+                window.location.href = 'customer.html'; // Redirect
+            } else {
+                // If we do not redirect, we must hide the login overlay
+                show_login('hide');
+                greet();
+            }
         } else if (details.credentials < 3) {
             window.location.href = 'staff.html'; // Redirect
         }
