@@ -10,16 +10,18 @@
         <script type="text/javascript" src="script/jquery-3.3.1.min.js"></script>
 
         <!-- DATA BASE -->
-        <script type="text/javascript" src="DB/Beverages.js"></script>
+        <!--<script type="text/javascript" src="DB/Beverages.js"></script>-->
         <script type="text/javascript" src="DB/DBLoaded.js"></script>
         <script type="text/javascript" src="DB/loader.js"></script>
 
         <!-- LOCALIZATION -->
-        <script type="text/javascript" src="script/localization/customer.js"></script>
         <script type="text/javascript" src="script/localization.js"></script>
+        <script type="text/javascript" src="script/localization/flag.js"></script>
+        <script type="text/javascript" src="script/localization/login.js"></script>
+        <script type="text/javascript" src="script/localization/customer.js"></script>
 
-        <!-- LOGIN -->
         <script type="text/javascript" src="script/customer.js"></script>
+        <script type="text/javascript" src="script/login.js"></script>
 
         <!-- CSS -->
         <link href="css/pages/customer.css" rel="stylesheet" type="text/css">
@@ -44,9 +46,9 @@
                         <button id="btn_food" class="underline" type="button"></button>
                     </nav>
                     <div class="box row v-center fill-height">
-                        <p id="total-products" class="margin-right"></p>
+                        <p id="total_products" class="margin-right"></p>
                         <!-- TODO: Hardcoded amounts of items--->
-                        <button id="btn-filter" class="brand no-radius fill-height"></button>
+                        <button id="btn_filter" class="brand no-radius fill-height"></button>
                     </div>
                 </section>
             </div>
@@ -54,12 +56,58 @@
         <main class="container-wrapper">
             <section id="menu" class="container padding-lg">
                 <article class="card">
-                    I am a card
+                    I am a card test
                 </article>
             </section>
         </main>
         <footer>
-            <p></p>
+            <section id="vip_footer" class="container-wrapper text-white">
+                <div class="container">
+                    <section class="box row center">
+                        <div id="welcome" class="box row fill h-center padding-v-sm">
+                            <p id="welcome_text" class="margin-right-sm"></p>
+                            <p id="welcome_name" class="bold"></p>
+                        </div>
+                        <div class="credit-container box row padding-h-lg padding-v-sm fill-height">
+                            <p id="vip_credit_text" class="margin-right-sm"></p>
+                            <p id="vip_credit" class="bold"></p>
+                        </div>
+                    </section>
+                </div>
+            </section>
+            <nav class="container-wrapper">
+                <div class="container">
+                    <div class="box row center padding-v-sm">
+                        <button id="btn_order" class="menu-item"></button>
+                        <button id="btn_menu" class="menu-item"></button>
+                        <button id="btn_vip_login" class="menu-item" onclick="show_login('show')"></button>
+                        <button id="btn_vip_logout" class="menu-item" onclick="logout()"></button>
+                    </div>
+                </div>
+            </nav>
         </footer>
+        
+      <div class="login overlay" id="login_background">
+        <div class="card modal" id="login_form">
+          <div class="modal-top">
+            <p id="login_form_text" class="modal-title">Login</p>
+    
+            <button id="x-button" class="modal-close" type="button" onclick="show_login('hide')">&#10799;</button>
+          </div>
+    
+          <div class="modal-content">
+              <div class="box">
+                  <label id="username_label" for="username"></label>
+                  <input id="username" type="text" placeholder="Username" class="margin-bottom" />
+              </div>
+              <div class="box">
+                 <label id="password_label" for="username"></label>
+                 <input id="password" type="password" placeholder="Password" class="margin-bottom-lg" />
+              </div>
+    
+            <button id="submit" class="fill-width extra-light margin-top" type="submit" onclick="login(false)"></button>
+          </div>
+        </div>
+      </div>
     </body>
 </html>

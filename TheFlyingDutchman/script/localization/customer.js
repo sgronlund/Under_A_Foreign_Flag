@@ -1,6 +1,19 @@
-const content = {
+add_localization_data('customer', {
     // Element ids for text elements
-    keys: ['title', 'btn_food', 'btn_drinks', 'slogan', 'total-products', 'btn-filter'],
+    keys: [
+        'title', 
+        'btn_food', 
+        'btn_drinks',
+        'slogan',
+        'total_products',
+        'btn_filter',
+        'welcome_text',
+        'btn_order',
+        'btn_menu',
+        'btn_vip_login',
+        'btn_vip_logout',
+        'vip_credit_text',
+    ],
 
     // Element ids for images and their alt-text
     img_keys: ['flag'],
@@ -16,42 +29,47 @@ const content = {
     // request.
     //
     en: {
-
         default: {
             title: 'The Flying Dutchman - Customer',
             btn_food: 'Food',
             btn_drinks: 'Drinks',
             slogan: 'Pub and restaurant',
-            'total-products' : '107 items',
-            'btn-filter' : 'Filter',
+            total_products: '107 items',
+            btn_filter: 'Filter',
+            welcome_text: 'You are logged in as',
+            btn_order: 'My order',
+            btn_menu: 'Menu',
+            btn_vip_login: 'Login',
+            btn_vip_logout: 'Logout',
+            vip_credit_text: 'Available credits:'
         },
-
         alt: {
             flag: 'The english flag',
         },
-
-
         img_src: {
             flag: 'bilder/eng.svg'
         }
     },
     sv : {
-
         default: {
             title: 'The Flying Dutchman - Kund',
             btn_food: 'Mat',
             btn_drinks: 'Dryck',
             slogan: 'Pub och restaurang',
-            'total-products' : '107 varor',
-            'btn-filter' : 'Filtrera',
+            total_products: '107 varor',
+            btn_filter: 'Filtrera',
+            welcome_text: 'Du är inloggad som',
+            btn_order: 'Min beställning',
+            btn_menu: 'Meny',
+            btn_vip_login: 'Logga in',
+            btn_vip_logout: 'Logga ut',
+            vip_credit_text: 'Nuvarande saldo:'
         },
-
         alt: {
             flag: 'Den svenska flaggan',
         },
-
         img_src: {
             flag: 'bilder/sv.svg'
         }
     }
-};
+});

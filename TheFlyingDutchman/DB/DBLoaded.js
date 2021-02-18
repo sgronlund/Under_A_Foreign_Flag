@@ -2,7 +2,7 @@ var DB = {
     "users": [
         {
             "user_id": "222",
-            "credentials": "3",
+            "credentials": "0",
             "password": " ",
             "username": "man",
             "first_name": "Man",
@@ -12,7 +12,7 @@ var DB = {
         },
         {
             "user_id": "2222",
-            "credentials": "0",
+            "credentials": "3",
             "password": " ",
             "username": "vip",
             "first_name": "Vip",
@@ -898,6 +898,10 @@ var DB = {
         "timestamp": "2014-10-15 22:57:38"
     }],
     "account": [
+        {
+           "user_id": "2222",
+           "creditSEK" : "6000000000000000000"
+        },  
         {
             "user_id": "2",
             "creditSEK" : "300"
