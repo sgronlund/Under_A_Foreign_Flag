@@ -23,38 +23,44 @@
   <script type="text/javascript" src="script/login.js"></script>
 
   <!-- CSS -->
-  <link href="css/base.css" rel="stylesheet" type="text/css">
   <link href="css/pages/index.css" rel="stylesheet" type="text/css">
   <link href="css/login.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
   <header>
-    <h1>The Flying Dutchman</h1>
+    <h1 class="logo margin-top">The Flying Dutchman</h1>
   </header>
-  <img id="flag" src="" onclick="change_lang()">
+  <button class="lang" id="btn-lang" onclick="change_lang()">
+    <img id="flag" src="">
+  </button>
   <main>
-      <div class="customer">
-          <button id="guest" class="white" type="button" onclick="location.href='regcustom.html';"></button>
-          <button id="login" class="brand" type="button" onclick="show_login('show')"></button>
+      <div class="start-buttons box">
+          <button id="guest" class="white large margin-bottom" type="button" onclick="location.href='customer.html';"></button>
+          <button id="login" class="brand large" type="button" onclick="show_login('show')"></button>
       </div>
       <img id="start" src="bilder/undraw_breakfast_psiw.svg">
   </main>
 
+  <div class="login overlay" id="login_background">
+    <div class="card modal" id="login_form">
+      <div class="modal-top">
+        <p id="login_form_text" class="modal-title">Login</p>
 
-  <div class="login" id="login_background">
-    <div class="login" id="login_form">
-      <div id="login_form_header">
-        <p class="login_form_text">Login</p>
-
-        <button id="x-button" type="button" onclick="show_login('hide')">&#x2613;</button>
+        <button id="x-button" class="modal-close" type="button" onclick="show_login('hide')">&#10799;</button>
       </div>
 
-      <div id="login_form_body">
-        <input id="username" type="text" placeholder="Username">
-        <input id="password" type="password" placeholder="Password">
+      <div class="modal-content">
+          <div class="box">
+              <label id="username_label" for="username"></label>
+              <input id="username" type="text" placeholder="Username" class="margin-bottom" />
+          </div>
+          <div class="box">
+             <label id="password_label" for="username"></label>
+             <input id="password" type="password" placeholder="Password" class="margin-bottom-lg" />
+          </div>
 
-        <button id="submit" type="submit" onclick="login()"></button>
+        <button id="submit" class="fill-width extra-light margin-top" type="submit" onclick="login()"></button>
       </div>
     </div>
   </div>

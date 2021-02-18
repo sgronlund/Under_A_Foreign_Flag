@@ -1,6 +1,26 @@
 var DB = {
     "users": [
         {
+            "user_id": "222",
+            "credentials": "3",
+            "password": " ",
+            "username": "man",
+            "first_name": "Man",
+            "last_name": "Ager",
+            "email": "jory.assies@it.uu.se",
+            "phone": "0704811411"
+        },
+        {
+            "user_id": "2222",
+            "credentials": "0",
+            "password": " ",
+            "username": "vip",
+            "first_name": "Vip",
+            "last_name": "Customer",
+            "email": "jory.assies@it.uu.se",
+            "phone": "0704811411"
+        },
+        {
             "user_id": "2",
             "credentials": "0",
             "password": "b690bc2447d40ea8a6f78345eb979a28",
