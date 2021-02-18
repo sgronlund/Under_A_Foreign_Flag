@@ -16,18 +16,16 @@ function show_login(arg) {
 function login() {
     let user_in = $('#username').val(); // Get username from input in html
     let password_in = $('#password').val(); // Get password from input in html
-    let details = userDetails(user_in); // Get user details from DB, if username does not exist in DB will return nothing
-
+    let details = userDetails(user_in); // Get user details from DB, if username does not exist in DB will return nothing 
     if (details.password === password_in) { // Compares password
-        login_error('hide');
-
-        // Checks credentials and redirects to the right side
-        if (details.credentials == 0) {
-            save_user_details(details);
-            window.location.href = 'customer.html'; // Redirect
-        } else if (details.credentials > 0) {
-            window.location.href = 'staff.html'; // Redirect
-        }
+    login_error('hide');
+    ///myWindow = window.sessionStorage;
+    window.sessionStorage.setItem('user', details.username);
+    // Checks credentials and redirects to the right side
+    if (details.credentials == 3) {
+      window.location.href = 'vipcustom.html'; // Redirect
+    } else if (details.credentials < 3) {
+      window.location.href = 'staff.html'; // Redirect
     } else {
         login_error('show');
     }
