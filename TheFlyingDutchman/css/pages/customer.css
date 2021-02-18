@@ -30,11 +30,11 @@ header {
     background-color: var(--background-color); 
 }
 
-body.logged-in #vip_login, #vip_footer, #vip_logout {
+body.logged-in #btn_vip_login, #vip_footer, #btn_vip_logout {
     display: none;
 }
 
-body.logged-in #vip_footer, body.logged-in #vip_logout {
+body.logged-in #vip_footer, body.logged-in #btn_vip_logout {
     display: flex;
 }
 

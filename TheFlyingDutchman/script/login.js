@@ -42,3 +42,11 @@ function login_error(arg) {
         $('#login_background').removeClass('error');
     }
 }
+
+function logout() {
+    var username = window.sessionStorage.getItem('user');
+    if (username) {
+        window.sessionStorage.clear();
+        $(document.body).removeClass('logged-in');
+    }
+}

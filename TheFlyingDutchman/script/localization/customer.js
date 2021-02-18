@@ -1,6 +1,18 @@
-const content = {
+add_localization_data('customer', {
     // Element ids for text elements
-    keys: ['title', 'btn_food', 'btn_drinks', 'slogan', 'total_products', 'btn_filter', 'welcome_text'],
+    keys: [
+        'title', 
+        'btn_food', 
+        'btn_drinks',
+        'slogan',
+        'total_products',
+        'btn_filter',
+        'welcome_text',
+        'btn_order',
+        'btn_menu',
+        'btn_vip_login',
+        'btn_vip_logout',
+    ],
 
     // Element ids for images and their alt-text
     img_keys: ['flag'],
@@ -24,6 +36,10 @@ const content = {
             total_products: '107 items',
             btn_filter: 'Filter',
             welcome_text: 'You are logged in as',
+            btn_order: 'My order',
+            btn_menu: 'Menu',
+            btn_vip_login: 'Login',
+            btn_vip_logout: 'Logout',
         },
         alt: {
             flag: 'The english flag',
@@ -41,6 +57,10 @@ const content = {
             total_products: '107 varor',
             btn_filter: 'Filtrera',
             welcome_text: 'Du är inloggad som',
+            btn_order: 'Min beställning',
+            btn_menu: 'Meny',
+            btn_vip_login: 'Logga in',
+            btn_vip_logout: 'Logga ut',
         },
         alt: {
             flag: 'Den svenska flaggan',
@@ -49,4 +69,4 @@ const content = {
             flag: 'bilder/sv.svg'
         }
     }
-};
+});
