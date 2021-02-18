@@ -1,0 +1,27 @@
+/* Import base styles */
+@import url('../base.css');
+
+body {
+    background-color: var(--background-color-gray);
+}
+
+header {
+    width: 100%;
+    background-color: var(--background-color);
+    box-shadow: var(--box-shadow-header);
+}
+
+.sub-header {
+    width: 100%;
+    height: var(--sub-header-height);
+    border-top: 1px solid var(--background-color-light);
+}
+
+#total-products {
+    color: var(--text-color-light);
+    font-size: var(--font-size-sm);
+}
+
+#btn-filter {
+    padding: 0 1.6rem;
+}
