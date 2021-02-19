@@ -94,3 +94,9 @@ body.view-menu #btn_menu, body.view-order #btn_order {
         justify-content: center;
     }
 }
+
+@media screen and (max-width: 650px) {
+    body.view-menu #menu, body.view-order #order {
+        grid-template-columns: 1fr;
+    }
+}
