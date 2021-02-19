@@ -90,7 +90,7 @@ function allBeverages() {
     // items, you may introduce filter functions in the loop... see the template within comments.
     //
     for (let i = 0; i < DB2.spirits.length; i++) {
-        collector.push({ namn: DB2.spirits[i].namn, varugrupp: DB2.spirits[i].varugrupp });
+        collector.push({ namn: (DB2.spirits[i].namn), varugrupp: (DB2.spirits[i].varugrupp) });
     };
 
     return collector;
