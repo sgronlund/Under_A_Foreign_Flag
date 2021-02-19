@@ -1,10 +1,6 @@
 /* Import base styles */
 @import url('../base.css');
 
-body {
-    background-color: var(--background-color-gray);
-}
-
 header {
     width: 100%;
     background-color: var(--background-color);
@@ -33,7 +29,8 @@ header {
 
 #vip_footer {
     font-size: var(--font-size-sm);
-    background-color: var(--background-color); 
+    color: white;
+    background-color: var(--background-color);
 }
 
 body.logged-in #btn_vip_login, #vip_footer, #btn_vip_logout {
@@ -48,13 +45,18 @@ body.logged-in #vip_footer, body.logged-in #btn_vip_logout {
     background-color: var(--price-color);
 }
 
+.menu-item {
+    background-color: transparent;
+}
+
 footer {
     width: 100%;
     position: fixed;
     bottom: 0;
-    background-color: white;
+    background-color: var(--background-color-highlight);
     box-shadow: var(--box-shadow-footer);
     z-index: var(--footer-z-index);
+    color: var(--text-color-default);
 }
 
 body.view-menu #menu, body.view-order #order {
@@ -74,7 +76,7 @@ body.view-menu #menu, body.view-order #order {
 }
 
 body.view-menu #btn_menu, body.view-order #btn_order {
-    background-color: var(--background-color-gray); 
+    background-color: var(--background-color-body);
 }
 
 @media screen and (max-width: 1050px) {
@@ -88,7 +90,7 @@ body.view-menu #btn_menu, body.view-order #btn_order {
     #vip_footer_content {
         flex-direction: column;
     }
-    
+
     .credit-container {
         width: 100%;
         justify-content: center;
