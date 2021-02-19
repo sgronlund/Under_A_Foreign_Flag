@@ -72,3 +72,25 @@ body.view-menu #menu, body.view-order #order {
     padding-bottom: var(--footer-height-offset);
     display: none;
 }
+
+body.view-menu #btn_menu, body.view-order #btn_order {
+    background-color: var(--background-color-gray); 
+}
+
+@media screen and (max-width: 1050px) {
+    body.view-menu #menu, body.view-order #order {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* For tablets */
+@media screen and (max-width: 800px) {
+    #vip_footer_content {
+        flex-direction: column;
+    }
+    
+    .credit-container {
+        width: 100%;
+        justify-content: center;
+    }
+}
