@@ -18,8 +18,22 @@ function greet() {
     }
 }
 
+function show_order() {
+    $(document.body).removeClass('view-menu');
+    $(document.body).addClass('view-order');
+}
+
+function show_menu() {
+    $(document.body).removeClass('view-order');
+    $(document.body).addClass('view-menu');
+}
+
 $(document).on('login', function () {
     greet();  
+});
+
+$(document).on('db-loaded', function() {
+    render_products('menu');
 });
 
 $(document).ready(function() {

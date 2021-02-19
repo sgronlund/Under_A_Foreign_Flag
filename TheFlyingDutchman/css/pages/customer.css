@@ -50,3 +50,11 @@ footer {
     box-shadow: var(--box-shadow-footer);
     z-index: var(--footer-z-index);
 }
+
+body.view-menu #menu, body.view-order #order {
+    display: flex;
+}
+
+#menu, #order {
+    display: none;
+}

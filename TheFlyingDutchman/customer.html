@@ -10,9 +10,9 @@
         <script type="text/javascript" src="script/jquery-3.3.1.min.js"></script>
 
         <!-- DATA BASE -->
-        <!--<script type="text/javascript" src="DB/Beverages.js"></script>-->
-        <script type="text/javascript" src="DB/DBLoaded.js"></script>
-        <script type="text/javascript" src="DB/loader.js"></script>
+        <script async type="text/javascript" src="DB/Beverages.js" id="db-script"></script>
+        <script async type="text/javascript" src="DB/DBLoaded.js"></script>
+        <script async type="text/javascript" src="DB/loader.js"></script>
 
         <!-- LOCALIZATION -->
         <script type="text/javascript" src="script/localization.js"></script>
@@ -20,13 +20,14 @@
         <script type="text/javascript" src="script/localization/login.js"></script>
         <script type="text/javascript" src="script/localization/customer.js"></script>
 
+        <script type="text/javascript" src="script/products.js"></script>
         <script type="text/javascript" src="script/customer.js"></script>
         <script type="text/javascript" src="script/login.js"></script>
 
         <!-- CSS -->
         <link href="css/pages/customer.css" rel="stylesheet" type="text/css">
     </head>
-    <body>
+    <body class="view-menu">
         <header class="container-wrapper text-white">
             <div class="container">
                 <section class="box row v-center space-between padding-lg">
@@ -78,8 +79,8 @@
             <nav class="container-wrapper">
                 <div class="container">
                     <div class="box row center padding-v-sm">
-                        <button id="btn_order" class="menu-item"></button>
-                        <button id="btn_menu" class="menu-item"></button>
+                        <button id="btn_order" class="menu-item" onclick="show_order()"></button>
+                        <button id="btn_menu" class="menu-item" onclick="show_menu()"></button>
                         <button id="btn_vip_login" class="menu-item" onclick="show_login('show')"></button>
                         <button id="btn_vip_logout" class="menu-item" onclick="logout()"></button>
                     </div>
