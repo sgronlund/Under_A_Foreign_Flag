@@ -27,6 +27,7 @@
     --lang-button-width: 4.2rem;
     --sub-header-height: 3.2rem;
     --button-height: 2.7rem;
+    --footer-height-offset: 7.3rem;
 
     --spacing-xsm: 0.3rem;
     --spacing-sm: 0.5rem;
@@ -40,7 +41,7 @@
     --font-size: 1rem;
     --font-size-lg: 1.2rem;
 
-    --box-shadow-header: 0px 4px 20px rgba(0, 0, 0, 0.22);
+    --box-shadow-header: 0px 10px 10px rgba(0, 0, 0, 0.16);
     --box-shadow-footer: 0px -3px 20px rgba(0, 0, 0, 0.1);
     --box-shadow-card: 1px 2px 10px rgba(0, 0, 0, 0.08);
 
@@ -103,6 +104,7 @@ button.underline {
     border-bottom: 0.3rem solid transparent;
     padding-left: var(--spacing-lg);
     padding-right: var(--spacing-lg);
+    font-size: var(--font-size-sm);
 }
 
 button.underline.selected {
@@ -369,4 +371,8 @@ h1, h2, h3, h4, p {
 
 .text-dark {
     color: var(--text-color);
+}
+
+.separator-bottom {
+    border-bottom: 1px solid var(--background-color-light);
 }

@@ -24,7 +24,7 @@ function render_products(id) {
 
 $(document).ready(function () {
     $('#db-script').on('load', () => {
-        console.log('asda');
-        // products = allBeverages();
+        products = allBeverages();
+        $(document).trigger('db-loaded');
     });
 });
