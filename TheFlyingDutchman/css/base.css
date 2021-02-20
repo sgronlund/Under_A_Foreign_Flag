@@ -322,8 +322,13 @@ button.icon-left > svg {
     min-width: var(--content-min-width);
 }
 
-.overlay.show {
+.overlay.show, .overlay.event-handler {
     display: flex;
+}
+
+.overlay.event-handler {
+    z-index: -1;
+    cursor: pointer;
 }
 
 /* INPUTS */
