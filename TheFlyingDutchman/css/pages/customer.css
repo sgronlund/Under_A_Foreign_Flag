@@ -33,15 +33,7 @@ header {
 
 #vip_footer {
     font-size: var(--font-size-sm);
-    background-color: var(--background-color); 
-}
-
-body.logged-in #btn_vip_login, #vip_footer, #btn_vip_logout {
-    display: none;
-}
-
-body.logged-in #vip_footer, body.logged-in #btn_vip_logout {
-    display: flex;
+    background-color: var(--background-color);
 }
 
 .credit-container {
@@ -57,11 +49,8 @@ footer {
     z-index: var(--footer-z-index);
 }
 
-body.view-menu #menu, body.view-order #order {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-row-gap: var(--spacing);
-    grid-column-gap: var(--spacing);
+.menu-item {
+    border: 1px solid transparent;
 }
 
 #menu > .card {
@@ -73,8 +62,37 @@ body.view-menu #menu, body.view-order #order {
     display: none;
 }
 
+#btn_order_count {
+    margin-left: var(--spacing-sm);
+    background-color: var(--background-color-extra-light);
+    border-radius: 8px;
+    padding: 0.05rem var(--spacing-sm);
+    font-size: var(--font-size-sm);
+}
+
+body.logged-in #btn_vip_login, #vip_footer, #btn_vip_logout {
+    display: none;
+}
+
+body.logged-in #vip_footer, body.logged-in #btn_vip_logout {
+    display: flex;
+}
+
+body.view-menu #menu, body.view-order #order {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-row-gap: var(--spacing);
+    grid-column-gap: var(--spacing);
+}
+
 body.view-menu #btn_menu, body.view-order #btn_order {
-    background-color: var(--background-color-gray); 
+    background-color: var(--background-color-gray);
+    border-color: var(--border-color-dark);
+}
+
+body.view-order #btn_order > #btn_order_count {
+    background-color: var(--text-color);
+    color: white;
 }
 
 @media screen and (max-width: 1050px) {
@@ -88,7 +106,7 @@ body.view-menu #btn_menu, body.view-order #btn_order {
     #vip_footer_content {
         flex-direction: column;
     }
-    
+
     .credit-container {
         width: 100%;
         justify-content: center;

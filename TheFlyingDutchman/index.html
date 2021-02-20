@@ -2,69 +2,80 @@
 
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>The Flying Dutchman</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>The Flying Dutchman</title>
 
-  <!-- JQUERY -->
-  <script type="text/javascript" src="script/jquery-3.3.1.min.js"></script>
+        <!-- JQUERY -->
+        <script type="text/javascript" src="script/jquery-3.3.1.min.js"></script>
 
-  <!-- DATA BASE -->
-  <script type="text/javascript" src="DB/DBLoaded.js"></script>
-  <script type="text/javascript" src="DB/loader.js"></script>
+        <!-- DATA BASE -->
+        <script type="text/javascript" src="DB/DBLoaded.js"></script>
+        <script type="text/javascript" src="DB/loader.js"></script>
 
-  <!-- LOCALIZATION -->
-  <script type="text/javascript" src="script/localization.js"></script>
-  <script type="text/javascript" src="script/localization/flag.js"></script>
-  <script type="text/javascript" src="script/localization/index.js"></script>
-  <script type="text/javascript" src="script/localization/login.js"></script>
+        <!-- LOCALIZATION -->
+        <script type="text/javascript" src="script/localization.js"></script>
+        <script type="text/javascript" src="script/localization/flag.js"></script>
+        <script type="text/javascript" src="script/localization/index.js"></script>
+        <script type="text/javascript" src="script/localization/login.js"></script>
 
-  <!-- LOGIN -->
-  <script type="text/javascript" src="script/login.js"></script>
-  <script type="text/javascript" src="script/index.js"></script>
-  
-  <!-- CSS -->
-  <link href="css/pages/index.css" rel="stylesheet" type="text/css">
-  <link href="css/login.css" rel="stylesheet" type="text/css">
-</head>
+        <!-- LOGIN -->
+        <script type="text/javascript" src="script/login.js"></script>
+        <script type="text/javascript" src="script/index.js"></script>
 
-<body>
-  <header>
-    <h1 class="logo margin-top">The Flying Dutchman</h1>
-  </header>
-  <button class="lang" id="btn-lang" onclick="change_lang()">
-    <img id="flag" src="">
-  </button>
-  <main>
-      <div class="start-buttons box">
-          <button id="guest" class="white large margin-bottom" type="button" onclick="location.href='customer.html';"></button>
-          <button id="login" class="brand large" type="button" onclick="show_login('show')"></button>
-      </div>
-      <img id="start" src="bilder/undraw_breakfast_psiw.svg">
-  </main>
+        <!-- CSS -->
+        <link href="css/pages/index.css" rel="stylesheet" type="text/css">
+        <link href="css/login.css" rel="stylesheet" type="text/css">
+    </head>
 
-  <div class="login overlay" id="login_background">
-    <div class="card modal" id="login_form">
-      <div class="modal-top">
-        <p id="login_form_text" class="modal-title"></p>
-        <button id="x-button" class="modal-close" type="button" onclick="show_login('hide')">&#10799;</button>
-      </div>
+    <body>
+        <header>
+            <h1 class="logo margin-top">The Flying Dutchman</h1>
+        </header>
+        <button class="lang" id="btn-lang" onclick="change_lang()">
+            <img id="flag" src="">
+        </button>
+        <main>
+            <div class="start-buttons box">
+                <button class="white large margin-bottom" type="button" onclick="location.href='customer.html';">
+                    <span id="guest"></span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </button>
+                <button class="brand large" type="button" onclick="show_login('show')">
+                    <span id="login"></span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </button>
+            </div>
+            <img id="start" src="bilder/undraw_breakfast_psiw.svg">
+        </main>
 
-      <div class="modal-content">
-          <div class="box">
-              <label id="username_label" for="username"></label>
-              <input id="username" type="text" placeholder="Username" class="margin-bottom" />
-          </div>
-          <div class="box">
-             <label id="password_label" for="username"></label>
-             <input id="password" type="password" placeholder="Password" class="margin-bottom-lg" />
-          </div>
+        <div class="login overlay" id="login_background">
+            <div class="card modal" id="login_form">
+                <div class="modal-top">
+                    <p id="login_form_text" class="modal-title"></p>
+                    <button id="x-button" class="modal-close" type="button" onclick="show_login('hide')">&#10799;</button>
+                </div>
 
-        <button id="submit" class="fill-width extra-light margin-top" type="submit" onclick="login(true)"></button>
-      </div>
-    </div>
-  </div>
-</body>
+                <div class="modal-content">
+                    <div class="box">
+                        <label id="username_label" for="username"></label>
+                        <input id="username" type="text" placeholder="Username" class="margin-bottom" />
+                    </div>
+                    <div class="box">
+                        <label id="password_label" for="username"></label>
+                        <input id="password" type="password" placeholder="Password" class="margin-bottom-lg" />
+                    </div>
+
+                    <button id="submit" class="fill-width extra-light margin-top" type="submit" onclick="login(true)"></button>
+                </div>
+            </div>
+        </div>
+    </body>
 
 </html>
