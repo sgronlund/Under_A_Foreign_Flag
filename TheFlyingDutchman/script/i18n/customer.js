@@ -13,7 +13,7 @@ add_localization_data('customer', {
         'btn_vip_logout_text',
         'vip_credit_text',
     ],
-    alt_keys: ['flag'],
+    alt_keys: [],
     placeholder_keys: [],
     src_keys: [],
 
