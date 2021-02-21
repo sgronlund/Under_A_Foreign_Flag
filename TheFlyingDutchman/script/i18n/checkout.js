@@ -1,6 +1,6 @@
-add_localization_data('filtering', {
+add_localization_data('checkout', {
     keys: [
-        'filtering_modal_title',
+        'checkout_modal_title',
     ],
     alt_keys: [],
     placeholder_keys: [],
@@ -13,12 +13,12 @@ add_localization_data('filtering', {
     //
     en: {
         default: {
-            filtering_modal_title: 'Filtering',
+            checkout_modal_title: 'Checkout',
         },
     },
     sv : {
         default: {
-            filtering_modal_title: 'Filtrering',
+            checkout_modal_title: 'Kassa',
         },
     }
 });

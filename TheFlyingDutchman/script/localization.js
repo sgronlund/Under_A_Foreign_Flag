@@ -7,6 +7,10 @@ var language = 'en';
 const content = {};
 
 function add_localization_data(id, data) {
+    if (content.hasOwnProperty(id)) {
+        console.warn(`Replacing localization data with id: ${id}`);
+    }
+
     content[id] = data;
 }
 
@@ -57,7 +61,7 @@ function get_placeholder_string(data, key) {
 }
 
 function get_src_string(data, key) {
-    return data[language]['img_src'][key];
+    return data[language]['src'][key];
 }
 
 // Switches between english and swedish and updates the view.

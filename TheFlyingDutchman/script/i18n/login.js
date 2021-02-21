@@ -3,14 +3,13 @@ add_localization_data('login', {
         'login',
         'guest',
         'login_modal_title',
-        'close',
         'submit',
         'username_label',
         'password_label'
     ],
-    img_keys: [],
+    alt_keys: [],
     placeholder_keys: ['username', 'password'],
-    img_src: [],
+    src_keys: [],
 
     // We use one JSON substructure for each language. If we have
     // many different languages and a large set of strings we might
@@ -19,7 +18,6 @@ add_localization_data('login', {
     //
     en: {
         default: {
-            close: 'Close',
             submit: 'Login',
             login_modal_title: 'Login',
             username_label: 'Username',
@@ -32,7 +30,6 @@ add_localization_data('login', {
     },
     sv : {
         default: {
-            close: 'Stäng',
             submit: 'Logga in',
             login_modal_title: 'Logga in',
             username_label: 'Användarnamn',

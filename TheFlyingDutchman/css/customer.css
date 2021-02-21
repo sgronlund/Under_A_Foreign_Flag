@@ -70,7 +70,9 @@ footer {
     font-size: var(--font-size-sm);
 }
 
-body.logged-in #btn_vip_login, #vip_footer, #btn_vip_logout {
+#vip_footer,
+#btn_vip_logout,
+body.logged-in #btn_vip_login {
     display: none;
 }
 

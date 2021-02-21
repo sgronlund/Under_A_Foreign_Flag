@@ -20,6 +20,7 @@
         <script type="text/javascript" src="script/i18n/login.js"></script>
         <script type="text/javascript" src="script/i18n/customer.js"></script>
         <script type="text/javascript" src="script/i18n/filtering.js"></script>
+        <script type="text/javascript" src="script/i18n/checkout.js"></script>
 
         <!-- COMPONENTS -->
         <script type="text/javascript" src="script/components/modal.js"></script>
@@ -42,6 +43,7 @@
                         <button class="lang" id="btn-lang" onclick="change_lang()">
                             <img id="flag" src="">
                         </button>
+                        <button class="brand" id="btn_checkout" onclick="show_modal('checkout_modal')"></button>
                     </div>
                 </section>
             </div>
@@ -200,6 +202,20 @@
               </div>
 
             <button id="submit" class="fill-width extra-light margin-top" type="submit" onclick="login(false)"></button>
+          </div>
+        </div>
+      </div>
+      <div class="overlay modal-root" id="checkout_modal">
+        <div class="overlay event-handler modal-event-hide"></div>
+        <div class="card modal modal-lg">
+          <div class="modal-top">
+            <p id="checkout_modal_title" class="modal-title"></p>
+
+            <button class="modal-close modal-event-hide" type="button">&#10799;</button>
+          </div>
+
+          <div class="modal-content">
+              Checkout
           </div>
         </div>
       </div>

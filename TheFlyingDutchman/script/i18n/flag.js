@@ -13,7 +13,7 @@ add_localization_data('flag', {
         alt: {
             flag: 'The english flag',
         },
-        img_src: {
+        src: {
             flag: 'img/eng.svg'
         },
     },
@@ -21,7 +21,7 @@ add_localization_data('flag', {
         alt: {
             flag: 'Den svenska flaggan',
         },
-        img_src: {
+        src: {
             flag: 'img/sv.svg'
         },
     }
