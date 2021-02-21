@@ -26,6 +26,7 @@
         <script type="text/javascript" src="script/components/modal.js"></script>
         <script type="text/javascript" src="script/components/login.js"></script>
         <script type="text/javascript" src="script/components/products.js"></script>
+        <script type="text/javascript" src="script/components/theme.js"></script>
 
         <!-- CURRENT PAGE -->
         <script type="text/javascript" src="script/pages/customer.js"></script>
@@ -40,7 +41,20 @@
                         <h3 id="slogan" class="slogan"></h3>
                     </div>
                     <div class="box row v-center">
-                        <button class="lang margin-right" id="btn-lang" onclick="change_lang()">
+                        <button id="btn_theme" class="light margin-right" onclick="toggle_theme()">
+                            <svg id="theme_icon_dark" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                                />
+                            </svg>
+                            <svg id="theme_icon_light" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728
+                                      0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                                />
+                            </svg>
+                        </button>
+                        <button class="margin-right" id="btn_lang" onclick="change_lang()">
                             <img id="flag" src="">
                         </button>
                         <button class="brand padding-h-lg" id="btn_checkout" onclick="show_modal('checkout_modal')">
@@ -145,7 +159,7 @@
             </section>
         </main>
         <footer>
-            <section id="vip_footer" class="container-wrapper text-white">
+            <section id="vip_footer" class="container-wrapper">
                 <div class="container">
                     <section id="vip_footer_content" class="box row center">
                         <div id="welcome" class="box row fill h-center padding-v-sm">
@@ -206,14 +220,13 @@
         <div class="card modal">
           <div class="modal-top">
             <p id="login_modal_title" class="modal-title"></p>
-
             <button class="modal-close modal-event-hide" type="button">&#10799;</button>
           </div>
 
           <div class="modal-content">
               <div class="box">
                   <label id="username_label" for="username"></label>
-                  <input id="username" type="text" placeholder="Username" class="margin-bottom" />
+                  <input id="username" type="text" placeholder="Username" class="margin-bottom-lg" />
               </div>
               <div class="box">
                  <label id="password_label" for="username"></label>

@@ -7,14 +7,19 @@
     --background-color-light: #976245;
     --background-color-extra-light: #FFE3D3;
     --background-color-gray: #EEE;
+    --background-color-highlight: white;
     --background-color-overlay: rgba(0, 0, 0, 50%);
+    --background-color-body: #eee;
+    --background-color-default: white;
 
     --border-color: #EEEEEE;
     --border-color-dark: #c6c6c6;
+    --border-color-focus: #333;
     --text-color: #333;
     --text-color-gray: #5e5e5e;
     --text-color-brand: #443100;
     --text-color-light: var(--background-color-extra-light);
+    --text-color-default: #333;
     --price-color: #008253;
     --error-color: #8B0000;
     --error-color-light: #FF4949;
@@ -51,12 +56,25 @@
     --overlay-z-index: 10;
     --footer-z-index: 9;
     --lang-button-z-index: 11;
+    --theme-button-z-index: 11;
+}
+
+:root body.dark{
+    --background-color-body: #131313;
+    --background-color-default: #333;
+    --background-color-highlight: #090808;
+    --text-color-default: white;
+    --border-color: #555;
+    --border-color-dark: #777;
+    --border-color-focus: #cacaca;
+    --error-color: #FF7474;
 }
 
 body {
     font-size: var(--font-size);
     font-family: 'Noto Sans', sans-serif;
     color: var(--text-color);
+    background-color: var(--background-color-body);
     margin: 0;
     padding: 0;
     min-width: var(--content-min-width);
@@ -69,7 +87,8 @@ button {
     font-weight: bold;
     text-decoration: none;
     padding: var(--spacing-sm) var(--spacing);
-    background-color: white;
+    background-color: var(--background-color-default);
+    color: inherit;
     border-radius: var(--border-radius);
     border: none;
     display: flex;
@@ -121,19 +140,41 @@ button.large {
     padding: var(--spacing) var(--spacing-lg);
 }
 
-button.lang {
+#btn_lang {
     width: var(--lang-button-width);
     background-color: var(--background-color-light);
     z-index: var(--lang-button-z-index);
 }
 
-button.lang > img {
+
+#btn_lang > img {
     height: 90%;
 }
 
-button.lang > span {
+#btn_lang > span {
     text-transform: uppercase;
     margin-left: var(--spacing-sm);
+}
+
+#btn_theme {
+    background-color: var(--background-color-default);
+    color: var(--text-color-default);
+    z-index: var(--theme-button-z-index);
+    border: 1px solid transparent;
+}
+
+#btn_theme > svg {
+    margin-left: 0;
+}
+
+#theme_icon_light,
+body.dark #theme_icon_dark {
+    display: flex;
+}
+
+#theme_icon_dark,
+body.dark #theme_icon_light {
+    display: none;
 }
 
 button > svg {
@@ -255,10 +296,17 @@ button.icon-left > svg {
 
 /* CARDS */
 .card {
-    background-color: white;
+    color: var(--text-color-default);
+    background-color: var(--background-color-default);
     box-shadow: var(--box-shadow-card);
     padding: var(--spacing-lg) var(--spacing-xlg);
     border-radius: var(--border-radius);
+    border: 1px solid transparent;
+}
+
+body.dark .card {
+    border-color: var(--border-color);
+    box-shadow: none;
 }
 
 .modal {
@@ -266,6 +314,7 @@ button.icon-left > svg {
     width: var(--modal-width);
     display: flex;
     flex-direction: column;
+    color: var(--text-color-default);
 }
 
 .modal-lg {
@@ -291,7 +340,7 @@ button.icon-left > svg {
     width: 1.6rem;
     line-height: 1.6rem;
     padding: 0;
-    color: var(--text-color);
+    color: var(--text-color-default);
     font-weight: bold;
     font-size: 1.4rem;
 }
@@ -340,7 +389,8 @@ input {
     height: var(--button-height);
     font-family: 'Noto Sans', sans-serif;
     font-size: var(--font-size-sm);
-    color: var(--text-color);
+    color: var(--text-color-default);
+    background-color: var(--background-color-default);
     padding: var(--spacing-md) var(--spacing-sm);
     box-sizing: border-box;
     border: 2px solid var(--border-color-dark);
@@ -349,14 +399,18 @@ input {
 
 input:focus, input:active {
     outline: none;
-    border-color: var(--text-color);
+    border-color: var(--border-color-focus);
 }
 
 label {
     font-size: var(--font-size-xsm);
     margin-bottom: var(--spacing-xsm);
     display: inline-block;
-    color: var(--text-color);
+    color: var(--text-color-default);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-size: 0.7rem;
 }
 
 .error input {

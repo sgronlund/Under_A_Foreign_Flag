@@ -1,10 +1,6 @@
 /* Import base styles */
 @import url('base.css');
 
-body {
-    background-color: var(--background-color-gray);
-}
-
 header {
     width: 100%;
     background-color: var(--background-color);
@@ -34,19 +30,25 @@ header {
 #vip_footer {
     font-size: var(--font-size-sm);
     background-color: var(--background-color);
+    color: white;
 }
 
 .credit-container {
     background-color: var(--price-color);
 }
 
+.menu-item {
+    background-color: transparent;
+}
+
 footer {
     width: 100%;
     position: fixed;
     bottom: 0;
-    background-color: white;
+    background-color: var(--background-color-highlight);
     box-shadow: var(--box-shadow-footer);
     z-index: var(--footer-z-index);
+    color: var(--text-color-default);
 }
 
 .menu-item {
@@ -65,6 +67,7 @@ footer {
 #btn_order_count {
     margin-left: var(--spacing-sm);
     background-color: var(--background-color-extra-light);
+    color: var(--text-color);
     border-radius: 8px;
     padding: 0.05rem var(--spacing-sm);
     font-size: var(--font-size-sm);
@@ -94,7 +97,7 @@ body.view-menu #menu, body.view-order #order {
 }
 
 body.view-menu #btn_menu, body.view-order #btn_order {
-    background-color: var(--background-color-gray);
+    background-color: var(--background-color-body);
     border-color: var(--border-color-dark);
 }
 

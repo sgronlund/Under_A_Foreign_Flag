@@ -23,6 +23,7 @@
         <!-- COMPONENTS -->
         <script type="text/javascript" src="script/components/modal.js"></script>
         <script type="text/javascript" src="script/components/login.js"></script>
+        <script type="text/javascript" src="script/components/theme.js"></script>
 
         <!-- CURRENT PAGE -->
         <script type="text/javascript" src="script/pages/index.js"></script>
@@ -33,9 +34,24 @@
         <header>
             <h1 class="logo margin-top">The Flying Dutchman</h1>
         </header>
-        <button class="lang" id="btn-lang" onclick="change_lang()">
-            <img id="flag" src="">
-        </button>
+        <section class="box row" id="actions">
+            <button id="btn_theme" class="light margin-right" onclick="toggle_theme()">
+                <svg id="theme_icon_dark" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                    />
+                </svg>
+                <svg id="theme_icon_light" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728
+                          0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                    />
+                </svg>
+            </button>
+            <button class="lang" id="btn_lang" onclick="change_lang()">
+                <img id="flag" src="">
+            </button>
+        </section>
         <main>
             <div class="start-buttons box">
                 <button class="white large margin-bottom" type="button" onclick="location.href='customer.html';">
@@ -62,7 +78,6 @@
                     <p id="login_modal_title" class="modal-title"></p>
                     <button class="modal-close modal-event-hide" type="button">&#10799;</button>
                 </div>
-
                 <div class="modal-content">
                     <div class="box">
                         <label id="username_label" for="username"></label>

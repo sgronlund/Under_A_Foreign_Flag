@@ -25,7 +25,7 @@ body {
     background-color: var(--background-color);
 }
 
-#btn-lang {
+#actions {
     position: absolute;
     top: 2rem;
     right: 2rem;
