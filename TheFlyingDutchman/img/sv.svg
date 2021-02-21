@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(0 -852.36)">
+  <rect y="852.36" width="320" height="200" fill="#005aad"/>
+  <rect transform="translate(0 852.36)" x="320" y="160" width="6.9428" height=".86785" fill="#ff0"/>
+  <path transform="translate(0 852.36)" d="m100 0v80h-100v40h100v80h40v-80h180v-40h-180v-80h-40z" fill="#ffc200"/>
+ </g>
+</svg>
