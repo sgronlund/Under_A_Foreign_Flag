@@ -40,16 +40,23 @@
                         <h3 id="slogan" class="slogan"></h3>
                     </div>
                     <div class="box row v-center">
-                        <button class="lang" id="btn-lang" onclick="change_lang()">
+                        <button class="lang margin-right" id="btn-lang" onclick="change_lang()">
                             <img id="flag" src="">
                         </button>
-                        <button class="brand" id="btn_checkout" onclick="show_modal('checkout_modal')"></button>
+                        <button class="brand padding-h-lg" id="btn_checkout" onclick="show_modal('checkout_modal')">
+                            <span id="btn_checkout_text"></span>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                                />
+                            </svg>
+                        </button>
                     </div>
                 </section>
             </div>
         </header>
         <section id="header_nav" class="container-wrapper text-white">
-            <div class="container">
+            <div class="container" id="header_nav_menu">
                 <section class="sub-header box row v-center space-between">
                     <nav class="box row v-center fill fill-height">
                         <button id="btn_drinks" class="underline selected margin-right"></button>
@@ -70,6 +77,18 @@
                             </svg>
                         </button>
                     </div>
+                </section>
+            </div>
+            <div class="container" id="header_nav_order">
+                <section class="sub-header box row v-center space-between padding-h-lg">
+                    <h4 id="table_id">
+                        <span id="table_id_label"></span>
+                        <span id="table_id_number">#20</span>
+                    </h4>
+                    <p id="order_total">
+                        <span id="order_total_label">Total:</span>
+                        <span id="order_total_amount" class="bold">2000 SEK</span>
+                    </p>
                 </section>
             </div>
         </section>

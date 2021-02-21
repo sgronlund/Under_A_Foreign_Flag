@@ -72,11 +72,17 @@ footer {
 
 #vip_footer,
 #btn_vip_logout,
+#btn_checkout,
+#header_nav_order,
+body.view-order #header_nav_menu,
 body.logged-in #btn_vip_login {
     display: none;
 }
 
-body.logged-in #vip_footer, body.logged-in #btn_vip_logout {
+body.logged-in #vip_footer,
+body.logged-in #btn_vip_logout,
+body.view-order #header_nav_order,
+body.view-order #btn_checkout {
     display: flex;
 }
 
