@@ -19,6 +19,7 @@
         <script type="text/javascript" src="script/i18n/flag.js"></script>
         <script type="text/javascript" src="script/i18n/login.js"></script>
         <script type="text/javascript" src="script/i18n/customer.js"></script>
+        <script type="text/javascript" src="script/i18n/filtering.js"></script>
 
         <!-- COMPONENTS -->
         <script type="text/javascript" src="script/components/modal.js"></script>
@@ -27,7 +28,7 @@
 
         <!-- CURRENT PAGE -->
         <script type="text/javascript" src="script/pages/customer.js"></script>
-        <link href="css/pages/customer.css" rel="stylesheet" type="text/css">
+        <link href="css/customer.css" rel="stylesheet" type="text/css">
     </head>
     <body class="view-menu">
         <header class="page-header container-wrapper text-white">
@@ -53,9 +54,11 @@
                         <button id="btn_food" class="underline" type="button"></button>
                     </nav>
                     <div class="box row v-center fill-height">
-                        <p id="total_products" class="margin-right"></p>
-                        <!-- TODO: Hardcoded amounts of items--->
-                        <button id="btn_filter" class="brand no-radius fill-height">
+                        <p id="total_products" class="margin-right">
+                            <span id="total_products_count">0</span>
+                            <span id="total_products_label"></span>
+                        </p>
+                        <button id="btn_filter" class="brand no-radius fill-height" onclick="show_modal('filter_modal')">
                             <span id="btn_filter_text"></span>
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -177,13 +180,13 @@
             </nav>
         </footer>
 
-      <div class="login overlay modal-root" id="login_modal">
+      <div class="overlay modal-root" id="login_modal">
         <div class="overlay event-handler modal-event-hide"></div>
         <div class="card modal">
           <div class="modal-top">
-            <p id="login_form_text" class="modal-title">Login</p>
+            <p id="login_modal_title" class="modal-title"></p>
 
-            <button id="x-button" class="modal-close modal-event-hide" type="button">&#10799;</button>
+            <button class="modal-close modal-event-hide" type="button">&#10799;</button>
           </div>
 
           <div class="modal-content">
@@ -197,6 +200,20 @@
               </div>
 
             <button id="submit" class="fill-width extra-light margin-top" type="submit" onclick="login(false)"></button>
+          </div>
+        </div>
+      </div>
+      <div class="overlay modal-root" id="filter_modal">
+        <div class="overlay event-handler modal-event-hide"></div>
+        <div class="card modal modal-lg">
+          <div class="modal-top">
+            <p id="filtering_modal_title" class="modal-title"></p>
+
+            <button class="modal-close modal-event-hide" type="button">&#10799;</button>
+          </div>
+
+          <div class="modal-content">
+              Filtering
           </div>
         </div>
       </div>

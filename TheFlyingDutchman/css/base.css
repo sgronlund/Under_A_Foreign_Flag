@@ -20,7 +20,7 @@
     --error-color-light: #FF4949;
 
     --border-radius: 5px;
-    --modal-width: 300px;
+    --modal-width: 325px;
     --modal-width-lg: 400px;
     --content-width: 1200px;
     --content-min-width: 400px;
@@ -261,11 +261,15 @@ button.icon-left > svg {
     border-radius: var(--border-radius);
 }
 
-.card.modal {
+.modal {
     padding: 0;
     width: var(--modal-width);
     display: flex;
     flex-direction: column;
+}
+
+.modal-lg {
+    width: var(--modal-width-lg);
 }
 
 .modal-top {

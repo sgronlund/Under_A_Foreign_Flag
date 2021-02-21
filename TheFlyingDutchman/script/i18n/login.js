@@ -2,7 +2,7 @@ add_localization_data('login', {
     keys: [
         'login',
         'guest',
-        'login_form_text',
+        'login_modal_title',
         'close',
         'submit',
         'username_label',
@@ -21,7 +21,7 @@ add_localization_data('login', {
         default: {
             close: 'Close',
             submit: 'Login',
-            login_form_text: 'Login',
+            login_modal_title: 'Login',
             username_label: 'Username',
             password_label: 'Password',
         },
@@ -34,7 +34,7 @@ add_localization_data('login', {
         default: {
             close: 'Stäng',
             submit: 'Logga in',
-            login_form_text: 'Logga in',
+            login_modal_title: 'Logga in',
             username_label: 'Användarnamn',
             password_label: 'Lösenord',
         },
