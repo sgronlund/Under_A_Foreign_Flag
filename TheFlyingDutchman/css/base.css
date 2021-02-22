@@ -7,26 +7,35 @@
     --background-color-light: #976245;
     --background-color-extra-light: #FFE3D3;
     --background-color-gray: #EEE;
+    --background-color-highlight: white;
     --background-color-overlay: rgba(0, 0, 0, 50%);
+    --background-color-body: #eee;
+    --background-color-default: white;
 
     --border-color: #EEEEEE;
     --border-color-dark: #c6c6c6;
+    --border-color-focus: #333;
     --text-color: #333;
     --text-color-gray: #5e5e5e;
-    --text-color-brand: #563E00;
+    --text-color-brand: #443100;
     --text-color-light: var(--background-color-extra-light);
+    --text-color-default: #333;
     --price-color: #008253;
     --error-color: #8B0000;
     --error-color-light: #FF4949;
 
     --border-radius: 5px;
-    --modal-width: 300px;
+    --modal-width: 325px;
     --modal-width-lg: 400px;
     --content-width: 1200px;
     --content-min-width: 400px;
     --lang-button-width: 4.2rem;
     --sub-header-height: 3.2rem;
     --button-height: 2.7rem;
+    --button-height-lg: 3.3rem;
+    --button-icon-height: 1.3rem;
+    --button-icon-height-lg: 1.8rem;
+    --footer-height-offset: 7.3rem;
 
     --spacing-xsm: 0.3rem;
     --spacing-sm: 0.5rem;
@@ -40,19 +49,32 @@
     --font-size: 1rem;
     --font-size-lg: 1.2rem;
 
-    --box-shadow-header: 0px 4px 20px rgba(0, 0, 0, 0.22);
+    --box-shadow-header: 0px 10px 10px rgba(0, 0, 0, 0.16);
     --box-shadow-footer: 0px -3px 20px rgba(0, 0, 0, 0.1);
     --box-shadow-card: 1px 2px 10px rgba(0, 0, 0, 0.08);
 
-    --overlay-z-index: 9;
-    --footer-z-index: 11;
+    --overlay-z-index: 10;
+    --footer-z-index: 9;
     --lang-button-z-index: 11;
+    --theme-button-z-index: 11;
+}
+
+:root body.dark{
+    --background-color-body: #131313;
+    --background-color-default: #333;
+    --background-color-highlight: #090808;
+    --text-color-default: white;
+    --border-color: #555;
+    --border-color-dark: #777;
+    --border-color-focus: #cacaca;
+    --error-color: #FF7474;
 }
 
 body {
     font-size: var(--font-size);
     font-family: 'Noto Sans', sans-serif;
     color: var(--text-color);
+    background-color: var(--background-color-body);
     margin: 0;
     padding: 0;
     min-width: var(--content-min-width);
@@ -65,7 +87,8 @@ button {
     font-weight: bold;
     text-decoration: none;
     padding: var(--spacing-sm) var(--spacing);
-    background-color: white;
+    background-color: var(--background-color-default);
+    color: inherit;
     border-radius: var(--border-radius);
     border: none;
     display: flex;
@@ -77,6 +100,7 @@ button {
 
 button.brand {
     background-color: var(--brand-color);
+    color: var(--text-color-brand);
 }
 
 button.light {
@@ -103,6 +127,7 @@ button.underline {
     border-bottom: 0.3rem solid transparent;
     padding-left: var(--spacing-lg);
     padding-right: var(--spacing-lg);
+    font-size: var(--font-size-sm);
 }
 
 button.underline.selected {
@@ -110,26 +135,62 @@ button.underline.selected {
 }
 
 button.large {
-    height: auto;
+    height: var(--button-height-lg);
     font-size: var(--font-size-lg);
     padding: var(--spacing) var(--spacing-lg);
 }
 
-button.lang {
+#btn_lang {
     width: var(--lang-button-width);
     background-color: var(--background-color-light);
     z-index: var(--lang-button-z-index);
 }
 
-button.lang > img {
+
+#btn_lang > img {
     height: 90%;
 }
 
-button.lang > span {
+#btn_lang > span {
     text-transform: uppercase;
     margin-left: var(--spacing-sm);
 }
 
+#btn_theme {
+    background-color: var(--background-color-default);
+    color: var(--text-color-default);
+    z-index: var(--theme-button-z-index);
+    border: 1px solid transparent;
+}
+
+#btn_theme > svg {
+    margin-left: 0;
+}
+
+#theme_icon_light,
+body.dark #theme_icon_dark {
+    display: flex;
+}
+
+#theme_icon_dark,
+body.dark #theme_icon_light {
+    display: none;
+}
+
+button > svg {
+    height: var(--button-icon-height);
+    margin-left: var(--spacing-sm);
+    color: inherit;
+}
+
+button.large > svg {
+    height: var(--button-icon-height-lg);
+}
+
+button.icon-left > svg {
+    margin-left: 0;
+    margin-right: var(--spacing-sm);
+}
 
 /* SPACING */
 .margin-top {
@@ -235,17 +296,29 @@ button.lang > span {
 
 /* CARDS */
 .card {
-    background-color: white;
+    color: var(--text-color-default);
+    background-color: var(--background-color-default);
     box-shadow: var(--box-shadow-card);
     padding: var(--spacing-lg) var(--spacing-xlg);
     border-radius: var(--border-radius);
+    border: 1px solid transparent;
 }
 
-.card.modal {
+body.dark .card {
+    border-color: var(--border-color);
+    box-shadow: none;
+}
+
+.modal {
     padding: 0;
     width: var(--modal-width);
     display: flex;
     flex-direction: column;
+    color: var(--text-color-default);
+}
+
+.modal-lg {
+    width: var(--modal-width-lg);
 }
 
 .modal-top {
@@ -267,7 +340,7 @@ button.lang > span {
     width: 1.6rem;
     line-height: 1.6rem;
     padding: 0;
-    color: var(--text-color);
+    color: var(--text-color-default);
     font-weight: bold;
     font-size: 1.4rem;
 }
@@ -290,7 +363,7 @@ button.lang > span {
     top: 0;
     left: 0;
     z-index: var(--overlay-z-index);
-    position: absolute;
+    position: fixed;
     width: 100vw;
     height: 100vh;
     background-color: var(--background-color-overlay);
@@ -302,8 +375,13 @@ button.lang > span {
     min-width: var(--content-min-width);
 }
 
-.overlay.show {
+.overlay.show, .overlay.event-handler {
     display: flex;
+}
+
+.overlay.event-handler {
+    z-index: -1;
+    cursor: pointer;
 }
 
 /* INPUTS */
@@ -311,7 +389,8 @@ input {
     height: var(--button-height);
     font-family: 'Noto Sans', sans-serif;
     font-size: var(--font-size-sm);
-    color: var(--text-color);
+    color: var(--text-color-default);
+    background-color: var(--background-color-default);
     padding: var(--spacing-md) var(--spacing-sm);
     box-sizing: border-box;
     border: 2px solid var(--border-color-dark);
@@ -320,14 +399,18 @@ input {
 
 input:focus, input:active {
     outline: none;
-    border-color: var(--text-color);
+    border-color: var(--border-color-focus);
 }
 
 label {
     font-size: var(--font-size-xsm);
     margin-bottom: var(--spacing-xsm);
     display: inline-block;
-    color: var(--text-color);
+    color: var(--text-color-default);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-size: 0.7rem;
 }
 
 .error input {
@@ -369,4 +452,8 @@ h1, h2, h3, h4, p {
 
 .text-dark {
     color: var(--text-color);
+}
+
+.separator-bottom {
+    border-bottom: 1px solid var(--background-color-light);
 }

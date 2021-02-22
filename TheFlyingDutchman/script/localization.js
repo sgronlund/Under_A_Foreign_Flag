@@ -7,29 +7,33 @@ var language = 'en';
 const content = {};
 
 function add_localization_data(id, data) {
+    if (content.hasOwnProperty(id)) {
+        console.warn(`Replacing localization data with id: ${id}`);
+    }
+
     content[id] = data;
 }
 
 function set_localization_string(key) {
     const data = content[key];
-    
+
     for (const idx in data.keys) { // updates all ids with their specific string content
         const key = data.keys[idx];
-        $('#' + key).text(get_string(data, key)); // jQuery function to update any attribute given its name and a value
+        $('#' + key).text(get_string(data, key));
     }
 
-    for (const idx in data.img_keys) { // updates all alt-texts with their specific string content
-        const key = data.img_keys[idx];
-        $('#' + key).attr('alt', get_alt_string(data, key)); // jQuery function to update any attribute given its name and a value
+    for (const idx in data.alt_keys) { // updates all alt-texts with their specific string content
+        const key = data.alt_keys[idx];
+        $('#' + key).attr('alt', get_alt_string(data, key));
     }
 
     for (const idx in data.placeholder_keys) { // updates all placeholder attributes with their specific string content
         const key = data.placeholder_keys[idx];
-        $('#' + key).attr('placeholder', get_placeholder_string(data, key)); // jQuery function to update any attribute given its name and a value
+        $('#' + key).attr('placeholder', get_placeholder_string(data, key));
     }
 
-    for (const idx in data.img_src) {
-        const key = data.img_src[idx];
+    for (const idx in data.src_keys) {
+        const key = data.src_keys[idx];
         $('#' + key).attr('src', get_src_string(data, key));
     }
 }
@@ -57,7 +61,7 @@ function get_placeholder_string(data, key) {
 }
 
 function get_src_string(data, key) {
-    return data[language]['img_src'][key];
+    return data[language]['src'][key];
 }
 
 // Switches between english and swedish and updates the view.

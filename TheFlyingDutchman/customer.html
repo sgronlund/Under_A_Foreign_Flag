@@ -6,64 +6,162 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title id="title"></title>
 
-        <!-- JQUERY -->
-        <script type="text/javascript" src="script/jquery-3.3.1.min.js"></script>
+        <!-- LIB -->
+        <script type="text/javascript" src="script/lib/jquery-3.3.1.min.js"></script>
 
-        <!-- DATA BASE -->
-        <!--<script type="text/javascript" src="DB/Beverages.js"></script>-->
-        <script type="text/javascript" src="DB/DBLoaded.js"></script>
-        <script type="text/javascript" src="DB/loader.js"></script>
+        <!-- DATABASE -->
+        <script type="text/javascript" src="script/database/api.js"></script>
+        <script async type="text/javascript" src="script/database/users.js"></script>
+        <script async type="text/javascript" src="script/database/beverages.js" id="db-script"></script>
 
         <!-- LOCALIZATION -->
         <script type="text/javascript" src="script/localization.js"></script>
-        <script type="text/javascript" src="script/localization/flag.js"></script>
-        <script type="text/javascript" src="script/localization/login.js"></script>
-        <script type="text/javascript" src="script/localization/customer.js"></script>
+        <script type="text/javascript" src="script/i18n/flag.js"></script>
+        <script type="text/javascript" src="script/i18n/login.js"></script>
+        <script type="text/javascript" src="script/i18n/customer.js"></script>
+        <script type="text/javascript" src="script/i18n/filtering.js"></script>
+        <script type="text/javascript" src="script/i18n/checkout.js"></script>
 
-        <script type="text/javascript" src="script/customer.js"></script>
-        <script type="text/javascript" src="script/login.js"></script>
+        <!-- COMPONENTS -->
+        <script type="text/javascript" src="script/components/modal.js"></script>
+        <script type="text/javascript" src="script/components/login.js"></script>
+        <script type="text/javascript" src="script/components/products.js"></script>
+        <script type="text/javascript" src="script/components/theme.js"></script>
 
-        <!-- CSS -->
-        <link href="css/pages/customer.css" rel="stylesheet" type="text/css">
+        <!-- CURRENT PAGE -->
+        <script type="text/javascript" src="script/pages/customer.js"></script>
+        <link href="css/customer.css" rel="stylesheet" type="text/css">
     </head>
-    <body>
-        <header class="container-wrapper text-white">
+    <body class="view-menu">
+        <header class="page-header container-wrapper text-white">
             <div class="container">
-                <section class="box row v-center space-between padding-lg">
+                <section class="box row v-center space-between padding-lg separator-bottom">
                     <div class="box v-center">
                         <h1 class="logo">The Dutchman</h1>
                         <h3 id="slogan" class="slogan"></h3>
                     </div>
                     <div class="box row v-center">
-                        <button class="lang" id="btn-lang" onclick="change_lang()">
+                        <button id="btn_theme" class="light margin-right" onclick="toggle_theme()">
+                            <svg id="theme_icon_dark" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                                />
+                            </svg>
+                            <svg id="theme_icon_light" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728
+                                      0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                                />
+                            </svg>
+                        </button>
+                        <button class="margin-right" id="btn_lang" onclick="change_lang()">
                             <img id="flag" src="">
+                        </button>
+                        <button class="brand padding-h-lg" id="btn_checkout" onclick="show_modal('checkout_modal')">
+                            <span id="btn_checkout_text"></span>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                                />
+                            </svg>
                         </button>
                     </div>
                 </section>
+            </div>
+        </header>
+        <section id="header_nav" class="container-wrapper text-white">
+            <div class="container" id="header_nav_menu">
                 <section class="sub-header box row v-center space-between">
                     <nav class="box row v-center fill fill-height">
                         <button id="btn_drinks" class="underline selected margin-right"></button>
                         <button id="btn_food" class="underline" type="button"></button>
                     </nav>
                     <div class="box row v-center fill-height">
-                        <p id="total_products" class="margin-right"></p>
-                        <!-- TODO: Hardcoded amounts of items--->
-                        <button id="btn_filter" class="brand no-radius fill-height"></button>
+                        <p id="total_products" class="margin-right">
+                            <span id="total_products_count">0</span>
+                            <span id="total_products_label"></span>
+                        </p>
+                        <button id="btn_filter" class="brand no-radius fill-height" onclick="show_modal('filter_modal')">
+                            <span id="btn_filter_text"></span>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6
+                                         6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                                />
+                            </svg>
+                        </button>
                     </div>
                 </section>
             </div>
-        </header>
+            <div class="container" id="header_nav_order">
+                <section class="sub-header box row v-center space-between padding-h-lg">
+                    <h4 id="table_id">
+                        <span id="table_id_label"></span>
+                        <span id="table_id_number">#20</span>
+                    </h4>
+                    <p id="order_total">
+                        <span id="order_total_label">Total:</span>
+                        <span id="order_total_amount" class="bold">2000 SEK</span>
+                    </p>
+                </section>
+            </div>
+        </section>
         <main class="container-wrapper">
             <section id="menu" class="container padding-lg">
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
+                <article class="card">
+                    I am a card test
+                </article>
                 <article class="card">
                     I am a card test
                 </article>
             </section>
         </main>
         <footer>
-            <section id="vip_footer" class="container-wrapper text-white">
+            <section id="vip_footer" class="container-wrapper">
                 <div class="container">
-                    <section class="box row center">
+                    <section id="vip_footer_content" class="box row center">
                         <div id="welcome" class="box row fill h-center padding-v-sm">
                             <p id="welcome_text" class="margin-right-sm"></p>
                             <p id="welcome_name" class="bold"></p>
@@ -78,34 +176,99 @@
             <nav class="container-wrapper">
                 <div class="container">
                     <div class="box row center padding-v-sm">
-                        <button id="btn_order" class="menu-item"></button>
-                        <button id="btn_menu" class="menu-item"></button>
-                        <button id="btn_vip_login" class="menu-item" onclick="show_login('show')"></button>
-                        <button id="btn_vip_logout" class="menu-item" onclick="logout()"></button>
+                        <button id="btn_order" class="menu-item fill icon-left margin-right" onclick="show_order()">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2
+                                         3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"
+                                />
+                            </svg>
+                            <span id="btn_order_text"></span>
+                            <span id="btn_order_count">5</span>
+                        </button>
+                        <button id="btn_menu" class="menu-item fill icon-left margin-right" onclick="show_menu()">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2
+                                         2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                                />
+                            </svg>
+                            <span id="btn_menu_text"></span>
+                        </button>
+                        <button id="btn_vip_login" class="menu-item fill icon-left" onclick="show_modal('login_modal', true)">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                            <span id="btn_vip_login_text"></span>
+                        </button>
+                        <button id="btn_vip_logout" class="menu-item fill icon-left" onclick="logout()">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                />
+                            </svg>
+                            <span id="btn_vip_logout_text"></span>
+                        </button>
                     </div>
                 </div>
             </nav>
         </footer>
-        
-      <div class="login overlay" id="login_background">
-        <div class="card modal" id="login_form">
+
+      <div class="overlay modal-root" id="login_modal">
+        <div class="overlay event-handler modal-event-hide"></div>
+        <div class="card modal">
           <div class="modal-top">
-            <p id="login_form_text" class="modal-title">Login</p>
-    
-            <button id="x-button" class="modal-close" type="button" onclick="show_login('hide')">&#10799;</button>
+            <p id="login_modal_title" class="modal-title"></p>
+            <button class="modal-close modal-event-hide" type="button">&#10799;</button>
           </div>
-    
+
           <div class="modal-content">
               <div class="box">
                   <label id="username_label" for="username"></label>
-                  <input id="username" type="text" placeholder="Username" class="margin-bottom" />
+                  <input id="username" type="text" placeholder="Username" class="margin-bottom-lg" />
               </div>
               <div class="box">
                  <label id="password_label" for="username"></label>
                  <input id="password" type="password" placeholder="Password" class="margin-bottom-lg" />
               </div>
-    
-            <button id="submit" class="fill-width extra-light margin-top" type="submit" onclick="login(false)"></button>
+
+            <button class="fill-width extra-light margin-top" type="submit" onclick="login(false)">
+                <span id="submit"></span>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
+                    />
+                </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="overlay modal-root" id="checkout_modal">
+        <div class="overlay event-handler modal-event-hide"></div>
+        <div class="card modal modal-lg">
+          <div class="modal-top">
+            <p id="checkout_modal_title" class="modal-title"></p>
+
+            <button class="modal-close modal-event-hide" type="button">&#10799;</button>
+          </div>
+
+          <div class="modal-content">
+              Checkout
+          </div>
+        </div>
+      </div>
+      <div class="overlay modal-root" id="filter_modal">
+        <div class="overlay event-handler modal-event-hide"></div>
+        <div class="card modal modal-lg">
+          <div class="modal-top">
+            <p id="filtering_modal_title" class="modal-title"></p>
+
+            <button class="modal-close modal-event-hide" type="button">&#10799;</button>
+          </div>
+
+          <div class="modal-content">
+              Filtering
           </div>
         </div>
       </div>
