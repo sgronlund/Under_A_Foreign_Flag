@@ -101,11 +101,6 @@ body.view-menu #btn_menu, body.view-order #btn_order {
     border-color: var(--border-color-dark);
 }
 
-body.view-order #btn_order > #btn_order_count {
-    background-color: var(--text-color);
-    color: white;
-}
-
 @media screen and (max-width: 1050px) {
     body.view-menu #menu, body.view-order #order {
         grid-template-columns: 1fr 1fr;
