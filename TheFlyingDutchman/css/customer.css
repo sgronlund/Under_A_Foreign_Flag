@@ -93,6 +93,12 @@ body.view-menu #menu, body.view-order #order {
     grid-column-gap: var(--spacing);
 }
 
+.product-price {
+    font-size: var(--font-size-sm);
+    font-weight: bold;
+    color: var(--price-color-text);
+}
+
 .product-description {
     display: grid;
     grid-template-columns: 1fr 1fr;

@@ -49,7 +49,10 @@ function render_products(id) {
     for (let i = 0; i < 100; i++) {
         html += `
             <article class="product card">
-                <h4 class="margin-bottom">${template_product.namn}</h4>
+                <div class="box row space-between v-center margin-bottom">
+                    <h4>${template_product.namn}</h4>
+                    <p class="product-price">${template_product.prisinklmoms} SEK</p>
+                </div>
                 <div class="product-description padding-bottom">
                     <p class="product-description-item">
                         <span class="product_producer_label">Producer:</span>
@@ -74,13 +77,13 @@ function render_products(id) {
                 </div>
                 <div class="product-actions box row space-between padding-top">
                     <div class="box row v-center">
-                        <button class="gray small no-icon-spacing" onclick="decrease_quantity(${template_product.nr})">
+                        <button class="gray small square no-icon-spacing" onclick="decrease_quantity(${template_product.nr})">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                             </svg>
                         </button>
                         <input data-quantity-id="${template_product.nr}" class="product-quantity no-spinner" min="1" max="10" value="1" type="number"/>
-                        <button class="gray small no-icon-spacing" onclick="increase_quantity(${template_product.nr})">
+                        <button class="gray small square no-icon-spacing" onclick="increase_quantity(${template_product.nr})">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg> 
