@@ -25,6 +25,7 @@
     --error-color-light: #FF4949;
 
     --border-radius: 5px;
+    --border-radius-lg: 8px;
     --modal-width: 325px;
     --modal-width-lg: 400px;
     --content-width: 1200px;
@@ -103,6 +104,11 @@ button.brand {
     color: var(--text-color-brand);
 }
 
+button.gray {
+    background-color: var(--background-color-body);
+    color: var(--text-color-default);
+}
+
 button.light {
     background-color: var(--background-color-light);
     color: white;
@@ -138,6 +144,13 @@ button.large {
     height: var(--button-height-lg);
     font-size: var(--font-size-lg);
     padding: var(--spacing) var(--spacing-lg);
+}
+
+button.small {
+    height: var(--button-height-sm);
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) var(--spacing-sm);
+    border-radius: var(--border-radius-lg);
 }
 
 #btn_lang {
@@ -217,6 +230,14 @@ button.icon-left > svg {
     margin-bottom: var(--spacing-lg);
 }
 
+.padding-bottom {
+    padding-bottom: var(--spacing);
+}
+
+.padding-top {
+    padding-top: var(--spacing);
+}
+
 .padding-lg {
     padding: var(--spacing-lg);
 }
@@ -241,6 +262,13 @@ button.icon-left > svg {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+}
+
+.box.grid {
+}
+
+.box.grid.col-2 {
+    grid-template-columns: 1fr 1fr;
 }
 
 .box.row {
@@ -456,4 +484,19 @@ h1, h2, h3, h4, p {
 
 .separator-bottom {
     border-bottom: 1px solid var(--background-color-light);
+}
+
+.no-icon-spacing > svg {
+    margin: 0; 
+}
+
+/* Hide default input spinners */
+.no-spinner {
+  -moz-appearance:textfield;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

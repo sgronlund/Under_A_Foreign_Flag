@@ -84,13 +84,14 @@ function changeBalance(username, newAmount) {
 //
 function allBeverages() {
     // Using a local variable to collect the items.
-    const collector = [];
+    const collector = {};
 
     // The DB is stored in the variable DB2, with "spirits" as key element. If you need to select only certain
     // items, you may introduce filter functions in the loop... see the template within comments.
     //
     for (let i = 0; i < DB2.spirits.length; i++) {
-        collector.push({ namn: (DB2.spirits[i].namn), varugrupp: (DB2.spirits[i].varugrupp) });
+        let product = DB2.spirits[i];
+        collector[product.nr] = Object.assign({}, product);
     };
 
     return collector;
