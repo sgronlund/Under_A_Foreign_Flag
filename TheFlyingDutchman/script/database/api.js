@@ -78,6 +78,18 @@ function changeBalance(username, newAmount) {
     };
 }
 
+function set_product_description_item(description, product, key, target_key) {
+    if (!target_key) {
+        target_key = key;
+    }
+
+    if (!product[key] || product[key] == '') {
+        description[target_key] = '-';
+    } else {
+        description[target_key] = product[key];
+    }
+}
+
 // =====================================================================================================
 // Returns a list of objects containing the name and category of each beverage in the database.
 // This function can be used as a recipe for similar functions.
@@ -91,34 +103,33 @@ function allBeverages() {
     //
     for (let i = 0; i < DB2.spirits.length; i++) {
         let product = DB2.spirits[i];
-        
+
         // Contains all the values that describe the beverage.
         // These are different based on the type of drink.
         const description = {};
-        
+
         // needed for all beverages
         description['forpackning'] = product.forpackning;
-        description['producent'] = product.producet;
-        
-        if (product.varugrupp.toLowerCase().contains("öl")) {
+        description['producent'] = product.producent;
+
+        if (product.varugrupp.toLowerCase().includes("öl")) {
             // Description for beers
-            description['ursprunglandnamn'] = product.ursprunglandnamn;
+            set_product_description_item(description, product, 'ursprunglandnamn');
             description['sort'] = product.varugrupp.split(',')[1];
-            description['alkoholhalt'] = product.alkoholhalt;
-            
-        } else if (product.varugrupp.toLowerCase().contains("vin")){
+            set_product_description_item(description, product, 'alkoholhalt');
+        } else if (product.varugrupp.toLowerCase().includes("vin")){
             // Description for Wine
-            description['argang'] = product.argang;
+            set_product_description_item(description, product, 'argang');
             description['typ'] = product.varugrupp.split(" ")[0];
-            description['druva'] = product.namn2;
-            
+            set_product_description_item(description, product, 'namn2', 'druva');
         } else {
             // Description for other
             description['ursprunglandnamn'] = product.ursprunglandnamn;
-            description['sort'] = product.varugrupp;
-            description['alkoholhalt'] = product.alkoholhalt;
+            set_product_description_item(description, product, 'ursprunglandnamn');
+            set_product_description_item(description, product, 'varugrupp', 'sort');
+            set_product_description_item(description, product, 'alkoholhalt');
         }
-        
+
         collector[product.nr] = {
             nr: product.nr,
             namn: product.namn,

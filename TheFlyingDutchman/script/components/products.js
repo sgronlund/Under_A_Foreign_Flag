@@ -2,9 +2,7 @@ var products = null;
 
 function item_dom(product){
     let description = ``;
-    
-    console.log(product);
-    
+
     for (const key of Object.keys(product.description)){
         description += `
             <p class="product-description-item">
@@ -13,7 +11,7 @@ function item_dom(product){
             </p>
         `;
     }
-    
+
     let item = `
         <article class="product card box">
             <div class="box row space-between v-center margin-bottom">
@@ -46,7 +44,7 @@ function item_dom(product){
             </div>
         </article>
     `;
-    
+
     return item;
 }
 
@@ -67,72 +65,16 @@ function render_products() {
     let html = "";
     let total = 0;
 
-    // Test data
-    // TODO: remove this
-    const wine = {
-        "nr": "10001",
-        "namn": "Jättegott vin",
-        "prisinklmoms": "442.00",
-        "description": {
-            "argang": "1700",
-            "typ": "Rött",
-            "druva": "Tin babaroca",
-            "forpackning": "Flaska",
-            "producent": "Tiffon",
-        },
-    };
-    
-    const pure =  {
-        "nr": "1001",
-        "namn": "Vanlig Vodka",
-        "prisinklmoms": "195.00",
-        "description": {
-            "ursprunglandnamn": "Sverige",
-            "sort": "Okryddad sprit",
-            "alkoholhalt": "37.5%",
-            "producent": "Svensk Export Vodka AB",
-            "forpackning": "Flaska",
-        },
-    };
-    
-    const beer =  {
-        "nr": "420",
-        "namn": "Braastad XO",
-        "prisinklmoms": "442.0",
-        "description": {
-            "ursprunglandnamn": "Frankrike",
-            "sort": "Okryddad sprit",
-            "alkoholhalt": "37.5%",
-            "producent": "Svensk Export Vodka AB",
-            "forpackning": "Flaska",
-        },
-    };
-
-    products = { "10001": wine, "1001": pure, "420": beer};
-
     for (const key of Object.keys(products)) {
+        console.log('asdasd');
         html += item_dom(products[key]);
         total++;
     }
 
     container.html(html);
     total_products.text(total);
-    
-    // Localization is set directly on load and must be updated 
+
+    // Localization is set directly on load and must be updated
     // after we have added the products
     update_localization();
 }
-
-$(document).ready(function () {
-    $('#db-script').on('load', () => {
-        products = allBeverages();
-        $(document).trigger('db-loaded');
-    });
-    
-    // Cloud9 fix 
-    if (window.location.host.length >= 13 && window.location.host.substr(-13) == "amazonaws.com") {
-        console.log('Detected cloud9 environment, overriding db-load event');
-        products = [];
-        $(document).trigger('db-loaded');
-    }
-});
