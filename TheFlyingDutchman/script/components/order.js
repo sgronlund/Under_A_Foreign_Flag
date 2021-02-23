@@ -121,34 +121,15 @@ function render_order() {
     // TODO: Reuse description rendering from product.js
     
     for (const item of Object.values(order.items)) {
+        const description = item_description_dom(item.product);
+        
         html += `
             <article class="product card">
                 <div class="box margin-bottom">
                     <h4 class="product-title">${item.product.namn}</h4>
                 </div>
                 <div class="box v-start fill padding-bottom">
-                    <div class="product-description-order">
-                        <p class="product-description-item">
-                            <span class="product_producer_label">Producer:</span>
-                            <span class="product_producer_value">${item.product.producent}</span>
-                        </p>
-                        <p class="product-description-item">
-                            <span class="product_country_label">Country:</span>
-                            <span class="product_country_value">${item.product.ursprunglandnamn}</span>
-                        </p>
-                        <p class="product-description-item">
-                            <span class="product_category_label">Category:</span>
-                            <span class="product_category_value">${item.product.varugrupp}</span>
-                        </p>
-                        <p class="product-description-item">
-                            <span class="product_alcohol_label">Alcohol:</span>
-                            <span class="product_alcohol_value">${item.product.alkoholhalt}</span>
-                        </p>
-                        <p class="product-description-item">
-                            <span class="product_type_label">Serving:</span>
-                            <span class="product_type_value">${item.product.forpackning}</span>
-                        </p>
-                    </div>
+                    <div class="product-description-order">${description}</div>
                 </div>
                 <div class="product-actions box row space-between v-center padding-top">
                     <div class="box row v-center">
@@ -178,4 +159,5 @@ function render_order() {
     }
     
     container.html(html);
+    update_localization();
 }

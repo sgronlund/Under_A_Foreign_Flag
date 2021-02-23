@@ -109,8 +109,8 @@ function allBeverages() {
         const description = {};
 
         // needed for all beverages
-        description['forpackning'] = product.forpackning;
-        description['producent'] = product.producent;
+        set_product_description_item(description, product, 'forpackning');
+        set_product_description_item(description, product, 'producent');
 
         if (product.varugrupp.toLowerCase().includes("öl")) {
             // Description for beers

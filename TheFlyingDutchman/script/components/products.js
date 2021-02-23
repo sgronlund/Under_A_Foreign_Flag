@@ -1,6 +1,6 @@
 var products = null;
 
-function item_dom(product){
+function item_description_dom(product) {
     let description = ``;
 
     for (const key of Object.keys(product.description)){
@@ -11,7 +11,13 @@ function item_dom(product){
             </p>
         `;
     }
+    
+    return description;
+}
 
+function item_dom(product){
+    const description = item_description_dom(product);
+    
     let item = `
         <article class="product card box">
             <div class="box row space-between v-center margin-bottom">
@@ -66,7 +72,6 @@ function render_products() {
     let total = 0;
 
     for (const key of Object.keys(products)) {
-        console.log('asdasd');
         html += item_dom(products[key]);
         total++;
     }

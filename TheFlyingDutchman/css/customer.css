@@ -106,6 +106,8 @@ body.view-order #order {
     font-size: var(--font-size-sm);
     font-weight: bold;
     color: var(--price-color-text);
+    min-width: 6rem;
+    text-align: right;
 }
 
 .product-price-order {
@@ -158,12 +160,8 @@ body.view-menu #btn_menu, body.view-order #btn_order {
 }
 
 @media screen and (max-width: 1050px) {
-    body.view-menu #menu {
+    body.view-menu #menu, .product-description-order {
         grid-template-columns: 1fr 1fr;
-    }
-    
-    .product-description-order {
-        grid-template-columns: 1fr;
     }
 }
 
@@ -176,6 +174,10 @@ body.view-menu #btn_menu, body.view-order #btn_order {
     .credit-container {
         width: 100%;
         justify-content: center;
+    }
+    
+    .product-description-order {
+        grid-template-columns: 1fr;
     }
     
     body.view-menu #menu {
