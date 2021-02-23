@@ -9,7 +9,7 @@
     --background-color-gray: #EEE;
     --background-color-highlight: white;
     --background-color-overlay: rgba(0, 0, 0, 50%);
-    --background-color-body: #eee;
+    --background-color-body: #e6e6e6;
     --background-color-default: white;
 
     --border-color: #EEEEEE;
@@ -488,12 +488,20 @@ h1, h2, h3, h4, p {
     color: var(--text-color);
 }
 
+.separator-top {
+    border-top: 1px solid var(--border-color);
+}
+
 .separator-bottom {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.separator-bottom-light {
     border-bottom: 1px solid var(--background-color-light);
 }
 
 .no-icon-spacing > svg {
-    margin: 0; 
+    margin: 0;
 }
 
 /* Hide default input spinners */

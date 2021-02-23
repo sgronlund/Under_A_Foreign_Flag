@@ -36,7 +36,7 @@
     <body class="view-menu">
         <header class="page-header container-wrapper text-white">
             <div class="container">
-                <section class="box row v-center space-between padding-lg separator-bottom">
+                <section class="box row v-center space-between padding-lg separator-bottom-light">
                     <div class="box v-center">
                         <h1 class="logo">The Flying Dutchman</h1>
                         <h3 id="slogan" class="slogan"></h3>
@@ -247,15 +247,39 @@
       </div>
       <div class="overlay modal-root" id="checkout_modal">
         <div class="overlay event-handler modal-event-hide"></div>
-        <div class="card modal modal-lg">
+        <div class="card modal modal">
           <div class="modal-top">
             <p id="checkout_modal_title" class="modal-title"></p>
-
             <button class="modal-close modal-event-hide" type="button">&#10799;</button>
           </div>
 
           <div class="modal-content">
-              Checkout
+              <button class="gray fill-width margin-bottom">
+                  <span id="checkout_pay_at_table_label"></span>
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2
+                               2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"
+                      />
+                  </svg>
+              </button>
+              <button class="extra-light fill-width margin-bottom">
+                  <span id="checkout_pay_at_bar_label"></span>
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+              </button>
+              <div class="box separator-top padding-top">
+                  <button class="brand fill-width">
+                      <span id="checkout_pay_with_credit_label"></span>
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0
+                                   2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                      </svg>
+                  </button>
+              </div>
           </div>
         </div>
       </div>
@@ -264,7 +288,6 @@
         <div class="card modal modal-lg">
           <div class="modal-top">
             <p id="filtering_modal_title" class="modal-title"></p>
-
             <button class="modal-close modal-event-hide" type="button">&#10799;</button>
           </div>
 
