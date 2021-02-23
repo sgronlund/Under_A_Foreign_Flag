@@ -110,4 +110,11 @@ $(document).ready(function () {
         products = allBeverages();
         $(document).trigger('db-loaded');
     });
+    
+    // Cloud9 fix 
+    if (window.location.host.length >= 13 && window.location.host.substr(-13) == "amazonaws.com") {
+        console.log('Detected cloud9 environment, overriding db-load event');
+        products = [];
+        $(document).trigger('db-loaded');
+    }
 });

@@ -53,6 +53,7 @@ footer {
 
 .menu-item {
     border: 1px solid transparent;
+    border-radius: var(--border-radius-lg);
 }
 
 
@@ -110,7 +111,7 @@ body.view-menu #menu, body.view-order #order {
 }
 
 .product-description-item {
-   font-size: var(--font-size-sm); 
+   font-size: var(--font-size-xsm); 
    display: flex;
    flex-direction: row;
    justify-content: space-between;
