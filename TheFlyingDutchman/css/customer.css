@@ -18,12 +18,12 @@ header {
     top: 0;
 }
 
-#total_products {
+.product-count {
     color: var(--text-color-light);
     font-size: var(--font-size-sm);
 }
 
-#btn_filter {
+#btn_filter, #btn_checkout {
     padding: 0 1.6rem;
 }
 
@@ -75,6 +75,7 @@ footer {
 #btn_vip_logout,
 #btn_checkout,
 #header_nav_order,
+#checkout_vip_actions,
 body.view-order #header_nav_menu,
 body.logged-in #btn_vip_login {
     display: none;
@@ -83,27 +84,32 @@ body.logged-in #btn_vip_login {
 body.logged-in #vip_footer,
 body.logged-in #btn_vip_logout,
 body.view-order #header_nav_order,
-body.view-order #btn_checkout {
+body.view-order #btn_checkout,
+body.logged-in #checkout_vip_actions {
     display: flex;
 }
 
-body.view-menu #menu, body.view-order #order {
+body.view-menu #menu {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-row-gap: var(--spacing);
     grid-column-gap: var(--spacing);
 }
 
-.product-price {
+body.view-order #order {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: var(--spacing);
+}
+
+.product-price, .product-price-order {
     font-size: var(--font-size-sm);
     font-weight: bold;
     color: var(--price-color-text);
 }
 
-.product-description {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: var(--spacing);
+.product-price-order {
+    font-size: var(--font-size); 
 }
 
 .product-actions {
@@ -136,14 +142,28 @@ body.view-menu #menu, body.view-order #order {
     padding-right: var(--spacing-lg);
 }
 
+.product-description-order {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: var(--spacing-lg);
+}
+
+#order_total {
+    font-size: var(--font-size);
+}
+
 body.view-menu #btn_menu, body.view-order #btn_order {
     background-color: var(--background-color-body);
     border-color: var(--border-color-dark);
 }
 
 @media screen and (max-width: 1050px) {
-    body.view-menu #menu, body.view-order #order {
+    body.view-menu #menu {
         grid-template-columns: 1fr 1fr;
+    }
+    
+    .product-description-order {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -157,10 +177,8 @@ body.view-menu #btn_menu, body.view-order #btn_order {
         width: 100%;
         justify-content: center;
     }
-}
-
-@media screen and (max-width: 650px) {
-    body.view-menu #menu, body.view-order #order {
+    
+    body.view-menu #menu {
         grid-template-columns: 1fr;
     }
 }

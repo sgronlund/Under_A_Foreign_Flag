@@ -244,6 +244,14 @@ button.icon-left > svg {
     padding-top: var(--spacing);
 }
 
+.padding {
+    padding: var(--spacing);
+}
+
+.padding-left-lg {
+    padding-left: var(--spacing-lg);
+}
+
 .padding-lg {
     padding: var(--spacing-lg);
 }
@@ -273,12 +281,12 @@ button.icon-left > svg {
 .box.grid {
 }
 
-.box.grid.col-2 {
-    grid-template-columns: 1fr 1fr;
-}
-
 .box.row {
     flex-direction: row;
+}
+
+.box.v-start:not(.row) {
+    justify-content: flex-start;
 }
 
 .box.center, .box.row.v-center, .box.h-center:not(.row) {

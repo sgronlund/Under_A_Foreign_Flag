@@ -91,8 +91,41 @@ function allBeverages() {
     //
     for (let i = 0; i < DB2.spirits.length; i++) {
         let product = DB2.spirits[i];
-        collector[product.nr] = Object.assign({}, product);
-    };
+        
+        // Contains all the values that describe the beverage.
+        // These are different based on the type of drink.
+        const description = {};
+        
+        // needed for all beverages
+        description['forpackning'] = product.forpackning;
+        description['producent'] = product.producet;
+        
+        if (product.varugrupp.toLowerCase().contains("öl")) {
+            // Description for beers
+            description['ursprunglandnamn'] = product.ursprunglandnamn;
+            description['sort'] = product.varugrupp.split(',')[1];
+            description['alkoholhalt'] = product.alkoholhalt;
+            
+        } else if (product.varugrupp.toLowerCase().contains("vin")){
+            // Description for Wine
+            description['argang'] = product.argang;
+            description['typ'] = product.varugrupp.split(" ")[0];
+            description['druva'] = product.namn2;
+            
+        } else {
+            // Description for other
+            description['ursprunglandnamn'] = product.ursprunglandnamn;
+            description['sort'] = product.varugrupp;
+            description['alkoholhalt'] = product.alkoholhalt;
+        }
+        
+        collector[product.nr] = {
+            nr: product.nr,
+            namn: product.namn,
+            prisinklmoms: product.prisinklmoms,
+            description,
+        };
+    }
 
     return collector;
 }

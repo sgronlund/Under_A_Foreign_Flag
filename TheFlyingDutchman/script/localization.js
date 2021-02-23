@@ -41,7 +41,7 @@ function set_localization_string(key) {
 }
 
 // Updates the elements based on the current language
-function update_view() {
+function update_localization() {
     for (const key of Object.keys(content)) {
         set_localization_string(key);
     }
@@ -74,10 +74,10 @@ function change_lang() {
         language = 'en'; // Updates the variable to the other available language
     }
 
-    update_view(); // Updates all the elements with the newly chosen languages string contents
+    update_localization(); // Updates all the elements with the newly chosen languages string contents
 }
 
 // Calls the function update_view() when loading the page.
 $(document).ready(function() {
-    update_view();
+    update_localization();
 });

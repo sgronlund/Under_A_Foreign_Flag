@@ -21,6 +21,7 @@ function greet() {
 function show_order() {
     $(document.body).removeClass('view-menu');
     $(document.body).addClass('view-order');
+    render_order();
 }
 
 function show_menu() {
@@ -33,7 +34,7 @@ $(document).on('login', function () {
 });
 
 $(document).on('db-loaded', function() {
-    render_products('menu');
+    render_products();
 });
 
 $(document).ready(function() {
