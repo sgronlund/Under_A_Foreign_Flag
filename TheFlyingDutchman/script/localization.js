@@ -16,25 +16,27 @@ function add_localization_data(id, data) {
 
 function set_localization_string(key) {
     const data = content[key];
+    let prefix = '#';
 
-    for (const idx in data.keys) { // updates all ids with their specific string content
-        const key = data.keys[idx];
-        $('#' + key).text(get_string(data, key));
+    // If the localization data uses class identifiers instead of id
+    if (data.hasOwnProperty('use_class_identifiers') && data.use_class_identifiers === true) {
+        prefix = '.';
     }
 
-    for (const idx in data.alt_keys) { // updates all alt-texts with their specific string content
-        const key = data.alt_keys[idx];
-        $('#' + key).attr('alt', get_alt_string(data, key));
+    for (const idx of data.keys) { // updates all ids with their specific string content
+        $(prefix + idx).text(get_string(data, idx));
     }
 
-    for (const idx in data.placeholder_keys) { // updates all placeholder attributes with their specific string content
-        const key = data.placeholder_keys[idx];
-        $('#' + key).attr('placeholder', get_placeholder_string(data, key));
+    for (const idx of data.alt_keys) { // updates all alt-texts with their specific string content
+        $(prefix + idx).attr('alt', get_alt_string(data, idx));
     }
 
-    for (const idx in data.src_keys) {
-        const key = data.src_keys[idx];
-        $('#' + key).attr('src', get_src_string(data, key));
+    for (const idx of data.placeholder_keys) { // updates all placeholder attributes with their specific string content
+        $(prefix + idx).attr('placeholder', get_placeholder_string(data, idx));
+    }
+
+    for (const idx of data.src_keys) {
+        $(prefix + idx).attr('src', get_src_string(data, idx));
     }
 }
 

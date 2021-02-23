@@ -16,7 +16,7 @@ function render_products(id) {
 
     let html = "";
     let total = 0;
-    
+
     const template_product = {
         "nr": "10001",
         "artikelid": "25053",
@@ -43,7 +43,7 @@ function render_products(id) {
         "ekologisk": "0",
         "koscher": "0",
     };
-    
+
     products = { "10001": template_product };
 
     for (let i = 0; i < 100; i++) {
@@ -86,14 +86,14 @@ function render_products(id) {
                         <button class="gray small square no-icon-spacing" onclick="increase_quantity(${template_product.nr})">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg> 
+                            </svg>
                         </button>
                     </div>
                     <button class="extra-light small product-add-to-order" onclick="add_to_order(${template_product.nr})">
-                        <span class="product-add-to-order-label">Add to order</span>
+                        <span class="product_add_to_order_label">Add to order</span>
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg> 
+                        </svg>
                     </button>
                 </div>
             </article>
