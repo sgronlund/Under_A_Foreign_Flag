@@ -1,40 +1,79 @@
-function greet() {
-    var username = window.sessionStorage.getItem('user');
+window.tfd.add_module('customer', {
+    // =====================================================================================================
+    // MODEL
+    //
+    model: {
+        current_view: 'menu',
+        ids: {
+            user_name: '#welcome_name',
+            user_credit: '#vip_credit',
+        },
+        classes: {
+            view_menu: 'view-menu',
+            view_order: 'view-order',
+        },
+    },
 
-    if (username) {
-        const details = userDetails(username);
-        const fullname = details.first_name + " " + details.last_name;
-        let balance = details['creditSEK'];
+    // =====================================================================================================
+    // VIEW
+    //
+    view: {
+        // Renders the VIP footer when logged in
+        update_vip_footer: function() {
+            if (!window.tfd.controller.login.is_logged_in()) {
+                return;
+            }
 
-        $(document.body).addClass('logged-in');
-        $("#welcome_name").text(fullname);
+            const {
+                first_name,
+                last_name,
+                creditSEK
+            } = window.tfd.controller.login.get_user_details();
 
-        // If the user for some reason does not have a balance
-        if (balance == null && balance == undefined) {
-            balance = 0;
-        }
+            const fullname = first_name + " " + last_name;
+            const balance = creditSEK ? creditSEK : 0;
 
-        $("#vip_credit").text(balance + " SEK");
+            $(this.model.ids.user_name).text(fullname);
+            $(this.model.ids.user_credit).text(balance + " SEK");
+        },
+
+        update_body: function() {
+            if (this.model.current_view == 'menu') {
+                $(document.body).addClass(this.model.classes.view_menu);
+                $(document.body).removeClass(this.model.classes.view_order);
+            } else {
+                $(document.body).removeClass(this.model.classes.view_menu);
+                $(document.body).addClass(this.model.classes.view_order);
+            }
+        },
+    },
+
+    // =====================================================================================================
+    // CONTROLLER
+    //
+    controller: {
+        set_logged_in: function() {
+            this.view.update_vip_footer();
+        },
+
+        set_view: function(new_view) {
+            this.model.current_view = new_view;
+            this.view.update_body();
+        },
+    },
+
+    // =====================================================================================================
+    // DOCUMENT READY EVENT
+    //
+    ready: function() {
+        render_products();
+    },
+
+    // =====================================================================================================
+    // MODULE LOAD
+    //
+    init: function() {
+        $(document).on('login', this.view.update_vip_footer);
+        products = allBeverages();
     }
-}
-
-function show_order() {
-    $(document.body).removeClass('view-menu');
-    $(document.body).addClass('view-order');
-    render_order();
-}
-
-function show_menu() {
-    $(document.body).removeClass('view-order');
-    $(document.body).addClass('view-menu');
-}
-
-$(document).on('login', function () {
-    greet();
-});
-
-$(document).ready(function() {
-    greet();
-    products = allBeverages();
-    render_products();
 });
