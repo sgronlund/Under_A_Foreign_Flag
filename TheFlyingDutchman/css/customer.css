@@ -104,7 +104,7 @@ body.view-order #order {
     grid-row-gap: var(--spacing);
 }
 
-.product-price, .product-price-order {
+.product-price, .order-product-price {
     font-size: var(--font-size-sm);
     font-weight: bold;
     color: var(--price-color-text);
@@ -112,8 +112,13 @@ body.view-order #order {
     text-align: right;
 }
 
-.product-price-order {
+.order-product-price {
     font-size: var(--font-size);
+}
+
+.order-product-price-each {
+    font-size: var(--font-size-sm);
+    font-weight: bold;
 }
 
 .product-actions {

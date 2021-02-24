@@ -13,6 +13,7 @@ add_localization_data('product', {
         'product_typ_label',
         'product_add_to_order_label',
         'order_remove_product_label',
+        'order_product_price_each_label',
     ],
     alt_keys: [],
     placeholder_keys: [],
@@ -35,6 +36,7 @@ add_localization_data('product', {
             product_typ_label: 'Type:',
             product_add_to_order_label: 'Add to order',
             order_remove_product_label: 'Remove',
+            order_product_price_each_label: 'each',
         },
     },
     sv : {
@@ -49,6 +51,7 @@ add_localization_data('product', {
             product_typ_label: 'Typ:',
             product_add_to_order_label: 'Lägg i varukorg',
             order_remove_product_label: 'Ta bort',
+            order_product_price_each_label: 'st',
         },
     }
 });

@@ -129,8 +129,12 @@ function render_order() {
 
         html += `
             <article class="product card">
-                <div class="box margin-bottom">
+                <div class="box row space-between v-center margin-bottom">
                     <h4 class="product-title">${item.product.namn}</h4>
+                    <p class="order-product-price-each">
+                        <span>${item.product.prisinklmoms} /</span>
+                        <span class="order_product_price_each_label"></span>
+                    </p>
                 </div>
                 <div class="box v-start fill padding-bottom">
                     <div class="product-description-order">${description}</div>
@@ -156,7 +160,7 @@ function render_order() {
                             </svg>
                         </button>
                     </div>
-                    <h3 class="product-price-order">${item.total} SEK</h3>
+                    <h3 class="order-product-price">${item.total} SEK</h3>
                 </div>
             </article>
         `;
