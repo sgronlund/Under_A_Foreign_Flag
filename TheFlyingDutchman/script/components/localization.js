@@ -2,8 +2,14 @@
 // These files are located in script/localization/<page name>.js
 // Each localization file exports a 'content' variable with the same format
 
+// The available languages
+const LANGUAGES = {
+    ENGLISH: 'en',
+    SWEDISH: 'sv',
+};
+
 // The current language
-var language = 'en';
+var language = LANGUAGES.ENGLISH;
 const content = {};
 
 function add_localization_data(id, data) {
@@ -66,18 +72,44 @@ function get_src_string(data, key) {
     return data[language]['src'][key];
 }
 
-// Switches between english and swedish and updates the view.
-function change_lang() {
-    if (language == 'en') {
-        language = 'sv'; // Updates the variable to the other available language
-    } else {
-        language = 'en'; // Updates the variable to the other available language
+function load_language() {
+    const saved_language = window.localStorage.getItem('language');
+
+    if (!saved_language) {
+        // Use default language
+        set_language(language);
+        return;
     }
 
-    update_localization(); // Updates all the elements with the newly chosen languages string contents
+    set_language(saved_language);
+}
+
+function set_language(new_language) {
+    if (new_language == LANGUAGES.ENGLISH) {
+        language = LANGUAGES.ENGLISH
+    } else if (new_language == LANGUAGES.SWEDISH) {
+        language = LANGUAGES.SWEDISH;
+    } else {
+        console.error(`Could not set invalid language: ${new_language}`);
+        return;
+    }
+
+    window.localStorage.setItem('language', language);
+
+    // Updates all the elements with the newly chosen languages string contents
+    update_localization();
+}
+
+// Switches between english and swedish and updates the view.
+function toggle_language() {
+    if (language == LANGUAGES.ENGLISH) {
+        set_language(LANGUAGES.SWEDISH);
+    } else {
+        set_language(LANGUAGES.ENGLISH);
+    }
 }
 
 // Calls the function update_view() when loading the page.
 $(document).ready(function() {
-    update_localization();
+    load_language();
 });

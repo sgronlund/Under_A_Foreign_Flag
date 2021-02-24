@@ -14,16 +14,16 @@
         <script type="text/javascript" src="script/database/api.js"></script>
         <script type="text/javascript" src="script/database/users.js"></script>
 
-        <!-- LOCALIZATION -->
-        <script type="text/javascript" src="script/localization.js"></script>
-        <script type="text/javascript" src="script/i18n/flag.js"></script>
-        <script type="text/javascript" src="script/i18n/index.js"></script>
-        <script type="text/javascript" src="script/i18n/login.js"></script>
-
         <!-- COMPONENTS -->
+        <script type="text/javascript" src="script/components/localization.js"></script>
         <script type="text/javascript" src="script/components/modal.js"></script>
         <script type="text/javascript" src="script/components/login.js"></script>
         <script type="text/javascript" src="script/components/theme.js"></script>
+
+        <!-- LOCALIZATION -->
+        <script type="text/javascript" src="script/i18n/flag.js"></script>
+        <script type="text/javascript" src="script/i18n/index.js"></script>
+        <script type="text/javascript" src="script/i18n/login.js"></script>
 
         <!-- CURRENT PAGE -->
         <script type="text/javascript" src="script/pages/index.js"></script>
@@ -49,7 +49,7 @@
                     />
                 </svg>
             </button>
-            <button class="lang" id="btn_lang" onclick="change_lang()">
+            <button class="lang" id="btn_lang" onclick="toggle_language()">
                 <img id="flag" src="">
             </button>
         </section>
