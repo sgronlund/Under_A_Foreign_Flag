@@ -232,6 +232,10 @@ button.icon-left > svg {
     margin-right: var(--spacing-sm);
 }
 
+.margin-top-lg {
+    margin-top: var(--spacing-lg);
+}
+
 .margin-bottom-lg {
     margin-bottom: var(--spacing-lg);
 }

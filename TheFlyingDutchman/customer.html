@@ -106,8 +106,8 @@
                 </p>
                 <div class="box row v-center fill-height">
                     <p class="product-count margin-right">
-                        <span id="total_products_order_count">0</span>
-                        <span id="total_products_order_label"></span>
+                        <span id="order_total_products_count">0</span>
+                        <span id="order_total_products_label"></span>
                     </p>
                     <button id="btn_checkout" class="brand no-radius fill-height" onclick="show_modal('checkout_modal')">
                         <span id="btn_checkout_text"></span>
@@ -124,6 +124,9 @@
     <main class="container-wrapper">
         <!--MENU VIEW CONTENT-->
         <section id="menu" class="container padding-lg"></section>
+
+        <!-- ORDER EMPTY -->
+        <p id="order_empty_label"></p>
 
         <!--ORDER VIEW CONTENT-->
         <section id="order" class="container padding-lg"></section>

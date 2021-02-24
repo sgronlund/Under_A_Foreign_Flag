@@ -101,9 +101,9 @@ function decrease_quantity_in_order(product_number){
 
 function render_order() {
     const container = $('#order');
-    const total_amount = $("#order_total_amount");
     const total_items = $("#btn_order_count");
-    const total_items_header = $("#total_products_order_count");
+    const total_amount = $("#order_total_amount");
+    const total_items_header = $("#order_total_products_count");
     let html = "";
 
     if (order.total_items == 0) {
@@ -112,12 +112,17 @@ function render_order() {
         total_amount.text('0 SEK');
         total_items.text('0');
         total_items_header.text('0');
+
+        // Show order empty text
+        $(document.body).addClass('order-empty');
+
         return;
     }
 
     total_amount.text(order.total_price + " SEK");
     total_items.text(order.total_items);
     total_items_header.text(order.total_items);
+    $(document.body).removeClass('order-empty');
 
     for (const item of Object.values(order.items)) {
         const description = item_description_dom(item.product);
