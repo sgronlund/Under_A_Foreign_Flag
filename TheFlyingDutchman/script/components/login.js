@@ -4,8 +4,6 @@ window.tfd.add_module('login', {
     //
     model: {
         logged_in: false,
-        has_error: false,
-        modal_open: false,
         user_details: null,
         ids: {
             modal: '#login_modal',
@@ -31,29 +29,9 @@ window.tfd.add_module('login', {
             }
         },
 
-        update_modal: function() {
-            if (!this.model.modal_open) {
-                return;
-            }
-
-            const modal = $(this.model.ids.modal);
-
-            if (this.model.logged_in) {
-                // Reset input fields
-                $(this.model.ids.username).val('');
-                $(this.model.ids.password).val('');
-
-                // Hide modal
-                modal.removeClass(this.model.classes.show);
-                return;
-            }
-
-            // TODO: Move modal hide/show to modal module
-            modal.addClass(this.model.classes.show);
-
-            if (this.model.has_error) {
-                modal.addClass(this.model.classes.error);
-            }
+        reset_input_fields: function() {
+            $(this.model.ids.username).val('');
+            $(this.model.ids.password).val('');
         },
     },
 
@@ -71,6 +49,7 @@ window.tfd.add_module('login', {
             // Compare password of user with the entered password
             if (details && details.password === password_element.val()) {
                 this.controller.set_logged_in_user(details);
+                window.tfd.modal.controller.hide_error();
 
                 if (redirect) {
                     // Checks credentials and redirects to the right page
@@ -79,14 +58,15 @@ window.tfd.add_module('login', {
                     } else {
                         window.location.href = 'staff.html';
                     }
+                } else {
+                    this.view.reset_input_fields();
+                    window.tfd.modal.controller.hide();
                 }
 
                 return;
             }
 
-
-            this.model.has_error = true;
-            this.view.update_modal();
+            window.tfd.modal.controller.show_error();
         },
 
         // Loads the currently logged in user from sessionStorage and logs in
@@ -115,39 +95,25 @@ window.tfd.add_module('login', {
 
             // Update model
             this.model.logged_in = true;
-            this.model.has_error = false;
             this.model.user_details = details;
 
             this.view.update_body();
-            this.view.update_modal();
-
-            // Send signal to the customer controller and update VIP-footer
-            window.tfd.controller.customer.set_logged_in();
+            this.controller.signal();
         },
 
         logout: function() {
             window.sessionStorage.clear();
 
             this.model.logged_in = false;
-            this.model.has_error = false;
             this.model.user_details = null;
 
             this.view.update_body();
-            this.view.update_modal();
+            this.controller.signal();
+        },
 
-            // Send event to other modules
+        // Send event to other modules
+        signal: function() {
             $(document).trigger('login');
-        },
-
-        // TODO: Move show_modal/hide_modal to modal module
-        show_modal: function() {
-            this.model.modal_open = true;
-            this.view.update_modal();
-        },
-
-        hide_modal: function() {
-            this.model.modal_open = false;
-            this.view.update_modal();
         },
 
         is_logged_in: function() {

@@ -1,80 +1,115 @@
-// Finds a modal by id and returns it.
-// If no modal is found, an error is printed to the console and it returns null.
-function get_modal(id) {
-    const modal = $(`#${id}`);
+window.tfd.add_module('modal', {
+    // =====================================================================================================
+    // MODEL
+    //
+    model: {
+        current_modal: null,
+        has_error: false,
+        ids: {
+            login_modal: '#login_modal',
+            filter_modal: '#filter_modal',
+            checkout_modal: '#checkout_modal',
+        },
+        classes: {
+            show: 'show',
+            error: 'error',
+        },
+    },
 
-    if (!modal.length) {
-        console.error(`Could not find modal with id: ${id}`);
-        return null;
-    }
+    // =====================================================================================================
+    // VIEW
+    //
+    view: {
+        update_current_modal: function() {
+            if (!this.model.current_modal) {
+                // Hide all modals
+                $(this.model.ids.login_modal).removeClass(this.model.classes.show);
+                $(this.model.ids.filter_modal).removeClass(this.model.classes.show);
+                $(this.model.ids.checkout_modal).removeClass(this.model.classes.show);
 
-    return modal;
-}
+                return;
+            }
 
-// Shows or hides a modal based on id
-function show_modal(id) {
-    const modal = get_modal(id);
+            // Show the selected modal
+            $(this.model.current_modal).addClass(this.model.classes.show);
+        },
 
-    if (!modal) {
-        return;
-    }
+        update_current_modal_error: function() {
+            // If no modal is open, do not set the error class
+            if (!this.model.current_modal) {
+                return;
+            }
 
-    modal.addClass('show');
-}
+            if (!this.model.has_error) {
+                $(this.model.current_modal).removeClass(this.model.classes.error);
+                return;
+            }
 
-function hide_modal(id) {
-    const modal = get_modal(id);
+            $(this.model.current_modal).addClass(this.model.classes.error);
+        },
+    },
 
-    if (!modal) {
-        return;
-    }
+    // =====================================================================================================
+    // CONTROLLER
+    //
+    controller: {
+        hide: function() {
+            this.model.current_modal = null;
+            this.view.update_current_modal();
+        },
 
+        show_login: function() {
+            this.model.current_modal = this.model.ids.login_modal;
+            this.view.update_current_modal();
+        },
 
-    modal.removeClass('show');
-}
+        show_filter: function() {
+            this.model.current_modal = this.model.ids.filter_modal;
+            this.view.update_current_modal();
+        },
 
-// Applies an error class to a modal by id.
-// Can be used to show or style elements within based
-// on the error status, e.g. invalid login attempts.
-function show_modal_error(id) {
-    const modal = get_modal(id);
+        show_checkout: function() {
+            this.model.current_modal = this.model.ids.checkout_modal;
+            this.view.update_current_modal();
+        },
 
-    if (!modal) {
-        return;
-    }
+        show_error: function() {
+            this.model.has_error = true;
+            this.view.update_current_modal_error();
+        },
 
-    modal.addClass('error');
-}
+        hide_error: function() {
+            this.model.has_error = false;
+            this.view.update_current_modal_error();
+        },
+    },
 
-function hide_modal_error(id) {
-    const modal = get_modal(id);
+    // =====================================================================================================
+    // DOCUMENT READY EVENT
+    //
+    ready: function() {
+        // Save to variable since the 'each()' jQuery function overrides 'this'.
+        const click_handler = this.controller.hide;
 
-    if (!modal) {
-        return;
-    }
+        // Find all elements within a modal overlay that should hide
+        // the overlay on click.
+        $('.modal-event-hide').each(function() {
+            // Find the closest parent modal root
+            const modal_root = $(this).parents('.modal-root').first();
 
-    modal.removeClass('error');
-}
+            // Skip if no parent modal root could be found
+            if (!modal_root.length) {
+                console.error(`Found element with 'modal-event-hide' class with no parent modal: ${$(this)}`);
+                return;
+            }
 
-$(document).ready(function() {
-    // Find all elements within a modal overlay that should hide
-    // the overlay on click.
-    $('.modal-event-hide').each(function() {
-        // Find the closest parent modal root
-        const modal_root = $(this).parents('.modal-root').first();
+            if (!modal_root.attr('id')) {
+                console.error(`Modal root is missing the id attribute: ${modal_root}`);
+                return;
+            }
 
-        // Skip if no parent modal root could be found
-        if (!modal_root.length) {
-            console.error(`Found element with 'modal-event-hide' class with no parent modal: ${$(this)}`);
-            return;
-        }
-
-        if (!modal_root.attr('id')) {
-            console.error(`Modal root is missing the id attribute: ${modal_root}`);
-            return;
-        }
-
-        // Add click handler to element that hides the modal
-        $(this).bind('click', function() { hide_modal(modal_root.attr('id')) });
-    });
+            // Add click handler to element that hides the modal
+            $(this).bind('click', click_handler);
+        });
+    },
 });

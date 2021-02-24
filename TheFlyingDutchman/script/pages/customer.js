@@ -78,7 +78,7 @@ window.tfd.add_module('customer', {
     // MODULE LOAD
     //
     init: function() {
-        $(document).on('login', this.view.update_vip_footer);
+        $(document).on('login', this.view.update_vip_footer.bind(this));
         products = allBeverages();
     }
 });
