@@ -160,6 +160,7 @@ body.view-order #order {
     margin-top: 2rem;
     font-weight: bold;
     font-size: var(--font-size-sm);
+    color: var(--text-color-default);
 }
 
 body.view-menu #btn_menu, body.view-order #btn_order {
