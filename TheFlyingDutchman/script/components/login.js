@@ -15,6 +15,7 @@ window.tfd.add_module('login', {
             error: 'error',
             show: 'show',
         },
+        storage_key: 'user',
     },
 
     // =====================================================================================================
@@ -71,7 +72,7 @@ window.tfd.add_module('login', {
 
         // Loads the currently logged in user from sessionStorage and logs in
         load_logged_in_user: function() {
-            const username = window.sessionStorage.getItem('user');
+            const username = window.sessionStorage.getItem(this.model.storage_key);
 
             if (!username) {
                 console.log('User is not logged in');
@@ -91,7 +92,7 @@ window.tfd.add_module('login', {
                 return;
             }
 
-            window.sessionStorage.setItem('user', details.username);
+            window.sessionStorage.setItem(this.model.storage_key, details.username);
 
             // Update model
             this.model.logged_in = true;
@@ -136,7 +137,7 @@ window.tfd.add_module('login', {
     // MODULE LOAD
     //
     init: function() {
-        const user = window.sessionStorage.getItem('user');
+        const user = window.sessionStorage.getItem(this.model.storage_key);
 
         // Extract html page from current location.
         // window.location.href contains the entire URL, including the domain name

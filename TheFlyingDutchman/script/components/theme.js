@@ -1,44 +1,69 @@
-const THEME_MODES = {
-    DARK: 'dark',
-    LIGHT: 'light',
-};
+window.tfd.add_module('theme', {
+    // =====================================================================================================
+    // MODEL
+    //
+    model: {
+        current_theme: 'light',
+        themes: {
+            dark: 'dark',
+            light: 'light',
+        },
+        classes: {
+            show: 'show',
+            error: 'error',
+        },
+        storage_key: 'theme',
+    },
 
-var theme = 'light';
+    // =====================================================================================================
+    // VIEW
+    //
+    view: {
+        update_body: function() {
+            if (this.model.current_theme == this.model.themes.light) {
+                $(document.body).removeClass(this.model.themes.dark);
+            } else {
+                $(document.body).addClass(this.model.themes.dark);
+            }
+        },
+    },
 
-function load_theme() {
-    const saved_theme = window.localStorage.getItem('theme');
+    // =====================================================================================================
+    // CONTROLLER
+    //
+    controller: {
+        load: function() {
+            const saved_theme = window.localStorage.getItem(this.model.storage_key);
 
-    if (!saved_theme) {
-        // Use default theme
-        set_theme(THEME_MODES.LIGHT);
-        return;
-    }
+            if (!saved_theme) {
+                // Use default theme
+                this.controller.set(this.model.themes.light);
+                return;
+            }
 
-    set_theme(saved_theme);
-}
+            this.controller.set(saved_theme);
+        },
 
-function set_theme(new_theme) {
-    if (new_theme == THEME_MODES.DARK) {
-        $(document.body).addClass(THEME_MODES.DARK);
-    } else if (new_theme == THEME_MODES.LIGHT) {
-        $(document.body).removeClass(THEME_MODES.DARK);
-    } else {
-        console.error(`Could not enable invalid theme mode: ${new_theme}`);
-        return;
-    }
+        set: function(theme) {
+            window.localStorage.setItem(this.model.storage_key, theme);
 
-    theme = new_theme;
-    window.localStorage.setItem('theme', theme);
-}
+            this.model.current_theme = theme;
+            this.view.update_body();
+        },
 
-function toggle_theme() {
-    if (theme == THEME_MODES.LIGHT) {
-        set_theme(THEME_MODES.DARK);
-    } else {
-        set_theme(THEME_MODES.LIGHT);
-    }
-}
+        toggle: function() {
+            if (this.model.current_theme == this.model.themes.light) {
+                this.controller.set(this.model.themes.dark);
+            } else {
+                this.controller.set(this.model.themes.light);
+            }
+        }
+    },
 
-$(document).ready(function() {
-    load_theme();
+    // =====================================================================================================
+    // DOCUMENT READY EVENT
+    //
+    ready: function() {
+        this.controller.load();
+    },
 });
