@@ -11,13 +11,13 @@ function item_description_dom(product) {
             </p>
         `;
     }
-    
+
     return description;
 }
 
 function item_dom(product){
     const description = item_description_dom(product);
-    
+
     let item = `
         <article class="product card box">
             <div class="box row space-between v-center margin-bottom">
@@ -79,7 +79,7 @@ function render_products() {
     container.html(html);
     total_products.text(total);
 
-    // Localization is set directly on load and must be updated
-    // after we have added the products
-    update_localization();
+    // Reapply the localization data for the current component (and only the current component).
+    // It is unnecessary to reapply all localization data.
+    window.tfd.localization.view.update_localization_component('product');
 }

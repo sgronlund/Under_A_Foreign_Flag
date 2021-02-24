@@ -1,4 +1,4 @@
-add_localization_data('login', {
+window.tfd.localization.controller.add('login', {
     keys: [
         'login',
         'guest',

@@ -167,5 +167,5 @@ function render_order() {
     }
 
     container.html(html);
-    update_localization();
+    window.tfd.localization.view.update_localization_component('product');
 }

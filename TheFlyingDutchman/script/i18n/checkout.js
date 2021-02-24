@@ -1,4 +1,4 @@
-add_localization_data('checkout', {
+window.tfd.localization.controller.add('checkout', {
     keys: [
         'checkout_modal_title',
         'checkout_pay_at_table_label',

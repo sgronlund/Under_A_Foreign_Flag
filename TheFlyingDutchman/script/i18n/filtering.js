@@ -1,4 +1,4 @@
-add_localization_data('filtering', {
+window.tfd.localization.controller.add('filtering', {
     keys: [
         'filtering_modal_title',
     ],

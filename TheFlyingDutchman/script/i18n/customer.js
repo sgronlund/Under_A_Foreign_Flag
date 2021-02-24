@@ -1,4 +1,4 @@
-add_localization_data('customer', {
+window.tfd.localization.controller.add('customer', {
     keys: [
         'title',
         'btn_food',
