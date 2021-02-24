@@ -1,12 +1,5 @@
 window.tfd = {
     // =====================================================================================================
-    // PUBLIC FIELDS
-    //
-    model: {},
-    view: {},
-    controller: {},
-
-    // =====================================================================================================
     // PUBLIC FUNCTIONS
     //
     // Creates a new module consisting of a model, view and controller.
@@ -29,47 +22,27 @@ window.tfd = {
             console.error('The module must contain model, view and controller object keys!');
         }
 
-        if (this.model.hasOwnProperty(name)) {
-            console.error(`You are trying to replace an existing model: ${name}`);
+        if (this.hasOwnProperty(name)) {
+            console.error(`Could not add module. Name collides with an internal key: ${name}`);
             return;
         }
 
-        if (this.view.hasOwnProperty(name)) {
-            console.error(`You are trying to replace an existing view handler: ${name}`);
-            return;
-        }
-
-        if (this.controller.hasOwnProperty(name)) {
-            console.error(`You are trying to replace an existing controller: ${name}`);
-            return;
-        }
-
-        const { model, view, controller } = module;
-
-        // Save the model and view in the global collections
-        this.model[name] = model;
-
-        // Create empty controller and view function collections.
-        // These will be populated in the for-loops below.
-        this.view[name] = {};
-        this.controller[name] = {};
-
-        // Create a context consisting of the view, model and controller.
-        // This will be bound to the 'this' keyword in every function of the module.
-        const context = {
-            model: this.model[name],
-            view: this.view[name],
-            controller: this.controller[name],
+        this[name] = {
+            model: module.model,
+            view: {},
+            controller: {},
         };
 
+        const context = this[name];
+
         // Go through each defined controller function
-        for (const fn_name of Object.keys(controller)) {
-            this.controller[name][fn_name] = controller[fn_name].bind(context);
+        for (const fn_name of Object.keys(module.controller)) {
+            this[name].controller[fn_name] = module.controller[fn_name].bind(context);
         }
 
         // Go through each defined view function
-        for (const fn_name of Object.keys(view)) {
-            this.view[name][fn_name] = view[fn_name].bind(context);
+        for (const fn_name of Object.keys(module.view)) {
+            this[name].view[fn_name] = module.view[fn_name].bind(context);
         }
 
         if (module.hasOwnProperty('ready')) {

@@ -20,7 +20,7 @@ window.tfd.add_module('customer', {
     view: {
         // Renders the VIP footer when logged in
         update_vip_footer: function() {
-            if (!window.tfd.controller.login.is_logged_in()) {
+            if (!window.tfd.login.controller.is_logged_in()) {
                 return;
             }
 
@@ -28,7 +28,7 @@ window.tfd.add_module('customer', {
                 first_name,
                 last_name,
                 creditSEK
-            } = window.tfd.controller.login.get_user_details();
+            } = window.tfd.login.controller.get_user_details();
 
             const fullname = first_name + " " + last_name;
             const balance = creditSEK ? creditSEK : 0;
@@ -56,8 +56,13 @@ window.tfd.add_module('customer', {
             this.view.update_vip_footer();
         },
 
-        set_view: function(new_view) {
-            this.model.current_view = new_view;
+        show_menu: function() {
+            this.model.current_view = 'menu';
+            this.view.update_body();
+        },
+
+        show_order: function() {
+            this.model.current_view = 'order';
             this.view.update_body();
         },
     },
