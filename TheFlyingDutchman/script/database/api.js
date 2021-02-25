@@ -79,19 +79,91 @@ function changeBalance(username, newAmount) {
 }
 
 // =====================================================================================================
+// Converts empty or invalid strings in the database into '-' to indicate
+// that the information is missing
+//
+function get_beverage_description_string(string) {
+    if (!string || string === '') {
+        return '-';
+    }
+
+    return string;
+}
+
+// =====================================================================================================
+// Extracts the beverage type from the category string, e.g. Red wine
+//
+function get_beverage_sort(category_string) {
+    const list = category_string.split(',');
+
+    // The beverage type is defined as the second string (separated by comma)
+    // in the beverage category string. If this is missing, the beverage has no type.
+    if (list.length < 2) {
+        return '-';
+    }
+
+    return list[1];
+}
+
+// =====================================================================================================
+// Extracts the sort of beverage from the category string, e.g. Cognac
+//
+function get_beverage_type(category_string) {
+    const list = category_string.split(' ');
+
+    // If category_string string is empty
+    if (list.length == 0) {
+        return '-';
+    }
+
+    return list[0];
+}
+
+// =====================================================================================================
 // Returns a list of objects containing the name and category of each beverage in the database.
 // This function can be used as a recipe for similar functions.
 //
 function allBeverages() {
     // Using a local variable to collect the items.
-    const collector = [];
+    const collector = {};
 
     // The DB is stored in the variable DB2, with "spirits" as key element. If you need to select only certain
     // items, you may introduce filter functions in the loop... see the template within comments.
     //
     for (let i = 0; i < DB2.spirits.length; i++) {
-        collector.push({ namn: (DB2.spirits[i].namn), varugrupp: (DB2.spirits[i].varugrupp) });
-    };
+        const product = DB2.spirits[i];
+
+        // Contains all the values that describe the beverage.
+        // These are different based on the type of drink.
+        const description = {
+            forpackning: get_beverage_description_string(product.forpackning),
+            producent: get_beverage_description_string(product.producent),
+            alkoholhalt: get_beverage_description_string(product.alkoholhalt),
+        };
+
+        // Extract type-specific description items
+        if (product.varugrupp.toLowerCase().includes("öl")) {
+            // Description for beers
+            description['sort'] = get_beverage_sort(product.varugrupp);
+            description['ursprunglandnamn'] = get_beverage_description_string(product.ursprunglandnamn);
+        } else if (product.varugrupp.toLowerCase().includes("vin")) {
+            // Description for wine
+            description['typ'] = get_beverage_type(product.varugrupp);
+            description['argang'] = get_beverage_description_string(product.argang);
+            description['druva'] = get_beverage_description_string(product.namn2);
+        } else {
+            // Description for other
+            description['ursprunglandnamn'] = get_beverage_description_string(product.ursprunglandnamn);
+            description['sort'] = get_beverage_description_string(product.varugrupp);
+        }
+
+        collector[product.nr] = {
+            nr: product.nr,
+            namn: product.namn,
+            prisinklmoms: product.prisinklmoms,
+            description,
+        };
+    }
 
     return collector;
 }

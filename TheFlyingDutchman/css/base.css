@@ -9,7 +9,7 @@
     --background-color-gray: #EEE;
     --background-color-highlight: white;
     --background-color-overlay: rgba(0, 0, 0, 50%);
-    --background-color-body: #eee;
+    --background-color-body: #e6e6e6;
     --background-color-default: white;
 
     --border-color: #EEEEEE;
@@ -21,10 +21,12 @@
     --text-color-light: var(--background-color-extra-light);
     --text-color-default: #333;
     --price-color: #008253;
+    --price-color-text: var(--price-color);
     --error-color: #8B0000;
     --error-color-light: #FF4949;
 
     --border-radius: 5px;
+    --border-radius-lg: 8px;
     --modal-width: 325px;
     --modal-width-lg: 400px;
     --content-width: 1200px;
@@ -67,6 +69,7 @@
     --border-color: #555;
     --border-color-dark: #777;
     --border-color-focus: #cacaca;
+    --price-color-text: #37FEB5;
     --error-color: #FF7474;
 }
 
@@ -101,6 +104,11 @@ button {
 button.brand {
     background-color: var(--brand-color);
     color: var(--text-color-brand);
+}
+
+button.gray {
+    background-color: var(--background-color-body);
+    color: var(--text-color-default);
 }
 
 button.light {
@@ -138,6 +146,17 @@ button.large {
     height: var(--button-height-lg);
     font-size: var(--font-size-lg);
     padding: var(--spacing) var(--spacing-lg);
+}
+
+button.small {
+    height: var(--button-height-sm);
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) var(--spacing);
+    border-radius: var(--border-radius-lg);
+}
+
+button.small.square {
+    padding: var(--spacing-sm);
 }
 
 #btn_lang {
@@ -213,8 +232,28 @@ button.icon-left > svg {
     margin-right: var(--spacing-sm);
 }
 
+.margin-top-lg {
+    margin-top: var(--spacing-lg);
+}
+
 .margin-bottom-lg {
     margin-bottom: var(--spacing-lg);
+}
+
+.padding-bottom {
+    padding-bottom: var(--spacing);
+}
+
+.padding-top {
+    padding-top: var(--spacing);
+}
+
+.padding {
+    padding: var(--spacing);
+}
+
+.padding-left-lg {
+    padding-left: var(--spacing-lg);
 }
 
 .padding-lg {
@@ -243,8 +282,15 @@ button.icon-left > svg {
     box-sizing: border-box;
 }
 
+.box.grid {
+}
+
 .box.row {
     flex-direction: row;
+}
+
+.box.v-start:not(.row) {
+    justify-content: flex-start;
 }
 
 .box.center, .box.row.v-center, .box.h-center:not(.row) {
@@ -454,6 +500,29 @@ h1, h2, h3, h4, p {
     color: var(--text-color);
 }
 
+.separator-top {
+    border-top: 1px solid var(--border-color);
+}
+
 .separator-bottom {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.separator-bottom-light {
     border-bottom: 1px solid var(--background-color-light);
+}
+
+.no-icon-spacing > svg {
+    margin: 0;
+}
+
+/* Hide default input spinners */
+.no-spinner {
+  -moz-appearance:textfield;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
