@@ -228,6 +228,38 @@ window.tfd.add_module('order', {
         decrease_quantity: function(id) {
             this.controller.change_quantity(id, -1);
         },
+
+        checkout_bar_or_table: function() {
+            var items = this.model.items;
+            for (const key of Object.keys(items)) {
+                this.controller.remove(key);
+                //TODO : Update stock, since it simply removes the items from your order
+            }
+            //console.log(this.model);
+            window.tfd.modal.controller.hide(); //Closes popout window for checkout.
+        },
+
+        checkout_balance: function() {
+            const total_amount = this.model.total_price;
+            if (this.global.logged_in) {
+                const user = this.global.user_details.username;
+                const details = this.global.user_details
+                console.log(details.creditSEK);
+                var current_balance = parseFloat(details.creditSEK);
+                const updated_balance = current_balance - total_amount;
+                console.log(updated_balance, current_balance, total_amount);
+                if (updated_balance > 0 ) {
+                    changeBalance(user, updated_balance);
+                    this.global.user_details = userDetails(user);
+                    window.tfd.customer.view.update_vip_footer();
+                    this.controller.checkout_bar_or_table();
+                    window.tfd.modal.controller.hide();
+                } else {
+                    console.log("Not sufficient funds");
+                    window.tfd.modal.controller.show_error();
+                }
+            }
+        },
     },
 
     // =====================================================================================================

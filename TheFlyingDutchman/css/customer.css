@@ -168,6 +168,7 @@ body.view-order #order {
     color: var(--text-color-default);
 }
 
+
 body.view-menu #btn_menu, body.view-order #btn_order {
     background-color: var(--background-color-body);
     border-color: var(--border-color-dark);

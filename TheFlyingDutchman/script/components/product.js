@@ -24,6 +24,7 @@ window.tfd.add_module('product', {
             for (const product of Object.values(this.global.products)) {
                 html += this.view.create_product(product);
                 total++;
+                if (total === 50) break;
             }
 
             container.html(html);
