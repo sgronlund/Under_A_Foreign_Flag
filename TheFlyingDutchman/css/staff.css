@@ -1,0 +1,69 @@
+/* Import base styles */
+@import url('base.css');
+
+header {
+    width: 100%;
+    background-color: var(--background-color);
+}
+
+main {
+    display: grid;
+    grid-column: 1fr 1fr 1fr;
+    grid-column-gap: 1rem;
+}
+
+
+/* ### MENU ### */
+#menu {
+    grid-column-start: 3;
+
+    /* SIZE */
+    width: 100%;
+    /* stops the menu from extending the page */
+    max-height: 87vh;
+
+    overflow: scroll;
+}
+
+/* ### TABLES ### */
+#tables_view {
+    /* Allows absolute position on children to keep in allowed space */
+    position: relative;
+
+    /* GRID PLACEMENT */
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+    /* TABLE PLACEMENT */
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: stretch;
+    gap: 2rem;
+
+    /* SIZE */
+    height: 100%;
+    width: 100%;
+}
+
+.table_item {
+    /* SIZE */
+    width: 15vw;
+    height: 10vh;
+
+    /* STYLE */
+    background-color: var(--background-color-light);
+    color: white;
+}
+
+.table_order {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+    background-color: rgba(62, 182, 96, 0.48);
+}

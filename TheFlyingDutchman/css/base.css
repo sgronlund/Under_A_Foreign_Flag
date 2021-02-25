@@ -526,3 +526,13 @@ h1, h2, h3, h4, p {
   -webkit-appearance: none;
   margin: 0;
 }
+
+footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: var(--background-color-highlight);
+    box-shadow: var(--box-shadow-footer);
+    z-index: var(--footer-z-index);
+    color: var(--text-color-default);
+}
