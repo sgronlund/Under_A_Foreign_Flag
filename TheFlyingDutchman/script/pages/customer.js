@@ -20,16 +20,11 @@ window.tfd.add_module('customer', {
     view: {
         // Renders the VIP footer when logged in
         update_vip_footer: function() {
-            if (!window.tfd.login.controller.is_logged_in()) {
+            if (!this.global.logged_in) {
                 return;
             }
 
-            const {
-                first_name,
-                last_name,
-                creditSEK
-            } = window.tfd.login.controller.get_user_details();
-
+            const { first_name, last_name, creditSEK } = this.global.user_details;
             const fullname = first_name + " " + last_name;
             const balance = creditSEK ? creditSEK : 0;
 
@@ -52,10 +47,6 @@ window.tfd.add_module('customer', {
     // CONTROLLER
     //
     controller: {
-        set_logged_in: function() {
-            this.view.update_vip_footer();
-        },
-
         show_menu: function() {
             this.model.current_view = 'menu';
             this.view.update_body();
@@ -78,7 +69,7 @@ window.tfd.add_module('customer', {
     // MODULE LOAD
     //
     init: function() {
-        $(document).on('login', this.view.update_vip_footer.bind(this));
+        $(document).on('login', window.tfd.customer.view.update_vip_footer);
         products = allBeverages();
     }
 });

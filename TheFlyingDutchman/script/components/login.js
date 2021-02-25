@@ -3,8 +3,6 @@ window.tfd.add_module('login', {
     // MODEL
     //
     model: {
-        logged_in: false,
-        user_details: null,
         ids: {
             modal: '#login_modal',
             username: '#username',
@@ -23,7 +21,7 @@ window.tfd.add_module('login', {
     //
     view: {
         update_body: function() {
-            if (this.model.logged_in) {
+            if (this.global.logged_in) {
                 $(document.body).addClass(this.model.classes.logged_in);
             } else {
                 $(document.body).removeClass(this.model.classes.logged_in);
@@ -95,8 +93,8 @@ window.tfd.add_module('login', {
             window.sessionStorage.setItem(this.model.storage_key, details.username);
 
             // Update model
-            this.model.logged_in = true;
-            this.model.user_details = details;
+            this.global.logged_in = true;
+            this.global.user_details = details;
 
             this.view.update_body();
             this.controller.signal();
@@ -105,8 +103,8 @@ window.tfd.add_module('login', {
         logout: function() {
             window.sessionStorage.clear();
 
-            this.model.logged_in = false;
-            this.model.user_details = null;
+            this.global.logged_in = false;
+            this.global.user_details = null;
 
             this.view.update_body();
             this.controller.signal();
@@ -116,14 +114,6 @@ window.tfd.add_module('login', {
         signal: function() {
             $(document).trigger('login');
         },
-
-        is_logged_in: function() {
-            return this.model.logged_in;
-        },
-
-        get_user_details: function() {
-            return this.model.user_details;
-        }
     },
 
     // =====================================================================================================
@@ -166,5 +156,5 @@ window.tfd.add_module('login', {
                 window.location.href = 'staff.html';
             }
         }
-    }
+    },
 });

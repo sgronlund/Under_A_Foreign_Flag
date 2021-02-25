@@ -1,5 +1,14 @@
 window.tfd = {
     // =====================================================================================================
+    // PUBLIC FIELDS
+    //
+    // Contains model state that is shared between modules
+    global: {
+        logged_in: false,
+        user_details: null,
+    },
+
+    // =====================================================================================================
     // PUBLIC FUNCTIONS
     //
     // Creates a new module consisting of a model, view and controller.
@@ -31,6 +40,7 @@ window.tfd = {
             model: module.model,
             view: {},
             controller: {},
+            global: window.tfd.global,
         };
 
         const context = this[name];
