@@ -1,4 +1,4 @@
-add_localization_data('flag', {
+window.tfd.localization.controller.add('flag', {
     keys: [],
     alt_keys: ['flag'],
     placeholder_keys: [],

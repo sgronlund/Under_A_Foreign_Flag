@@ -1,4 +1,4 @@
-add_localization_data('index', {
+window.tfd.localization.controller.add('index', {
     keys: ['login','guest'],
     alt_keys: ['start'],
     placeholder_keys: [],

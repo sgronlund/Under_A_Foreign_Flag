@@ -1,78 +1,155 @@
-$(function () {
-    const user = window.sessionStorage.getItem('user');
+window.tfd.add_module('login', {
+    // =====================================================================================================
+    // MODEL
+    //
+    model: {
+        ids: {
+            modal: '#login_modal',
+            username: '#username',
+            password: '#password',
+        },
+        classes: {
+            logged_in: 'logged-in',
+            error: 'error',
+            show: 'show',
+        },
+        storage_key: 'user',
+    },
 
-    // Extract html page from current location.
-    // window.location.href contains the entire URL, including the domain name
-    const href = window.location.href;
-    const page_index = href.lastIndexOf('/');
-    const current_page = href.substring(page_index + 1, href.length);
-
-    // Guests should only be allowed on the index and customer page
-    if (!user) {
-        if (current_page != 'index.html' && current_page != 'customer.html') {
-            window.location.href = 'index.html';
-        }
-
-        return;
-    }
-
-    const credential = userDetails(user).credentials;
-
-    // Redirects the user to the right page according to their credentials
-    if (credential == 3) {
-        if (current_page != 'customer.html') {
-            window.location.href = 'customer.html';
-        }
-    } else {
-        if (current_page != 'staff.html') {
-            window.location.href = 'staff.html';
-        }
-    }
-});
-
-// Simple login function
-function login(redirect) {
-    const modal_id = 'login_modal';
-    const username_element = $('#username'); // Get username from input in html
-    const password_element = $('#password'); // Get password from input in html
-    const details = userDetails(username_element.val()); // Get user details from DB, if username does not exist in DB will return nothing
-
-    if (details.password === password_element.val()) { // Compares password
-        hide_modal_error(modal_id);
-        window.sessionStorage.setItem('user', details.username);
-
-        // Checks credentials and redirects to the right side
-        if (details.credentials == 3) {
-            // Only redirect to customer page if we are on the start page
-            if (redirect) {
-                // Do not clear session storage on redirect.
-                // Otherwise, the user will not be logged in after the redirect
-                window.location.href = 'customer.html'; // Redirect
+    // =====================================================================================================
+    // VIEW
+    //
+    view: {
+        update_body: function() {
+            if (this.global.logged_in) {
+                $(document.body).addClass(this.model.classes.logged_in);
             } else {
-                // If we do not redirect, we must hide the login overlay
-                hide_modal(modal_id);
-
-                // Reset input fields
-                username_element.val('');
-                password_element.val('');
-
-                // Trigger event that can be handled by the page to
-                // display
-                $(document).trigger('login');
+                $(document.body).removeClass(this.model.classes.logged_in);
             }
-        } else if (details.credentials < 3) {
-            window.location.href = 'staff.html'; // Redirect
+        },
+
+        reset_input_fields: function() {
+            $(this.model.ids.username).val('');
+            $(this.model.ids.password).val('');
+        },
+    },
+
+    // =====================================================================================================
+    // CONTROLLER
+    //
+    controller: {
+        login: function(redirect) {
+            const username_element = $(this.model.ids.username);
+            const password_element = $(this.model.ids.password);
+
+            // Fetch details from database
+            const details = userDetails(username_element.val());
+
+            // Compare password of user with the entered password
+            if (details && details.password === password_element.val()) {
+                this.controller.set_logged_in_user(details);
+                window.tfd.modal.controller.hide_error();
+
+                if (redirect) {
+                    // Checks credentials and redirects to the right page
+                    if (details.credentials == 3) {
+                        window.location.href = 'customer.html';
+                    } else {
+                        window.location.href = 'staff.html';
+                    }
+                } else {
+                    this.view.reset_input_fields();
+                    window.tfd.modal.controller.hide();
+                }
+
+                return;
+            }
+
+            window.tfd.modal.controller.show_error();
+        },
+
+        // Loads the currently logged in user from sessionStorage and logs in
+        load_logged_in_user: function() {
+            const username = window.sessionStorage.getItem(this.model.storage_key);
+
+            if (!username) {
+                console.log('User is not logged in');
+                this.controller.logout();
+                return;
+            }
+
+            const details = userDetails(username);
+
+            this.controller.set_logged_in_user(details);
+        },
+
+        set_logged_in_user: function(details) {
+            if (!details) {
+                console.log('User is logged in, but not as a valid user');
+                this.controller.logout();
+                return;
+            }
+
+            window.sessionStorage.setItem(this.model.storage_key, details.username);
+
+            // Update model
+            this.global.logged_in = true;
+            this.global.user_details = details;
+
+            this.view.update_body();
+            this.trigger('login');
+        },
+
+        logout: function() {
+            window.sessionStorage.clear();
+
+            this.global.logged_in = false;
+            this.global.user_details = null;
+
+            this.view.update_body();
+            this.trigger('login');
+        },
+    },
+
+    // =====================================================================================================
+    // DOCUMENT READY EVENT
+    //
+    ready: function() {
+        this.controller.load_logged_in_user();
+    },
+
+    // =====================================================================================================
+    // MODULE LOAD
+    //
+    init: function() {
+        const user = window.sessionStorage.getItem(this.model.storage_key);
+
+        // Extract html page from current location.
+        // window.location.href contains the entire URL, including the domain name
+        const href = window.location.href;
+        const page_index = href.lastIndexOf('/');
+        const current_page = href.substring(page_index + 1, href.length);
+
+        // Guests should only be allowed on the index and customer page
+        if (!user) {
+            if (current_page != 'index.html' && current_page != 'customer.html') {
+                window.location.href = 'index.html';
+            }
+
+            return;
         }
-    } else {
-        show_modal_error(modal_id);
-    }
-}
 
-function logout() {
-    const username = window.sessionStorage.getItem('user');
+        const credential = userDetails(user).credentials;
 
-    if (username) {
-        window.sessionStorage.clear();
-        $(document.body).removeClass('logged-in');
-    }
-}
+        // Redirects the user to the right page according to their credentials
+        if (credential == 3) {
+            if (current_page != 'customer.html') {
+                window.location.href = 'customer.html';
+            }
+        } else {
+            if (current_page != 'staff.html') {
+                window.location.href = 'staff.html';
+            }
+        }
+    },
+});

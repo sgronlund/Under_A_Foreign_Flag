@@ -1,4 +1,4 @@
-add_localization_data('product', {
+window.tfd.localization.controller.add('product', {
     // This makes sure that the localization script locates each key
     // using a class, rather than id.
     use_class_identifiers: true,
