@@ -97,7 +97,7 @@ window.tfd.add_module('login', {
             this.global.user_details = details;
 
             this.view.update_body();
-            this.controller.signal();
+            this.trigger('login');
         },
 
         logout: function() {
@@ -107,12 +107,7 @@ window.tfd.add_module('login', {
             this.global.user_details = null;
 
             this.view.update_body();
-            this.controller.signal();
-        },
-
-        // Send event to other modules
-        signal: function() {
-            $(document).trigger('login');
+            this.trigger('login');
         },
     },
 

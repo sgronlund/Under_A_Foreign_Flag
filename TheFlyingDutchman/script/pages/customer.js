@@ -69,7 +69,15 @@ window.tfd.add_module('customer', {
     // MODULE LOAD
     //
     init: function() {
-        $(document).on('login', window.tfd.customer.view.update_vip_footer);
         products = allBeverages();
-    }
+    },
+
+    // =====================================================================================================
+    // CUSTOM SIGNAL HANDLERS
+    //
+    signal: {
+        login: function() {
+            this.view.update_vip_footer();
+        },
+    },
 });

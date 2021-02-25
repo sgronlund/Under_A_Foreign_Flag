@@ -13,10 +13,10 @@ window.tfd = {
     //
     // Creates a new module consisting of a model, view and controller.
     // The view, model and controller can be accessed globally from the
-    // 'window.tfd.<view/model/controller>.<key>' namespace.
+    // 'window.tfd.<module name>' namespace.
     //
     // To simplify the call and implementation of controller functions,
-    // the specified model and view is automatically passed to the controller.
+    // the specified model and view is automatically passed to the controller using the 'this' keyword.
     add_module: function(name, module) {
         if (!name) {
             console.error('Name of module can not be undefined/null!');
@@ -36,10 +36,17 @@ window.tfd = {
             return;
         }
 
+        // Save the module to the global namespace
         this[name] = {
             model: module.model,
             view: {},
             controller: {},
+            signal: {},
+
+            // Helper function for triggering signals
+            trigger: window.tfd.__trigger_signal,
+
+            // Shared model state
             global: window.tfd.global,
         };
 
@@ -55,14 +62,32 @@ window.tfd = {
             this[name].view[fn_name] = module.view[fn_name].bind(context);
         }
 
+        // Check if the module has registered a document ready event handler
         if (module.hasOwnProperty('ready')) {
             this.add_ready_callback(
                 module.ready.bind(context)
             );
         }
 
+        // Check if the module has registered a module init event handler
         if (module.hasOwnProperty('init')) {
             module.init();
+        }
+
+        // Check if the module has registered any custom signal handlers
+        if (module.hasOwnProperty('signal')) {
+            for (const key of Object.keys(module.signal)) {
+                // Bind module context to signal handler
+                const fn = module.signal[key].bind(context);
+
+                if (!this.__signals.hasOwnProperty(key)) {
+                    // If no previous handlers for the signal has been registered,
+                    // create a new array with the handler function.
+                    this.__signals[key] = [ fn ];
+                } else {
+                    this.__signals[key].push(fn);
+                }
+            }
         }
     },
 
@@ -83,6 +108,10 @@ window.tfd = {
     // List of functions that should be called when the document has loaded and is ready
     __ready_callbacks: [],
 
+    // Object containing all registered signals by modules and a list of all functions that
+    // has been registered as callback for that signal.
+    __signals: {},
+
     // =====================================================================================================
     // PRIVATE FUNCTIONS
     //
@@ -99,9 +128,39 @@ window.tfd = {
             callback();
         }
     },
+
+    // Creates the event handler for each registered signal and executes all signal handlers
+    __register_signal_handlers: function() {
+        for (const key of Object.keys(this.__signals)) {
+            // Create a callback for the signal
+            $(document).on(key, function() {
+                // Execute each signal callback
+                for (const fn of window.tfd.__signals[key]) {
+                    fn();
+                }
+            });
+        }
+    },
+
+    // Triggers a custom signal on the document body.
+    // These can be handled from a module by specifing a 'signal' key object
+    // in the module with keys for each respective signal to handle.
+    __trigger_signal: function(signal, ...args) {
+        // Only trigger the event if the signal has registered handler(s)
+        if (!window.tfd.__signals.hasOwnProperty(signal)) {
+            console.error(`Could not trigger signal: ${signal} - No registered signal handlers`);
+            return;
+        }
+
+        // Trigger the signal with the specified args as separate function parameters
+        $(document).trigger(signal, [ ...args ]);
+    },
 };
 
 // Register a handler for the document ready event
 $(document).ready(function() {
+    // Make sure to register signal handlers before executing the ready function callbacks.
+    // This is because functions that run on ready might trigger signals themselves.
+    window.tfd.__register_signal_handlers();
     window.tfd.__run_ready_callback();
 });
