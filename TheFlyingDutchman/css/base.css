@@ -282,9 +282,6 @@ button.icon-left > svg {
     box-sizing: border-box;
 }
 
-.box.grid {
-}
-
 .box.row {
     flex-direction: row;
 }

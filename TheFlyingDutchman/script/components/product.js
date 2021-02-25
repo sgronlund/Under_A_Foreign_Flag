@@ -22,6 +22,11 @@ window.tfd.add_module('product', {
 
             // TODO: This completely fucks the performance
             for (const product of Object.values(this.global.products)) {
+                // FIXME: Temporary performance fix
+                if (total == 50) {
+                    break;
+                }
+
                 html += this.view.create_product(product);
                 total++;
             }
@@ -120,7 +125,7 @@ window.tfd.add_module('product', {
         change_quantity: function(id, change) {
             const new_quantity = this.controller.get_quantity(id) + change;
 
-            if (new_quantity < 0 || new_quantity > 10) {
+            if (new_quantity < 1 || new_quantity > 10) {
                 console.log(`Could not update quantity of product to: ${new_quantity}`);
                 return;
             }

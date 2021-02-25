@@ -77,6 +77,7 @@ footer {
 #header_nav_order,
 #checkout_vip_actions,
 #order_empty_label,
+#btn_special_drinks,
 body.view-order #header_nav_menu,
 body.logged-in #btn_vip_login {
     display: none;
@@ -87,11 +88,13 @@ body.logged-in #btn_vip_logout,
 body.view-order #header_nav_order,
 body.view-order #btn_checkout,
 body.logged-in #checkout_vip_actions,
+body.logged-in #btn_special_drinks,
 body.view-order.order-empty #order_empty_label {
     display: flex;
 }
 
-body.view-menu #menu {
+body.view-menu.subview-drinks #menu,
+body.view-menu.subview-special-drinks #special_drinks {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-row-gap: var(--spacing);
@@ -102,6 +105,11 @@ body.view-order #order {
     display: grid;
     grid-template-columns: 1fr;
     grid-row-gap: var(--spacing);
+}
+
+body.view-menu.subview-drinks #btn_drinks,
+body.view-menu.subview-special-drinks #btn_special_drinks {
+    border-bottom-color: var(--brand-color);
 }
 
 .product-price, .order-product-price {

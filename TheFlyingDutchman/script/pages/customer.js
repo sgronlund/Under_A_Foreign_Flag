@@ -3,14 +3,21 @@ window.tfd.add_module('customer', {
     // MODEL
     //
     model: {
-        current_view: 'menu',
+        current_view: 'view-menu',
+        current_subview: 'subview-drinks',
+        previous_view: null,
+        previous_subview: null,
         ids: {
             user_name: '#welcome_name',
             user_credit: '#vip_credit',
         },
+        views: {
+            menu: 'view-menu',
+            order: 'view-order',
+            drinks: 'subview-drinks',
+            special_drinks: 'subview-special-drinks',
+        },
         classes: {
-            view_menu: 'view-menu',
-            view_order: 'view-order',
         },
     },
 
@@ -33,12 +40,34 @@ window.tfd.add_module('customer', {
         },
 
         update_body: function() {
-            if (this.model.current_view == 'menu') {
-                $(document.body).addClass(this.model.classes.view_menu);
-                $(document.body).removeClass(this.model.classes.view_order);
-            } else {
-                $(document.body).removeClass(this.model.classes.view_menu);
-                $(document.body).addClass(this.model.classes.view_order);
+            if (this.model.previous_view) {
+                $(document.body).removeClass(this.model.previous_view);
+            }
+
+            if (this.model.previous_subview) {
+                $(document.body).removeClass(this.model.previous_subview);
+            }
+
+            // Update the current main view
+            switch (this.model.current_view) {
+                case this.model.views.menu:
+                    $(document.body).addClass(this.model.views.menu);
+                    break;
+
+                case this.model.views.order:
+                    $(document.body).addClass(this.model.views.order);
+                    break;
+            }
+
+            // Update the current subview inside the main view
+            switch (this.model.current_subview) {
+                case this.model.views.drinks:
+                    $(document.body).addClass(this.model.views.drinks);
+                    break;
+
+                case this.model.views.special_drinks:
+                    $(document.body).addClass(this.model.views.special_drinks);
+                    break;
             }
         },
     },
@@ -47,14 +76,40 @@ window.tfd.add_module('customer', {
     // CONTROLLER
     //
     controller: {
-        show_menu: function() {
-            this.model.current_view = 'menu';
+        set_view: function(new_view) {
+            this.model.previous_view = this.model.current_view;
+            this.model.current_view = new_view;
             this.view.update_body();
         },
 
-        show_order: function() {
-            this.model.current_view = 'order';
+        set_subview: function(new_subview) {
+            this.model.previous_subview = this.model.current_subview;
+            this.model.current_subview = new_subview;
             this.view.update_body();
+        },
+
+        show_menu: function() {
+            this.controller.set_view(
+                this.model.views.menu
+            );
+        },
+
+        show_order: function() {
+            this.controller.set_view(
+                this.model.views.order
+            );
+        },
+
+        show_drinks: function() {
+            this.controller.set_subview(
+                this.model.views.drinks
+            );
+        },
+
+        show_special_drinks: function() {
+            this.controller.set_subview(
+                this.model.views.special_drinks
+            );
         },
     },
 

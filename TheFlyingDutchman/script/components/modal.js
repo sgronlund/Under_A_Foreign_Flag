@@ -9,6 +9,7 @@ window.tfd.add_module('modal', {
             login_modal: '#login_modal',
             filter_modal: '#filter_modal',
             checkout_modal: '#checkout_modal',
+            special_drink_modal: '#special_drink_modal',
         },
         classes: {
             show: 'show',
@@ -23,9 +24,11 @@ window.tfd.add_module('modal', {
         update_current_modal: function() {
             if (!this.model.current_modal) {
                 // Hide all modals
+                // TODO: Probably not the best solution but it works
                 $(this.model.ids.login_modal).removeClass(this.model.classes.show);
                 $(this.model.ids.filter_modal).removeClass(this.model.classes.show);
                 $(this.model.ids.checkout_modal).removeClass(this.model.classes.show);
+                $(this.model.ids.special_drink_modal).removeClass(this.model.classes.show);
 
                 return;
             }
@@ -60,6 +63,11 @@ window.tfd.add_module('modal', {
 
         show_login: function() {
             this.model.current_modal = this.model.ids.login_modal;
+            this.view.update_current_modal();
+        },
+
+        show_special_drink: function() {
+            this.model.current_modal = this.model.ids.special_drink_modal;
             this.view.update_current_modal();
         },
 

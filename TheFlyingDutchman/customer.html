@@ -40,7 +40,7 @@
 </head>
 <!-- VIEW MENU AND ITS CONTENT -->
 
-<body class="view-menu">
+<body class="view-menu subview-drinks">
     <header class="page-header container-wrapper text-white">
         <div class="container">
             <section class="box row v-center space-between padding-lg separator-bottom-light">
@@ -76,8 +76,8 @@
         <div class="container" id="header_nav_menu">
             <section class="sub-header box row v-center space-between">
                 <nav class="box row v-center fill fill-height">
-                    <button id="btn_drinks" class="underline selected margin-right"></button>
-                    <button id="btn_food" class="underline" type="button"></button>
+                    <button id="btn_drinks" class="underline margin-right" onclick="window.tfd.customer.controller.show_drinks()"></button>
+                    <button id="btn_special_drinks" class="underline" type="button" onclick="window.tfd.customer.controller.show_special_drinks()"></button>
                 </nav>
                 <div class="box row v-center fill-height">
                     <p class="product-count margin-right">
@@ -127,6 +127,9 @@
     <main class="container-wrapper">
         <!--MENU VIEW CONTENT-->
         <section id="menu" class="container padding-lg"></section>
+
+        <!--SPECIAL DRINKS VIEW CONTENT-->
+        <section id="special_drinks" class="container padding-lg"></section>
 
         <!-- ORDER EMPTY -->
         <p id="order_empty_label"></p>
@@ -276,6 +279,21 @@
 
             <div class="modal-content">
                 Filtering
+            </div>
+        </div>
+    </div>
+
+    <!-- SPECIAL DRINK MODAL-->
+    <div class="overlay modal-root" id="special_drink_modal">
+        <div class="overlay event-handler modal-event-hide"></div>
+        <div class="card modal modal-lg">
+            <div class="modal-top">
+                <p id="filtering_modal_title" class="modal-title"></p>
+                <button class="modal-close modal-event-hide" type="button">&#10799;</button>
+            </div>
+
+            <div class="modal-content">
+                Special drinks
             </div>
         </div>
     </div>
