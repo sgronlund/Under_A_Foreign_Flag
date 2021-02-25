@@ -160,7 +160,7 @@ function allBeverages() {
         collector[product.nr] = {
             nr: product.nr,
             namn: product.namn,
-            prisinklmoms: product.prisinklmoms,
+            prisinklmoms: parseFloat(product.prisinklmoms), // Convert to float
             description,
         };
     }

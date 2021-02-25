@@ -6,6 +6,7 @@ window.tfd = {
     global: {
         logged_in: false,
         user_details: null,
+        products: allBeverages(),
     },
 
     // =====================================================================================================
@@ -133,10 +134,10 @@ window.tfd = {
     __register_signal_handlers: function() {
         for (const key of Object.keys(this.__signals)) {
             // Create a callback for the signal
-            $(document).on(key, function() {
+            $(document).on(key, function(_, ...args) {
                 // Execute each signal callback
                 for (const fn of window.tfd.__signals[key]) {
-                    fn();
+                    fn(...args);
                 }
             });
         }

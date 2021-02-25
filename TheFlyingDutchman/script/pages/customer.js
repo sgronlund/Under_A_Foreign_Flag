@@ -62,7 +62,7 @@ window.tfd.add_module('customer', {
     // DOCUMENT READY EVENT
     //
     ready: function() {
-        render_products();
+        this.trigger('render_products');
     },
 
     // =====================================================================================================
