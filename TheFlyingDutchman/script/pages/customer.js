@@ -125,7 +125,8 @@ window.tfd.add_module('customer', {
     //
     init: function() {
         // Load products into global state
-        this.global.products = allBeverages();
+        this.global.drinks = load_drinks(DRINKS);
+        this.global.special_drinks = load_drinks(SPECIAL_DRINKS)
     },
 
     // =====================================================================================================
@@ -133,6 +134,7 @@ window.tfd.add_module('customer', {
     //
     signal: {
         login: function() {
+            this.trigger('render_special_products');
             this.view.update_vip_footer();
         },
     },

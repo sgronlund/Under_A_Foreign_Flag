@@ -123,15 +123,15 @@ function get_beverage_type(category_string) {
 // Returns a list of objects containing the name and category of each beverage in the database.
 // This function can be used as a recipe for similar functions.
 //
-function allBeverages() {
+function load_drinks(data) {
     // Using a local variable to collect the items.
     const collector = {};
 
     // The DB is stored in the variable DB2, with "spirits" as key element. If you need to select only certain
     // items, you may introduce filter functions in the loop... see the template within comments.
     //
-    for (let i = 0; i < DB2.spirits.length; i++) {
-        const product = DB2.spirits[i];
+    for (let i = 0; i < data.spirits.length; i++) {
+        const product = data.spirits[i];
 
         // Contains all the values that describe the beverage.
         // These are different based on the type of drink.
@@ -162,6 +162,9 @@ function allBeverages() {
             namn: product.namn,
             prisinklmoms: parseFloat(product.prisinklmoms), // Convert to float
             description,
+
+            // Indicates if a product is only for VIP guests
+            vip: product.vip == true,
         };
     }
 

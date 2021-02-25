@@ -123,7 +123,7 @@ window.tfd.add_module('order', {
                 return;
             }
 
-            const product = this.global.products[id];
+            const product = this.global.drinks[id];
             const total = product.prisinklmoms * quantity;
 
             if (this.model.total_items + quantity > 10) {

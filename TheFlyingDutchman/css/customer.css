@@ -57,7 +57,7 @@ footer {
 }
 
 
-#menu, #order {
+#menu, #special_drinks, #order {
     padding-bottom: var(--footer-height-offset);
     display: none;
 }

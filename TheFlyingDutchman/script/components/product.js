@@ -5,7 +5,8 @@ window.tfd.add_module('product', {
     model: {
         ids: {
             container: '#menu',
-            total_products: '#total_products_count'
+            container_special: '#special_drinks',
+            total_products: '#total_products_count',
         },
     },
 
@@ -13,15 +14,15 @@ window.tfd.add_module('product', {
     // VIEW
     //
     view: {
-        update_products: function() {
-            const container = $(this.model.ids.container);
+        update_products: function(container_id, products) {
+            const container = $(container_id);
             const total_products = $(this.model.ids.total_products);
 
             let html = "";
             let total = 0;
 
             // TODO: This completely fucks the performance
-            for (const product of Object.values(this.global.products)) {
+            for (const product of Object.values(products)) {
                 // FIXME: Temporary performance fix
                 if (total == 50) {
                     break;
@@ -50,6 +51,7 @@ window.tfd.add_module('product', {
         create_product: function(product) {
             const { nr, namn, prisinklmoms } = product;
             const description = this.view.create_product_description(product);
+            const button = this.view.create_product_action_button(product);
 
             return (`
                 <article class="product card box">
@@ -74,14 +76,34 @@ window.tfd.add_module('product', {
                                 </svg>
                             </button>
                         </div>
-                        <button class="extra-light small product-add-to-order" onclick="window.tfd.product.controller.add_to_order(${nr})">
-                            <span class="product_add_to_order_label">Add to order</span>
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </button>
+                        ${button}
                     </div>
                 </article>
+            `);
+        },
+
+        create_product_action_button: function(product) {
+            if (product.vip) {
+                return (`
+                    <button class="extra-light small" onclick="window.tfd.modal.controller.show_special_drink(${product.nr})">
+                        <span class="product_select_special_drink_label"></span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11
+                                  0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                    </button>
+                `);
+            }
+
+            return (`
+                <button class="extra-light small" onclick="window.tfd.product.controller.add_to_order(${product.nr})">
+                    <span class="product_add_to_order_label"></span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                </button>
             `);
         },
 
@@ -146,8 +168,20 @@ window.tfd.add_module('product', {
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {
+        // Render the default drinks list
         render_products: function() {
-            this.view.update_products();
+            this.view.update_products(
+                this.model.ids.container,
+                this.global.drinks,
+            );
+        },
+
+        // Render the VIP drinks list
+        render_special_products: function() {
+            this.view.update_products(
+                this.model.ids.container_special,
+                this.global.special_drinks,
+            );
         },
     },
 });

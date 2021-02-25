@@ -13,7 +13,8 @@
     <!-- DATABASE -->
     <script type="text/javascript" src="script/database/api.js"></script>
     <script type="text/javascript" src="script/database/users.js"></script>
-    <script type="text/javascript" src="script/database/beverages.js"></script>
+    <script type="text/javascript" src="script/database/drinks.js"></script>
+    <script type="text/javascript" src="script/database/special_drinks.js"></script>
 
     <!-- MVC HANDLER -->
     <script type="text/javascript" src="script/main.js"></script>
@@ -33,6 +34,7 @@
     <script type="text/javascript" src="script/i18n/filtering.js"></script>
     <script type="text/javascript" src="script/i18n/checkout.js"></script>
     <script type="text/javascript" src="script/i18n/product.js"></script>
+    <script type="text/javascript" src="script/i18n/special_drink.js"></script>
 
     <!-- CURRENT PAGE -->
     <script type="text/javascript" src="script/pages/customer.js"></script>
@@ -40,7 +42,7 @@
 </head>
 <!-- VIEW MENU AND ITS CONTENT -->
 
-<body class="view-menu subview-drinks">
+<body class="view-menu subview-drinks order-empty">
     <header class="page-header container-wrapper text-white">
         <div class="container">
             <section class="box row v-center space-between padding-lg separator-bottom-light">
@@ -288,7 +290,7 @@
         <div class="overlay event-handler modal-event-hide"></div>
         <div class="card modal modal-lg">
             <div class="modal-top">
-                <p id="filtering_modal_title" class="modal-title"></p>
+                <p id="special_drink_modal_title" class="modal-title"></p>
                 <button class="modal-close modal-event-hide" type="button">&#10799;</button>
             </div>
 
