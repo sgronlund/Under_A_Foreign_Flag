@@ -137,5 +137,16 @@ window.tfd.add_module('customer', {
             this.trigger('render_special_products');
             this.view.update_vip_footer();
         },
+
+        logout: function() {
+            this.view.update_vip_footer();
+
+            // Special drinks can only be viewed by VIP customers
+            if (this.model.current_view == this.model.views.menu) {
+                this.controller.set_subview(
+                    this.model.views.drinks
+                );
+            }
+        },
     },
 });

@@ -49,9 +49,9 @@ window.tfd.add_module('product', {
         },
 
         create_product: function(product) {
-            const { nr, namn, prisinklmoms } = product;
+            const { namn, prisinklmoms } = product;
             const description = this.view.create_product_description(product);
-            const button = this.view.create_product_action_button(product);
+            const actions = this.view.create_product_actions(product);
 
             return (`
                 <article class="product card box">
@@ -62,30 +62,19 @@ window.tfd.add_module('product', {
                     <div class="box v-start fill padding-bottom">
                         <div class="box">${description}</div>
                     </div>
-                    <div class="product-actions box row space-between padding-top">
-                        <div class="box row v-center">
-                            <button class="gray small square no-icon-spacing" onclick="window.tfd.product.controller.decrease_quantity(${nr})">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                                </svg>
-                            </button>
-                            <input data-quantity-id="${nr}" class="product-quantity no-spinner" min="1" max="10" value="1" type="number"/>
-                            <button class="gray small square no-icon-spacing" onclick="window.tfd.product.controller.increase_quantity(${nr})">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
-                        </div>
-                        ${button}
+                    <div class="product-actions box row v-center space-between padding-top">
+                        ${actions}
                     </div>
                 </article>
             `);
         },
 
-        create_product_action_button: function(product) {
-            if (product.vip) {
+        create_product_actions: function(product) {
+            const { nr, vip } = product;
+
+            if (vip) {
                 return (`
-                    <button class="extra-light small" onclick="window.tfd.modal.controller.show_special_drink(${product.nr})">
+                    <button class="extra-light small fill-width" onclick="window.tfd.modal.controller.show_special_drink(${nr})">
                         <span class="product_select_special_drink_label"></span>
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -98,7 +87,20 @@ window.tfd.add_module('product', {
             }
 
             return (`
-                <button class="extra-light small" onclick="window.tfd.product.controller.add_to_order(${product.nr})">
+                <div class="box row v-center">
+                    <button class="gray small square no-icon-spacing" onclick="window.tfd.product.controller.decrease_quantity(${nr})">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                        </svg>
+                    </button>
+                    <input data-quantity-id="${nr}" class="product-quantity no-spinner" min="1" max="10" value="1" type="number"/>
+                    <button class="gray small square no-icon-spacing" onclick="window.tfd.product.controller.increase_quantity(${nr})">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                    </button>
+                </div>
+                <button class="extra-light small" onclick="window.tfd.product.controller.add_to_order(${nr})">
                     <span class="product_add_to_order_label"></span>
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

@@ -33,8 +33,10 @@
     --content-min-width: 400px;
     --lang-button-width: 4.2rem;
     --sub-header-height: 3.2rem;
+    --button-height-sm: 2.4rem;
     --button-height: 2.7rem;
     --button-height-lg: 3.3rem;
+    --button-icon-height-sm: 1.1rem;
     --button-icon-height: 1.3rem;
     --button-icon-height-lg: 1.8rem;
     --footer-height-offset: 7.3rem;
