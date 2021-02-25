@@ -69,7 +69,8 @@ window.tfd.add_module('customer', {
     // MODULE LOAD
     //
     init: function() {
-        products = allBeverages();
+        // Load products into global state
+        this.global.products = allBeverages();
     },
 
     // =====================================================================================================

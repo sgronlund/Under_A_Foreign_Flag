@@ -6,7 +6,7 @@ window.tfd = {
     global: {
         logged_in: false,
         user_details: null,
-        products: allBeverages(),
+        products: null,
     },
 
     // =====================================================================================================
@@ -72,7 +72,8 @@ window.tfd = {
 
         // Check if the module has registered a module init event handler
         if (module.hasOwnProperty('init')) {
-            module.init();
+            // The init function should be called when the module is created, i.e. now
+            module.init.bind(context)();
         }
 
         // Check if the module has registered any custom signal handlers
@@ -149,7 +150,7 @@ window.tfd = {
     __trigger_signal: function(signal, ...args) {
         // Only trigger the event if the signal has registered handler(s)
         if (!window.tfd.__signals.hasOwnProperty(signal)) {
-            console.error(`Could not trigger signal: ${signal} - No registered signal handlers`);
+            console.warn(`Could not trigger signal: ${signal} - No registered signal handlers`);
             return;
         }
 
