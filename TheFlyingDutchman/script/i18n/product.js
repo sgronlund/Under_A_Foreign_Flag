@@ -52,7 +52,7 @@ window.tfd.localization.controller.add('product', {
             product_argang_label: 'Årgång:',
             product_typ_label: 'Typ:',
             product_add_to_order_label: 'Lägg i varukorg',
-            product_select_special_drink_label: 'Välj drink',
+            product_select_special_drink_label: 'Välj dricka',
             order_remove_product_label: 'Ta bort',
             order_product_price_each_label: 'st',
         },
