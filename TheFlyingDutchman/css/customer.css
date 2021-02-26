@@ -181,6 +181,11 @@ body.view-menu #btn_menu, body.view-order #btn_order {
     border-color: var(--border-color-dark);
 }
 
+#special_drink_info {
+    font-size: var(--font-size-xsm);
+    margin: var(--spacing-lg) 0;
+}
+
 @media screen and (max-width: 1050px) {
     body.view-menu #menu, .product-description-order {
         grid-template-columns: 1fr 1fr;

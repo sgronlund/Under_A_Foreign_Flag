@@ -74,7 +74,7 @@ window.tfd.add_module('product', {
 
             if (vip) {
                 return (`
-                    <button class="extra-light small fill-width" onclick="window.tfd.modal.controller.show_special_drink(${nr})">
+                    <button class="extra-light small fill-width" onclick="window.tfd.vip.controller.select_special_drink(${nr})">
                         <span class="product_select_special_drink_label"></span>
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

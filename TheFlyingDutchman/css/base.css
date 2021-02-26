@@ -128,6 +128,11 @@ button.white {
     color: var(--text-color);
 }
 
+button.success {
+    background-color: var(--price-color);
+    color: white;
+}
+
 button.underline {
     height: 100%;
     background-color: transparent;
@@ -232,6 +237,10 @@ button.icon-left > svg {
 
 .margin-right-sm {
     margin-right: var(--spacing-sm);
+}
+
+.margin-top-sm {
+    margin-top: var(--spacing-sm);
 }
 
 .margin-top-lg {
