@@ -14,7 +14,7 @@ main {
 
 
 /* ### MENU ### */
-#menu {
+#menu_view {
     grid-column-start: 3;
 
     /* SIZE */
