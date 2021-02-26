@@ -74,7 +74,7 @@ window.tfd.add_module('staff', {
     //
     ready: function() {
         this.trigger('render_products'); // TODO: fix so this renders in a better way?
-        this.trigger('render_tables');
+        this.view.update_tables();
     },
 
     // =====================================================================================================
@@ -83,14 +83,5 @@ window.tfd.add_module('staff', {
     init: function() {
         this.global.drinks = load_drinks(DRINKS);
         this.global.special_drinks = load_drinks(SPECIAL_DRINKS);
-    },
-
-    // =====================================================================================================
-    // CUSTOM SIGNAL HANDLERS
-    //
-    signal: {
-        render_tables: function() {
-            this.view.update_tables();
-        },
     },
 });

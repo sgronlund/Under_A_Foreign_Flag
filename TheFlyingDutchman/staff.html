@@ -87,25 +87,18 @@
         </div>
     </section>
 
-    <main>
-        <!-- TABLE VIEW -->
-        <div id="tables_view" class="padding">
-            <div class="table_order_view card modal">
-                <div class="order_header modal-top">
-                    <p class="modal-title">Order</p>
-                    <button class="" type="button" onclick="window.tfd.staff.view.view_order()">&#10799;</button>
-                </div>
-                <div class="table_order">
-
-                </div>
+    <main class="container-wrapper">
+        <div class="container box row">
+            <!-- TABLE VIEW -->
+            <div id="tables_view" class="padding">
             </div>
-        </div>
 
-        <!--MENU VIEW CONTENT-->
-        <div id="menu_view" class="container">
-            <div class="box row v-center fill-height">
+            <!--MENU VIEW CONTENT-->
+            <div id="menu_view" class="container">
+                <div class="box row v-center fill-height">
+                </div>
+                <section id="menu" class="container padding-lg"></section>
             </div>
-            <section id="menu" class="container padding-lg"></section>
         </div>
     </main>
 
@@ -118,7 +111,9 @@
                 <div class="box row center padding-v-sm padding-h-lg">
                     <button id="btn_vip_logout" class="menu-item fill icon-left" onclick="window.tfd.login.controller.logout()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                            />
                         </svg>
                         <span id="btn_vip_logout_text"></span>
                     </button>
@@ -126,6 +121,21 @@
             </div>
         </nav>
     </footer>
+
+    <!--ORDER MODAL-->
+    <div class="overlay modal-root" id="order_modal">
+        <div class="overlay event-handler modal-event-hide"></div>
+        <div class="card modal modal-lg">
+            <div class="modal-top">
+                <p id="order_modal_title" class="modal-title"></p>
+                <button class="modal-close modal-event-hide" type="button">&#10799;</button>
+            </div>
+
+            <div class="modal-content">
+                Order
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
