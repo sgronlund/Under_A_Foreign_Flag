@@ -33,8 +33,10 @@
     --content-min-width: 400px;
     --lang-button-width: 4.2rem;
     --sub-header-height: 3.2rem;
+    --button-height-sm: 2.4rem;
     --button-height: 2.7rem;
     --button-height-lg: 3.3rem;
+    --button-icon-height-sm: 1.1rem;
     --button-icon-height: 1.3rem;
     --button-icon-height-lg: 1.8rem;
     --footer-height-offset: 7.3rem;
@@ -124,6 +126,11 @@ button.extra-light {
 button.white {
     background-color: white;
     color: var(--text-color);
+}
+
+button.success {
+    background-color: var(--price-color);
+    color: white;
 }
 
 button.underline {
@@ -232,6 +239,10 @@ button.icon-left > svg {
     margin-right: var(--spacing-sm);
 }
 
+.margin-top-sm {
+    margin-top: var(--spacing-sm);
+}
+
 .margin-top-lg {
     margin-top: var(--spacing-lg);
 }
@@ -280,9 +291,6 @@ button.icon-left > svg {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-}
-
-.box.grid {
 }
 
 .box.row {

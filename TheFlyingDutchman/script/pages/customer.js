@@ -3,14 +3,15 @@ window.tfd.add_module('customer', {
     // MODEL
     //
     model: {
-        current_view: 'menu',
-        ids: {
-            user_name: '#welcome_name',
-            user_credit: '#vip_credit',
-        },
-        classes: {
-            view_menu: 'view-menu',
-            view_order: 'view-order',
+        current_view: 'view-menu',
+        current_subview: 'subview-drinks',
+        previous_view: null,
+        previous_subview: null,
+        views: {
+            menu: 'view-menu',
+            order: 'view-order',
+            drinks: 'subview-drinks',
+            special_drinks: 'subview-special-drinks',
         },
     },
 
@@ -18,27 +19,23 @@ window.tfd.add_module('customer', {
     // VIEW
     //
     view: {
-        // Renders the VIP footer when logged in
-        update_vip_footer: function() {
-            if (!this.global.logged_in) {
-                return;
+        update_body: function() {
+            if (this.model.previous_view) {
+                $(document.body).removeClass(this.model.previous_view);
             }
 
-            const { first_name, last_name, creditSEK } = this.global.user_details;
-            const fullname = first_name + " " + last_name;
-            const balance = creditSEK ? creditSEK : 0;
+            if (this.model.previous_subview) {
+                $(document.body).removeClass(this.model.previous_subview);
+            }
 
-            $(this.model.ids.user_name).text(fullname);
-            $(this.model.ids.user_credit).text(balance + " SEK");
-        },
-
-        update_body: function() {
-            if (this.model.current_view == 'menu') {
-                $(document.body).addClass(this.model.classes.view_menu);
-                $(document.body).removeClass(this.model.classes.view_order);
+            if (this.model.current_view == this.model.views.menu) {
+                // Batch classes together to prevent multiple layout rerenders
+                $(document.body).addClass([
+                    this.model.current_view,
+                    this.model.current_subview
+                ]);
             } else {
-                $(document.body).removeClass(this.model.classes.view_menu);
-                $(document.body).addClass(this.model.classes.view_order);
+                $(document.body).addClass(this.model.current_view);
             }
         },
     },
@@ -47,14 +44,32 @@ window.tfd.add_module('customer', {
     // CONTROLLER
     //
     controller: {
-        show_menu: function() {
-            this.model.current_view = 'menu';
+        set_view: function(new_view) {
+            this.model.previous_view = this.model.current_view;
+            this.model.current_view = this.model.views[new_view];
             this.view.update_body();
         },
 
-        show_order: function() {
-            this.model.current_view = 'order';
+        set_subview: function(new_subview) {
+            this.model.previous_subview = this.model.current_subview;
+            this.model.current_subview = this.model.views[new_subview];
             this.view.update_body();
+        },
+
+        show_menu: function() {
+            this.controller.set_view('menu');
+        },
+
+        show_order: function() {
+            this.controller.set_view('order');
+        },
+
+        show_drinks: function() {
+            this.controller.set_subview('drinks');
+        },
+
+        show_special_drinks: function() {
+            this.controller.set_subview('special_drinks');
         },
     },
 
@@ -70,15 +85,19 @@ window.tfd.add_module('customer', {
     //
     init: function() {
         // Load products into global state
-        this.global.products = allBeverages();
+        this.global.drinks = load_drinks(DRINKS);
+        this.global.special_drinks = load_drinks(SPECIAL_DRINKS)
     },
 
     // =====================================================================================================
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {
-        login: function() {
-            this.view.update_vip_footer();
+        logout: function() {
+            // Special drinks can only be viewed by VIP customers
+            if (this.model.current_view == this.model.views.menu) {
+                this.controller.set_subview('drinks');
+            }
         },
     },
 });

@@ -11,6 +11,7 @@ window.tfd.add_module('order', {
             total_items: '#btn_order_count',
             total_amount: '#order_total_amount',
             total_items_header: '#order_total_products_count',
+            insufficient_funds: '#insufficient',
         },
         body_classes: {
             order_empty: 'order-empty',
@@ -27,6 +28,15 @@ window.tfd.add_module('order', {
                 $(document.body).addClass(this.model.body_classes.order_empty);
             } else {
                 $(document.body).removeClass(this.model.body_classes.order_empty);
+            }
+        },
+
+        update_checkout_error: function(show) {
+            // Displays text for insufficient funds
+            if (show) {
+                $(this.model.ids.insufficient_funds).addClass('show')
+            } else {
+                $(this.model.ids.insufficient_funds).removeClass('show');
             }
         },
 
@@ -123,7 +133,7 @@ window.tfd.add_module('order', {
                 return;
             }
 
-            const product = this.global.products[id];
+            const product = this.global.drinks[id];
             const total = product.prisinklmoms * quantity;
 
             if (this.model.total_items + quantity > 10) {
@@ -227,6 +237,56 @@ window.tfd.add_module('order', {
 
         decrease_quantity: function(id) {
             this.controller.change_quantity(id, -1);
+        },
+
+        // TODO: discuss design, whether this should be one or two functions
+        checkout_bar_or_table: function() {
+            if (this.model.total_price > 0) {
+                // Hide any previous display of errors
+                this.view.update_checkout_error(false);
+                window.tfd.modal.controller.hide_error();
+
+                // Iterate and remove all items from order, "simulating" paying for the items to a staff member.
+                var items = this.model.items;
+                for (const key of Object.keys(items)) {
+                    this.controller.remove(key);
+                    //TODO : Update stock after removing, check each individuals items quantity and decrement from stock
+                    // What should happen if we don't have a item in stock? Should that be handled when adding to our order?
+                }
+                window.tfd.modal.controller.hide(); //Closes popout window for checkout.
+            }
+        },
+
+        checkout_balance: function() {
+            const total_amount = this.model.total_price;
+            if (this.global.logged_in && total_amount > 0) { //Checks if user is logged in and we have items to checkout
+
+                // TODO: We could move the balance update code to the VIP module instead
+                // Get users details
+                const user = this.global.user_details.username;
+                const details = this.global.user_details;
+
+                // Compute the new balance by subtracting the value of the order
+                //var current_balance = parseFloat(details.creditSEK);
+                //const updated_balance = current_balance - total_amount;
+
+                // Checks if user can make the purchase with its current balance.
+                if (window.tfd.vip.controller.update_balance(total_amount)) {
+                    //Hides previous display of errors
+                    this.view.update_checkout_error(false);
+                    window.tfd.modal.controller.hide_error();
+                    this.controller.checkout_bar_or_table(); //Removes the products from the order
+
+                    window.tfd.modal.controller.hide(); // Close the checkout windoow
+                } else {
+                    console.log("Not sufficient funds");
+
+                    // Style elements to tell user this action was not allowed.
+                    window.tfd.modal.controller.show_error();
+                    this.view.update_checkout_error(true);
+                }
+
+            }
         },
     },
 

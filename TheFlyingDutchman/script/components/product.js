@@ -5,7 +5,8 @@ window.tfd.add_module('product', {
     model: {
         ids: {
             container: '#menu',
-            total_products: '#total_products_count'
+            container_special: '#special_drinks',
+            total_products: '#total_products_count',
         },
     },
 
@@ -13,15 +14,20 @@ window.tfd.add_module('product', {
     // VIEW
     //
     view: {
-        update_products: function() {
-            const container = $(this.model.ids.container);
+        update_products: function(container_id, products) {
+            const container = $(container_id);
             const total_products = $(this.model.ids.total_products);
 
             let html = "";
             let total = 0;
 
             // TODO: This completely fucks the performance
-            for (const product of Object.values(this.global.products)) {
+            for (const product of Object.values(products)) {
+                // FIXME: Temporary performance fix
+                if (total == 50) {
+                    break;
+                }
+
                 html += this.view.create_product(product);
                 total++;
             }
@@ -43,8 +49,9 @@ window.tfd.add_module('product', {
         },
 
         create_product: function(product) {
-            const { nr, namn, prisinklmoms } = product;
+            const { namn, prisinklmoms } = product;
             const description = this.view.create_product_description(product);
+            const actions = this.view.create_product_actions(product);
 
             return (`
                 <article class="product card box">
@@ -55,28 +62,50 @@ window.tfd.add_module('product', {
                     <div class="box v-start fill padding-bottom">
                         <div class="box">${description}</div>
                     </div>
-                    <div class="product-actions box row space-between padding-top">
-                        <div class="box row v-center">
-                            <button class="gray small square no-icon-spacing" onclick="window.tfd.product.controller.decrease_quantity(${nr})">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                                </svg>
-                            </button>
-                            <input data-quantity-id="${nr}" class="product-quantity no-spinner" min="1" max="10" value="1" type="number"/>
-                            <button class="gray small square no-icon-spacing" onclick="window.tfd.product.controller.increase_quantity(${nr})">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
-                        </div>
-                        <button class="extra-light small product-add-to-order" onclick="window.tfd.product.controller.add_to_order(${nr})">
-                            <span class="product_add_to_order_label">Add to order</span>
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </button>
+                    <div class="product-actions box row v-center space-between padding-top">
+                        ${actions}
                     </div>
                 </article>
+            `);
+        },
+
+        create_product_actions: function(product) {
+            const { nr, vip } = product;
+
+            if (vip) {
+                return (`
+                    <button class="extra-light small fill-width" onclick="window.tfd.vip.controller.select_special_drink(${nr})">
+                        <span class="product_select_special_drink_label"></span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11
+                                  0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                    </button>
+                `);
+            }
+
+            return (`
+                <div class="box row v-center">
+                    <button class="gray small square no-icon-spacing" onclick="window.tfd.product.controller.decrease_quantity(${nr})">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                        </svg>
+                    </button>
+                    <input data-quantity-id="${nr}" class="product-quantity no-spinner" min="1" max="10" value="1" type="number"/>
+                    <button class="gray small square no-icon-spacing" onclick="window.tfd.product.controller.increase_quantity(${nr})">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                    </button>
+                </div>
+                <button class="extra-light small" onclick="window.tfd.product.controller.add_to_order(${nr})">
+                    <span class="product_add_to_order_label"></span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                </button>
             `);
         },
 
@@ -120,7 +149,7 @@ window.tfd.add_module('product', {
         change_quantity: function(id, change) {
             const new_quantity = this.controller.get_quantity(id) + change;
 
-            if (new_quantity < 0 || new_quantity > 10) {
+            if (new_quantity < 1 || new_quantity > 10) {
                 console.log(`Could not update quantity of product to: ${new_quantity}`);
                 return;
             }
@@ -141,8 +170,20 @@ window.tfd.add_module('product', {
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {
+        // Render the default drinks list
         render_products: function() {
-            this.view.update_products();
+            this.view.update_products(
+                this.model.ids.container,
+                this.global.drinks,
+            );
+        },
+
+        // Render the VIP drinks list
+        render_special_products: function() {
+            this.view.update_products(
+                this.model.ids.container_special,
+                this.global.special_drinks,
+            );
         },
     },
 });
