@@ -127,42 +127,10 @@ function allBeverages() {
     // Using a local variable to collect the items.
     const collector = {};
 
-    // The DB is stored in the variable DB2, with "spirits" as key element. If you need to select only certain
-    // items, you may introduce filter functions in the loop... see the template within comments.
-    //
+    // Passes to products to the filter function which formats them correctly
     for (let i = 0; i < DB2.spirits.length; i++) {
         const product = DB2.spirits[i];
-
-        // Contains all the values that describe the beverage.
-        // These are different based on the type of drink.
-        const description = {
-            forpackning: get_beverage_description_string(product.forpackning),
-            producent: get_beverage_description_string(product.producent),
-            alkoholhalt: get_beverage_description_string(product.alkoholhalt),
-        };
-
-        // Extract type-specific description items
-        if (product.varugrupp.toLowerCase().includes("öl")) {
-            // Description for beers
-            description['sort'] = get_beverage_sort(product.varugrupp);
-            description['ursprunglandnamn'] = get_beverage_description_string(product.ursprunglandnamn);
-        } else if (product.varugrupp.toLowerCase().includes("vin")) {
-            // Description for wine
-            description['typ'] = get_beverage_type(product.varugrupp);
-            description['argang'] = get_beverage_description_string(product.argang);
-            description['druva'] = get_beverage_description_string(product.namn2);
-        } else {
-            // Description for other
-            description['ursprunglandnamn'] = get_beverage_description_string(product.ursprunglandnamn);
-            description['sort'] = get_beverage_description_string(product.varugrupp);
-        }
-
-        collector[product.nr] = {
-            nr: product.nr,
-            namn: product.namn,
-            prisinklmoms: parseFloat(product.prisinklmoms), // Convert to float
-            description,
-        };
+        collector[product.nr] = filter(product);
     }
 
     return collector;
@@ -175,39 +143,75 @@ function allBeverages() {
 function filterBasedOnStrength(strength) {
     // Using a local variable to collect the items.
     //
-    const collector = [];
+    const collector = {};
     
-    // The DB is stored in the variable DB2, with "spirits" as key element. If you need to select only certain
-    // items, you may introduce filter functions in the loop... see the template within comments.
-    //
     for (let i = 0; i < DB2.spirits.length; i++) {
         const product = DB2.spirits[i]
-        // We check if the percentage alcohol strength stored in the data base is lower than the
-        // given limit strength. If the limit is set to 14, also liqueuers are listed.
-        //
-        if (percentToNumber(product.alkoholhalt) < strength) {
-            console.log(product.namn);
-            // The key for the beverage name is "namn", and beverage type is "varugrupp".
-            //
-            const description = {
-                forpackning: get_beverage_description_string(product.forpackning),
-                producent: get_beverage_description_string(product.producent),
-                alkoholhalt: get_beverage_description_string(product.alkoholhalt),
-            };
-
-            collector[product.nr] = {
-                nr: product.nr,
-                namn: product.namn,
-                prisinklmoms: parseFloat(product.prisinklmoms), // Convert to float
-                description,
-            };
-
+        
+        // Checks if the alcohol content of the drink is less than the supplied strength
+        if (percentToNumber(product.alkoholhalt) > strength) {
+            collector[product.nr] = filter(product);
         };
     };
-
-    // Don't forget to return the result.
-    //
     return collector;
+}
+
+function filterTannins() {
+    const collector = {};
+    for(let i = 0; i < DB2.spirits.length; i++) {
+        const product = DB2.spirits[i];
+        // All wines contains tannnins therefore we check if the type of the product is wine
+        if (!product.varugrupp.toLowerCase().includes("vin")) {
+            collector[product.nr] = filter(product);
+        }
+    }
+    return collector;
+}
+
+
+function filterKosher() {
+    const collector = {};
+    for(let i = 0; i < DB2.spirits.length; i++) {
+        const product = DB2.spirits[i];
+        // Checks if the koscher field for the drink is set to 1, i.e. the drink is koscher.
+        if (product.koscher == "1") {
+            collector[product.nr] = filter(product);
+        }
+    }
+    return collector;
+}
+
+// Formats the description/content of a drink based on its type, eg. with a Wine we also include the grape variety.
+function filter(product) {
+    const description = {
+        forpackning: get_beverage_description_string(product.forpackning),
+        producent: get_beverage_description_string(product.producent),
+        alkoholhalt: get_beverage_description_string(product.alkoholhalt),
+    };
+
+    // Extract type-specific description items
+    if (product.varugrupp.toLowerCase().includes("öl")) {
+        // Description for beers
+        description['sort'] = get_beverage_sort(product.varugrupp);
+        description['ursprunglandnamn'] = get_beverage_description_string(product.ursprunglandnamn);
+    } else if (product.varugrupp.toLowerCase().includes("vin")) {
+        // Description for wine
+        description['typ'] = get_beverage_type(product.varugrupp);
+        description['argang'] = get_beverage_description_string(product.argang);
+        description['druva'] = get_beverage_description_string(product.namn2);
+    } else {
+        // Description for other
+        description['ursprunglandnamn'] = get_beverage_description_string(product.ursprunglandnamn);
+        description['sort'] = get_beverage_description_string(product.varugrupp);
+    }
+
+    filtered = {
+        nr: product.nr,
+        namn: product.namn,
+        prisinklmoms: parseFloat(product.prisinklmoms), // Convert to float
+        description,
+    };
+    return filtered;
 }
 
 // =====================================================================================================
