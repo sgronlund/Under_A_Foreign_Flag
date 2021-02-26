@@ -57,9 +57,12 @@ footer {
 }
 
 
-#menu, #order {
+#menu, #special_drinks, #order {
     padding-bottom: var(--footer-height-offset);
     display: none;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-row-gap: var(--spacing);
+    grid-column-gap: var(--spacing);
 }
 
 #btn_order_count {
@@ -77,6 +80,7 @@ footer {
 #header_nav_order,
 #checkout_vip_actions,
 #order_empty_label,
+#btn_special_drinks,
 body.view-order #header_nav_menu,
 body.logged-in #btn_vip_login {
     display: none;
@@ -87,21 +91,25 @@ body.logged-in #btn_vip_logout,
 body.view-order #header_nav_order,
 body.view-order #btn_checkout,
 body.logged-in #checkout_vip_actions,
+body.logged-in #btn_special_drinks,
 body.view-order.order-empty #order_empty_label {
     display: flex;
 }
 
-body.view-menu #menu {
+body.view-menu.subview-drinks #menu,
+body.view-menu.subview-special-drinks #special_drinks {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-row-gap: var(--spacing);
-    grid-column-gap: var(--spacing);
 }
 
 body.view-order #order {
     display: grid;
     grid-template-columns: 1fr;
     grid-row-gap: var(--spacing);
+}
+
+body.view-menu.subview-drinks #btn_drinks,
+body.view-menu.subview-special-drinks #btn_special_drinks {
+    border-bottom-color: var(--brand-color);
 }
 
 .product-price, .order-product-price {
@@ -174,7 +182,31 @@ body.view-menu #btn_menu, body.view-order #btn_order {
     border-color: var(--border-color-dark);
 }
 
-.error button.brand:focus, .error button.brand:active, .error button.brand {
+#special_drink_info {
+    font-size: var(--font-size-xsm);
+    margin: var(--spacing-lg) 0;
+}
+
+#special_drink_code {
+    background-color: var(--background-color-body);
+    font-size: 2.5rem;
+    border-radius: var(--border-radius);
+    letter-spacing: var(--spacing-sm);
+}
+
+#special_drink_code,
+#special_drink_container.show-code #special_drink_info,
+#special_drink_container.show-code #special_drink_confirm {
+    display: none;
+}
+
+#special_drink_container.show-code #special_drink_code {
+    display: flex;
+}
+
+.error button.brand,
+.error button.brand:focus,
+.error button.brand:active {
     border: solid 3px var(--error-color);
     color: var(--error-color-light);
 }
@@ -192,7 +224,7 @@ span.error_message.show {
 }
 
 @media screen and (max-width: 1050px) {
-    body.view-menu #menu, .product-description-order {
+    #menu, #special_drinks, .product-description-order {
         grid-template-columns: 1fr 1fr;
     }
 }
@@ -212,7 +244,8 @@ span.error_message.show {
         grid-template-columns: 1fr;
     }
 
-    body.view-menu #menu {
+    #menu,
+    #special_drinks {
         grid-template-columns: 1fr;
     }
 }

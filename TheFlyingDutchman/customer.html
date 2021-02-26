@@ -13,13 +13,15 @@
     <!-- DATABASE -->
     <script type="text/javascript" src="script/database/api.js"></script>
     <script type="text/javascript" src="script/database/users.js"></script>
-    <script type="text/javascript" src="script/database/beverages.js"></script>
+    <script type="text/javascript" src="script/database/drinks.js"></script>
+    <script type="text/javascript" src="script/database/special_drinks.js"></script>
 
     <!-- MVC HANDLER -->
     <script type="text/javascript" src="script/main.js"></script>
 
     <!-- COMPONENTS -->
     <script type="text/javascript" src="script/components/localization.js"></script>
+    <script type="text/javascript" src="script/components/vip.js"></script>
     <script type="text/javascript" src="script/components/modal.js"></script>
     <script type="text/javascript" src="script/components/login.js"></script>
     <script type="text/javascript" src="script/components/order.js"></script>
@@ -33,6 +35,7 @@
     <script type="text/javascript" src="script/i18n/filtering.js"></script>
     <script type="text/javascript" src="script/i18n/checkout.js"></script>
     <script type="text/javascript" src="script/i18n/product.js"></script>
+    <script type="text/javascript" src="script/i18n/special_drink.js"></script>
 
     <!-- CURRENT PAGE -->
     <script type="text/javascript" src="script/pages/customer.js"></script>
@@ -40,7 +43,7 @@
 </head>
 <!-- VIEW MENU AND ITS CONTENT -->
 
-<body class="view-menu">
+<body class="view-menu subview-drinks order-empty">
     <header class="page-header container-wrapper text-white">
         <div class="container">
             <section class="box row v-center space-between padding-lg separator-bottom-light">
@@ -76,8 +79,8 @@
         <div class="container" id="header_nav_menu">
             <section class="sub-header box row v-center space-between">
                 <nav class="box row v-center fill fill-height">
-                    <button id="btn_drinks" class="underline selected margin-right"></button>
-                    <button id="btn_food" class="underline" type="button"></button>
+                    <button id="btn_drinks" class="underline margin-right" onclick="window.tfd.customer.controller.show_drinks()"></button>
+                    <button id="btn_special_drinks" class="underline" type="button" onclick="window.tfd.customer.controller.show_special_drinks()"></button>
                 </nav>
                 <div class="box row v-center fill-height">
                     <p class="product-count margin-right">
@@ -127,6 +130,9 @@
     <main class="container-wrapper">
         <!--MENU VIEW CONTENT-->
         <section id="menu" class="container padding-lg"></section>
+
+        <!--SPECIAL DRINKS VIEW CONTENT-->
+        <section id="special_drinks" class="container padding-lg"></section>
 
         <!-- ORDER EMPTY -->
         <p id="order_empty_label"></p>
@@ -277,6 +283,35 @@
 
             <div class="modal-content">
                 Filtering
+            </div>
+        </div>
+    </div>
+
+    <!-- SPECIAL DRINK MODAL-->
+    <div class="overlay modal-root" id="special_drink_modal">
+        <div class="overlay event-handler modal-event-hide"></div>
+        <div class="card modal modal-lg">
+            <div class="modal-top">
+                <p id="special_drink_modal_title" class="modal-title"></p>
+                <button class="modal-close modal-event-hide" type="button">&#10799;</button>
+            </div>
+
+            <div class="modal-content" id="special_drink_container">
+                <label id="special_drink_product_label"></label>
+                <div class="box row space-between v-center fill-width">
+                    <p id="special_drink_product_name" class="bold"></p>
+                    <p id="special_drink_product_price" class="product-price"></p>
+                </div>
+                <p id="special_drink_info"></p>
+                <p id="special_drink_code" class="box row center padding margin-top-lg"></p>
+                <div class="box row separator-top padding-top margin-top" id="special_drink_confirm">
+                    <button class="brand fill" onclick="window.tfd.vip.controller.confirm_special_drink()">
+                        <span id="btn_special_drink_label"></span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

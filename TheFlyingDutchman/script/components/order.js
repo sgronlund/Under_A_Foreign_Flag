@@ -133,7 +133,7 @@ window.tfd.add_module('order', {
                 return;
             }
 
-            const product = this.global.products[id];
+            const product = this.global.drinks[id];
             const total = product.prisinklmoms * quantity;
 
             if (this.model.total_items + quantity > 10) {
@@ -258,14 +258,15 @@ window.tfd.add_module('order', {
         },
 
         checkout_balance: function() {
-            const total_amount = this.model.total_price; 
+            const total_amount = this.model.total_price;
             if (this.global.logged_in && total_amount > 0) { //Checks if user is logged in and we have items to checkout
 
+                // TODO: We could move the balance update code to the VIP module instead
                 // Get users details
                 const user = this.global.user_details.username;
                 const details = this.global.user_details;
 
-                // Compute the new balance by subtracting the value of the order 
+                // Compute the new balance by subtracting the value of the order
                 var current_balance = parseFloat(details.creditSEK);
                 const updated_balance = current_balance - total_amount;
 
@@ -278,7 +279,7 @@ window.tfd.add_module('order', {
                     changeBalance(user, updated_balance); //Updates the database temporarily
                     this.global.user_details = userDetails(user); //Fetches new data
 
-                    window.tfd.customer.view.update_vip_footer(); //Updates the view, showing the new balance
+                    window.tfd.vip.view.update_footer(); //Updates the view, showing the new balance
                     this.controller.checkout_bar_or_table(); //Removes the products from the order
 
                     window.tfd.modal.controller.hide(); // Close the checkout windoow
@@ -289,7 +290,7 @@ window.tfd.add_module('order', {
                     window.tfd.modal.controller.show_error();
                     this.view.update_checkout_error(true);
                 }
-                
+
             }
         },
     },

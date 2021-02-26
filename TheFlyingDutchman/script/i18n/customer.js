@@ -1,8 +1,8 @@
 window.tfd.localization.controller.add('customer', {
     keys: [
         'title',
-        'btn_food',
         'btn_drinks',
+        'btn_special_drinks',
         'btn_checkout_text',
         'slogan',
         'total_products_label',
@@ -30,8 +30,8 @@ window.tfd.localization.controller.add('customer', {
     en: {
         default: {
             title: 'The Flying Dutchman - Customer',
-            btn_food: 'Food',
             btn_drinks: 'Drinks',
+            btn_special_drinks: 'Special drinks',
             btn_checkout_text: 'Checkout',
             slogan: 'Pub and restaurant',
             total_products_label: 'items',
@@ -51,8 +51,8 @@ window.tfd.localization.controller.add('customer', {
     sv : {
         default: {
             title: 'The Flying Dutchman - Kund',
-            btn_food: 'Mat',
             btn_drinks: 'Dryck',
+            btn_special_drinks: 'Speciella drycker',
             btn_checkout_text: 'Till kassan',
             slogan: 'Pub och restaurang',
             total_products_label: 'varor',

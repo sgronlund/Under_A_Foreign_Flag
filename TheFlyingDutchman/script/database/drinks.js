@@ -1,4 +1,4 @@
-var DB2 = {
+const DRINKS = {
     "spirits" :
         [{
             "nr": "10001",

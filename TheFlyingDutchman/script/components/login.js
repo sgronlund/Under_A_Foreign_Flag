@@ -107,7 +107,7 @@ window.tfd.add_module('login', {
             this.global.user_details = null;
 
             this.view.update_body();
-            this.trigger('login');
+            this.trigger('logout');
         },
     },
 
