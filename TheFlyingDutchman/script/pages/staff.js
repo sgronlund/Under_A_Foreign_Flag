@@ -15,10 +15,12 @@ window.tfd.add_module('staff', {
     view: {
         create_table: function (table_number) {
             return (`
-                <div id="table_${table_number}" class="table_item padding" onclick="window.tfd.staff.view.view_order(${table_number});">
-                    <p>
-                        ${table_number}
-                    </p>
+                <div id="table_${table_number}" class="box center" onclick="window.tfd.staff.view.view_order(${table_number});">
+                    <div class="table_item">
+                        <p>
+                            ${table_number}
+                        </p>
+                    </div>
                 </div>
             `);
         },

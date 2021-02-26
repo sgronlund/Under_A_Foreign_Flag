@@ -25,16 +25,6 @@
     background-color: var(--price-color);
 }
 
-.menu-item {
-    background-color: transparent;
-}
-
-.menu-item {
-    border: 1px solid transparent;
-    border-radius: var(--border-radius-lg);
-}
-
-
 #menu, #special_drinks, #order {
     padding-bottom: var(--footer-height-offset);
     display: none;

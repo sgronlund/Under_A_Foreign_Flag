@@ -50,7 +50,7 @@
                     <h1 class="logo">The Flying Dutchman</h1>
                 </div>
                 <div class="box row v-center">
-                    <button id="btn_theme" class="light" onclick="window.tfd.theme.controller.toggle()">
+                    <button id="btn_theme" class="light no-icon-spacing" onclick="window.tfd.theme.controller.toggle()">
                         <svg id="theme_icon_dark" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                         </svg>
@@ -62,6 +62,14 @@
                     <button id="btn_lang" class="margin-left" onclick="window.tfd.localization.controller.toggle()">
                         <img id="flag" src="">
                     </button>
+                    <button id="security_button" class="error no-icon-spacing margin-left">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67
+                                     6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                            />
+                        </svg>
+                    </button>
                 </div>
             </section>
         </div>
@@ -70,10 +78,7 @@
     <!-- SUB HEADER -->
     <section class="nav-header container-wrapper text-white">
         <div class="container" id="header_nav_menu">
-            <section class="sub-header box row v-center space-between">
-                <div class="box row v-center fill fill-height">
-                    <button id="security_button" class="white margin-right">security_button</button>
-                </div>
+            <section class="sub-header box row v-center align-end">
                 <button class="brand no-radius padding-h-lg fill-height" onclick="window.tfd.modal.controller.show_filter()">
                     <span id="btn_filter_text"></span>
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -90,14 +95,13 @@
     <main class="container-wrapper">
         <div class="container box row">
             <!-- TABLE VIEW -->
-            <div id="tables_view" class="padding">
-            </div>
+            <div id="tables_view"></div>
 
             <!--MENU VIEW CONTENT-->
-            <div id="menu_view" class="container">
+            <div id="menu_view" class="container margin-top-lg">
                 <div class="box row v-center fill-height">
                 </div>
-                <section id="menu" class="container padding-lg"></section>
+                <section id="menu" class="container padding-h-lg"></section>
             </div>
         </div>
     </main>
@@ -109,7 +113,25 @@
         <nav class="container-wrapper">
             <div class="container">
                 <div class="box row center padding-v-sm padding-h-lg">
-                    <button id="btn_vip_logout" class="menu-item fill icon-left" onclick="window.tfd.login.controller.logout()">
+                    <button id="btn_inventory" class="menu-item fill icon-left margin-right" onclick="window.tfd.customer.controller.show_order()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0
+                                     00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                            />
+                        </svg>
+                        <span id="btn_inventory_text">Inventory</span>
+                    </button>
+                    <button id="btn_menu" class="menu-item fill icon-left margin-right" onclick="window.tfd.customer.controller.show_order()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2
+                                     2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                            />
+                        </svg>
+                        <span id="btn_menu_text"></span>
+                    </button>
+                    <button id="btn_logout" class="menu-item fill icon-left" onclick="window.tfd.login.controller.logout()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
