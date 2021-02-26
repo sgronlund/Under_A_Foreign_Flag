@@ -11,6 +11,7 @@ window.tfd.add_module('order', {
             total_items: '#btn_order_count',
             total_amount: '#order_total_amount',
             total_items_header: '#order_total_products_count',
+            insufficient_funds: '#insufficient',
         },
         body_classes: {
             order_empty: 'order-empty',
@@ -27,6 +28,14 @@ window.tfd.add_module('order', {
                 $(document.body).addClass(this.model.body_classes.order_empty);
             } else {
                 $(document.body).removeClass(this.model.body_classes.order_empty);
+            }
+        },
+
+        update_checkout_error: function(show) {
+            if (show) {
+                $(this.model.ids.insufficient_funds).addClass('show')
+            } else {
+                $(this.model.ids.insufficient_funds).removeClass('show');
             }
         },
 
@@ -229,35 +238,54 @@ window.tfd.add_module('order', {
             this.controller.change_quantity(id, -1);
         },
 
+        // TODO: discuss design, whether this should be one or two functions
         checkout_bar_or_table: function() {
-            var items = this.model.items;
-            for (const key of Object.keys(items)) {
-                this.controller.remove(key);
-                //TODO : Update stock, since it simply removes the items from your order
+            if (this.model.total_price > 0) {
+                this.view.update_checkout_error(false);
+                window.tfd.modal.controller.hide_error();
+                var items = this.model.items;
+                for (const key of Object.keys(items)) {
+                    this.controller.remove(key);
+                    //TODO : Update stock after removing, check each individuals items quantity and decrement from stock
+                    // What should happen if we don't have a item in stock? Should that be handled when adding to our order?
+                }
+                window.tfd.modal.controller.hide(); //Closes popout window for checkout.
             }
-            //console.log(this.model);
-            window.tfd.modal.controller.hide(); //Closes popout window for checkout.
         },
 
+        /*
+         * 
+         * 
+         */
         checkout_balance: function() {
             const total_amount = this.model.total_price;
-            if (this.global.logged_in) {
+            if (this.global.logged_in && total_amount > 0) {
+                // Get users details
                 const user = this.global.user_details.username;
-                const details = this.global.user_details
-                console.log(details.creditSEK);
+                const details = this.global.user_details;
+
+                // Compute the new balance by subtracting the value of the order 
                 var current_balance = parseFloat(details.creditSEK);
                 const updated_balance = current_balance - total_amount;
-                console.log(updated_balance, current_balance, total_amount);
+
+                // Checks if user can make the purchase with its current balance.
                 if (updated_balance > 0 ) {
-                    changeBalance(user, updated_balance);
-                    this.global.user_details = userDetails(user);
-                    window.tfd.customer.view.update_vip_footer();
-                    this.controller.checkout_bar_or_table();
-                    window.tfd.modal.controller.hide();
+                    this.view.update_checkout_error(false);
+                    window.tfd.modal.controller.hide_error();
+                    changeBalance(user, updated_balance); //Updates the database temporarily
+                    this.global.user_details = userDetails(user); //Fetches new data
+
+                    window.tfd.customer.view.update_vip_footer(); //Updates the view, showing the new balance
+                    this.controller.checkout_bar_or_table(); //Removes the products from the order
+
+                    window.tfd.modal.controller.hide(); // Close the checkout windoow
                 } else {
                     console.log("Not sufficient funds");
                     window.tfd.modal.controller.show_error();
+                    this.view.update_checkout_error(true);
+                    //TODO: Change styling so that the user knows if an error has occurred.
                 }
+                
             }
         },
     },
