@@ -176,6 +176,7 @@ body.view-menu.subview-special-drinks #btn_special_drinks {
     color: var(--text-color-default);
 }
 
+
 body.view-menu #btn_menu, body.view-order #btn_order {
     background-color: var(--background-color-body);
     border-color: var(--border-color-dark);
@@ -201,6 +202,25 @@ body.view-menu #btn_menu, body.view-order #btn_order {
 
 #special_drink_container.show-code #special_drink_code {
     display: flex;
+}
+
+.error button.brand,
+.error button.brand:focus,
+.error button.brand:active {
+    border: solid 3px var(--error-color);
+    color: var(--error-color-light);
+}
+
+span.error_message {
+    display: none;
+    text-align: center;
+    color: var(--error-color-light);
+}
+
+span.error_message.show {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--spacing);
 }
 
 @media screen and (max-width: 1050px) {

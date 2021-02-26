@@ -241,7 +241,7 @@
             </div>
 
             <div class="modal-content">
-                <button class="gray fill-width margin-bottom">
+                <button class="gray fill-width margin-bottom" onclick="window.tfd.order.controller.checkout_bar_or_table()">
                   <span id="checkout_pay_at_table_label"></span>
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -250,14 +250,14 @@
                       />
                   </svg>
               </button>
-                <button class="extra-light fill-width">
+                <button class="extra-light fill-width" onclick="window.tfd.order.controller.checkout_bar_or_table()">
                   <span id="checkout_pay_at_bar_label"></span>
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
               </button>
                 <div class="box separator-top padding-top margin-top" id="checkout_vip_actions">
-                    <button class="brand fill-width">
+                    <button class="brand fill-width" onclick="window.tfd.order.controller.checkout_balance()">
                       <span id="checkout_pay_with_credit_label"></span>
                       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -266,6 +266,7 @@
                           />
                       </svg>
                   </button>
+                  <span id="insufficient" class="error_message"></span>
                 </div>
             </div>
         </div>
