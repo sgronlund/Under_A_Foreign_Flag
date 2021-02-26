@@ -73,7 +73,7 @@ window.tfd.add_module('staff', {
     // DOCUMENT READY EVENT
     //
     ready: function() {
-        this.trigger('render_products');
+        this.trigger('render_products'); // TODO: fix so this renders in a better way?
         this.trigger('render_tables');
     },
 
