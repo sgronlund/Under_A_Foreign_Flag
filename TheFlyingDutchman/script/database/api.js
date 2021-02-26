@@ -126,9 +126,6 @@ function get_beverage_type(category_string) {
 function load_drinks(data) {
     // Using a local variable to collect the items.
     const collector = {};
-
-<<<<<<< HEAD
-<<<<<<< HEAD
     // The DB is stored in the variable DB2, with "spirits" as key element. If you need to select only certain
     // items, you may introduce filter functions in the loop... see the template within comments.
     //
@@ -167,19 +164,9 @@ function load_drinks(data) {
 
             // Indicates if a product is only for VIP guests
             vip: product.vip == true,
-        };
-=======
-=======
->>>>>>> 52d29eccbc779b0c788a21e2bb0175bafb6b4ad8
-    // Passes to products to the filter function which formats them correctly
-    for (let i = 0; i < DB2.spirits.length; i++) {
-        const product = DB2.spirits[i];
-        collector[product.nr] = filter(product);
-<<<<<<< HEAD
->>>>>>> Added some more backend functions to filter, rewrote older ones
-=======
->>>>>>> 52d29eccbc779b0c788a21e2bb0175bafb6b4ad8
-    }
+        }
+    };
+
 
     return collector;
 }
