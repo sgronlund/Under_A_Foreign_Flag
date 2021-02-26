@@ -295,19 +295,16 @@
                 <button class="modal-close modal-event-hide" type="button">&#10799;</button>
             </div>
 
-            <div class="modal-content">
+            <div class="modal-content" id="special_drink_container">
                 <label id="special_drink_product_label"></label>
                 <div class="box row space-between v-center fill-width">
                     <p id="special_drink_product_name" class="bold"></p>
                     <p id="special_drink_product_price" class="product-price"></p>
                 </div>
-                <p id="special_drink_info">
-                    The product price will be deducted from your current balance.
-                    After confirmation, you will receieve a unique code that can be used to fetch
-                    your drink.
-                </p>
-                <div class="box row separator-top padding-top margin-top">
-                    <button class="brand fill">
+                <p id="special_drink_info"></p>
+                <p id="special_drink_code" class="box row center padding margin-top-lg"></p>
+                <div class="box row separator-top padding-top margin-top" id="special_drink_confirm">
+                    <button class="brand fill" onclick="window.tfd.vip.controller.confirm_special_drink()">
                         <span id="btn_special_drink_label"></span>
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
