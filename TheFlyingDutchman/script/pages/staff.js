@@ -3,8 +3,10 @@ window.tfd.add_module('staff', {
     // MODEL
     //
     model: {
+        selected_table: null,
         ids: {
             container: '#tables_view',
+            modal_content: '#order_modal_content',
         },
         tables: DB_tables.tables,
     },
@@ -13,19 +15,7 @@ window.tfd.add_module('staff', {
     // VIEW
     //
     view: {
-        create_table: function (table_number) {
-            return (`
-                <div id="table_${table_number}" class="box center" onclick="window.tfd.staff.view.view_order(${table_number});">
-                    <div class="table_item">
-                        <p>
-                            ${table_number}
-                        </p>
-                    </div>
-                </div>
-            `);
-        },
-
-        update_tables: function () {
+        update_tables: function() {
             const container = $(this.model.ids.container);
 
             let html = '';
@@ -39,37 +29,47 @@ window.tfd.add_module('staff', {
             container.append(html);
         },
 
-        view_order: function (table_number) {
-            let order_view = $(".table_order_view");
+        update_order_modal: function() {
+            const order_details = this.view.create_order_details();
 
-
-            if (order_view.css("display") === "none") {
-                let order = $(".table_order");
-                let html = this.view.get_order(table_number);
-
-                order.html(html);
-                order_view.css("display", "initial");
-            } else {
-                order_view.css("display", "none");
-            }
+            $(this.model.ids.modal_content).html(order_details);
         },
-        // ligger antagligen på fel ställe
-        get_order: function (table_number) {
+
+        create_order_details: function() {
             // TODO: make this work as it should
             return (`
-                <div>
-                    <p>
-                        test item ${table_number}
-                    </p>
+                <p>test item ${this.model.selected_table}</p>
+            `);
+        },
+
+        create_table: function (table_number) {
+            return (`
+                <div id="table_${table_number}" class="box center" onclick="window.tfd.staff.controller.show_order(${table_number})">
+                    <div class="table_item">
+                        <p>
+                            ${table_number}
+                        </p>
+                    </div>
                 </div>
             `);
-        }
+        },
     },
 
     // =====================================================================================================
     // CONTROLLER
     //
-    controller: {},
+    controller: {
+        show_order: function(table_number) {
+            // Update model with the selected table number
+            this.model.selected_table = table_number;
+
+            // Update the modal content
+            this.view.update_order_modal();
+
+            // Show order modal
+            window.tfd.modal.controller.show_order();
+        },
+    },
 
     // =====================================================================================================
     // DOCUMENT READY EVENT

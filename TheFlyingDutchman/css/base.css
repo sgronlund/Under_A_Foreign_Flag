@@ -61,6 +61,7 @@
     --footer-z-index: 9;
     --lang-button-z-index: 11;
     --theme-button-z-index: 11;
+    --security-button-z-index: 11;
 }
 
 :root body.dark{

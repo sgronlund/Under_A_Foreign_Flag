@@ -1,6 +1,10 @@
 /* Import base styles */
 @import url('base.css');
 
+#security_button {
+    z-index: var(--security-button-z-index);
+}
+
 #menu .product {
     margin-bottom: var(--spacing);
 }
@@ -50,4 +54,11 @@
     position: absolute;
     top: 0;
     left: 0;
+}
+
+body.view-menu #btn_menu,
+body.view-orders #btn_orders,
+body.view-inventory #btn_inventory {
+    background-color: var(--background-color-body);
+    border-color: var(--border-color-dark);
 }

@@ -91,7 +91,8 @@ body.view-menu.subview-special-drinks #btn_special_drinks {
     color: var(--text-color-default);
 }
 
-body.view-menu #btn_menu, body.view-order #btn_order {
+body.view-menu #btn_menu,
+body.view-order #btn_order {
     background-color: var(--background-color-body);
     border-color: var(--border-color-dark);
 }
