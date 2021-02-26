@@ -66,6 +66,28 @@
         </div>
     </header>
 
+    <section id="header_nav" class="container-wrapper text-white">
+        <!--HEADER SUBNAV FOR MENU VIEW-->
+        <div class="container" id="header_nav_menu">
+            <section class="sub-header box row v-center space-between">
+                <div class="box row v-center fill fill-height">
+                    <button id="security_button" class="margin-right">security_button</button>
+                </div>
+                <div class="box row v-center fill-height">
+                    <button id="btn_filter" class="brand no-radius fill-height" onclick="window.tfd.modal.controller.show_filter()">
+                        <span id="btn_filter_text"></span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6
+                                     6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                            />
+                        </svg>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </section>
+
     <main>
         <!-- TABLE VIEW -->
         <div id="tables_view" class="padding">
