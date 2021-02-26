@@ -79,16 +79,39 @@ window.tfd.add_module('vip', {
             window.tfd.modal.controller.show_special_drink();
         },
 
+        
+
         confirm_special_drink: function() {
             if (!this.model.selected_drink) {
                 console.error('Could not confirm special drink selection - no selected drink');
                 return;
             }
 
-            // TODO: Update balance
-            // TODO: Decrease stock
-            this.controller.generate_special_drink_code();
+            const price = this.model.selected_drink.prisinklmoms;
+
+            if (this.controller.update_balance(price)) {
+                this.controller.generate_special_drink_code();
+                // TODO: Decrease stock
+            };
         },
+
+        update_balance: function(price) {
+            const current_balance = this.global.user_details.creditSEK;
+            const updated_balance = current_balance - price;
+            if (updated_balance < 0) {
+                return false;;
+            }
+            else {
+                changeBalance(this.global.user_details.username, updated_balance); //Updates the database temporarily
+                this.global.user_details = userDetails(this.global.user_details.username); //Fetches new data
+
+                this.view.update_footer(); //Updates the view, showing the new balance
+                return true;
+            }
+            
+        },
+
+       
     },
 
     // =====================================================================================================
