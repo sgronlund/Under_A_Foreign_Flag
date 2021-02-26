@@ -3,21 +3,41 @@ window.tfd.add_module('staff', {
     // MODEL
     //
     model: {
-        current_view: 'menu',
         ids: {
-            user_name: '#welcome_name',
-            user_credit: '#vip_credit',
+            container: '#tables_view',
         },
-        classes: {
-            view_menu: 'view-menu',
-            view_order: 'view-order',
-        },
+        tables: DB_tables.tables,
     },
 
     // =====================================================================================================
     // VIEW
     //
-    view: {},
+    view: {
+        create_table: function (table_number) {
+            return (`
+                <div id="table_1" class="table_item padding">
+                    <p>
+                        ${table_number}
+                    </p>
+                    <div class="table_order"></div>
+                </div>
+            `);
+        },
+
+        update_tables: function () {
+            const container = $(this.model.ids.container);
+
+            let html = '';
+            const num_tables = $(this.model.tables.num_tables);
+            const start_number = $(this.model.tables.table_numbering_start);
+
+            for (let i = 0; i < num_tables[0]; i++) {
+                html += this.view.create_table(start_number[0] + i);
+            }
+
+            container.html(html);
+        },
+    },
 
     // =====================================================================================================
     // CONTROLLER
@@ -29,18 +49,22 @@ window.tfd.add_module('staff', {
     //
     ready: function() {
         this.trigger('render_products');
+        this.trigger('render_tables');
     },
 
     // =====================================================================================================
     // MODULE LOAD
     //
     init: function() {
-        // Load products into global state
         this.global.products = allBeverages();
     },
 
     // =====================================================================================================
     // CUSTOM SIGNAL HANDLERS
     //
-    signal: {},
+    signal: {
+        render_tables: function() {
+            this.view.update_tables();
+        },
+    },
 });

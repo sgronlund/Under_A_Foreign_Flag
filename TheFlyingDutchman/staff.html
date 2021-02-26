@@ -15,6 +15,7 @@
     <script type="text/javascript" src="script/database/api.js"></script>
     <script type="text/javascript" src="script/database/users.js"></script>
     <script type="text/javascript" src="script/database/beverages.js"></script>
+    <script type="text/javascript" src="script/database/tables.js"></script>
 
     <!-- MVC HANDLER -->
     <script type="text/javascript" src="script/main.js"></script>
@@ -36,7 +37,7 @@
     <script type="text/javascript" src="script/i18n/product.js"></script>
 
     <!-- CURRENT PAGE -->
-    <script type="text/javascript" src="script/pages/staff.js"></script>
+    <script type="text/javascript" src="script/pages/staff.js?<?php echo date('l jS \of F Y h:i:s A'); ?>"></script>
     <link href="css/staff.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -68,13 +69,6 @@
     <main>
         <!-- TABLE VIEW -->
         <div id="tables_view" class="padding">
-            <div id="table_1" class="table_item padding" onclick="show_order">
-
-                <p>
-                    table name
-                </p>
-                <div class="table_order"></div>
-            </div>
 
         </div>
 
