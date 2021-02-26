@@ -282,7 +282,27 @@
             </div>
 
             <div class="modal-content">
-                Filtering
+                    <li>
+                        <input type="checkbox" id="gluten">
+                        <label for="gluten">Gluten</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="koscher">
+                        <label for="koscher">Koscher</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="tannins">
+                        <label for="tannins">Tannins</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="alcfree">
+                        <label for="alfree">Non-alcoholic drinks</label>
+                    </li>
+                    <button id="filter" type="button" onclick="window.tfd.product.controller.filter(true)">
+                    <label for="filter">Filter</label>
+                    <button id="filter_restore" type="button" onclick="window.tfd.product.controller.filter(false)">
+                    <label for="filter_restore">Restore filter</label>
+                </form>
             </div>
         </div>
     </div>

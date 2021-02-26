@@ -8,6 +8,12 @@ window.tfd.add_module('product', {
             container_special: '#special_drinks',
             total_products: '#total_products_count',
         },
+        checkbox_ids: {
+            gluten: '#gluten',
+            koscher: '#koscher',
+            tannins: '#tannins',
+            alcfree: '#alcfree',
+        },
     },
 
     // =====================================================================================================
@@ -163,6 +169,25 @@ window.tfd.add_module('product', {
 
         decrease_quantity: function(id) {
             this.controller.change_quantity(id, -1);
+        },
+        filter: function(restore) {
+            //const old = this.global.drinks;
+            if (restore) {
+                for(const key of Object.keys(this.model.checkbox_ids)) {
+                    if (document.getElementById(key).checked) {
+                        this.view.update_products(this.model.ids.container, {});
+                        //FIXME: Horrible solution, need to redo this.
+                        if (key === "koscher") this.view.update_products(this.model.ids.container, filterKosher(DRINKS));
+                        if (key === "gluten") this.view.update_products(this.model.ids.container, filterGluten(DRINKS));
+                        if (key === "tannins") this.view.update_products(this.model.ids.container, filterTannins(DRINKS));
+                        if (key === "alcfree") this.view.update_products(this.model.ids.container, filterAlcoholFree(DRINKS));
+                    }
+                } 
+            } else {
+                console.log(this.global.drinks);
+                this.view.update_products(this.model.ids.container, this.global.drinks);
+            }
+            window.tfd.modal.controller.hide(); //Closes filter window
         },
     },
 
