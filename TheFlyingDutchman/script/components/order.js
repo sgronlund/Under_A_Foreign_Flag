@@ -32,6 +32,7 @@ window.tfd.add_module('order', {
         },
 
         update_checkout_error: function(show) {
+            // Displays text for insufficient funds
             if (show) {
                 $(this.model.ids.insufficient_funds).addClass('show')
             } else {
@@ -241,8 +242,11 @@ window.tfd.add_module('order', {
         // TODO: discuss design, whether this should be one or two functions
         checkout_bar_or_table: function() {
             if (this.model.total_price > 0) {
+                // Hide any previous display of errors
                 this.view.update_checkout_error(false);
                 window.tfd.modal.controller.hide_error();
+
+                // Iterate and remove all items from order, "simulating" paying for the items to a staff member.
                 var items = this.model.items;
                 for (const key of Object.keys(items)) {
                     this.controller.remove(key);
@@ -253,13 +257,10 @@ window.tfd.add_module('order', {
             }
         },
 
-        /*
-         * 
-         * 
-         */
         checkout_balance: function() {
-            const total_amount = this.model.total_price;
-            if (this.global.logged_in && total_amount > 0) {
+            const total_amount = this.model.total_price; 
+            if (this.global.logged_in && total_amount > 0) { //Checks if user is logged in and we have items to checkout
+
                 // Get users details
                 const user = this.global.user_details.username;
                 const details = this.global.user_details;
@@ -270,8 +271,10 @@ window.tfd.add_module('order', {
 
                 // Checks if user can make the purchase with its current balance.
                 if (updated_balance > 0 ) {
+                    //Hides previous display of errors
                     this.view.update_checkout_error(false);
                     window.tfd.modal.controller.hide_error();
+
                     changeBalance(user, updated_balance); //Updates the database temporarily
                     this.global.user_details = userDetails(user); //Fetches new data
 
@@ -281,9 +284,10 @@ window.tfd.add_module('order', {
                     window.tfd.modal.controller.hide(); // Close the checkout windoow
                 } else {
                     console.log("Not sufficient funds");
+
+                    // Style elements to tell user this action was not allowed.
                     window.tfd.modal.controller.show_error();
                     this.view.update_checkout_error(true);
-                    //TODO: Change styling so that the user knows if an error has occurred.
                 }
                 
             }
