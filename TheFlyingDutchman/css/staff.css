@@ -84,12 +84,8 @@ main {
     position: absolute;
     top: 0;
     left: 0;
-
-    /* SIZE */
-
-    /* STYLE */
 }
-
+/*
 .order_header{
     width: 100%;
     display: flex;
@@ -98,3 +94,4 @@ main {
     justify-content: space-between;
     align-items: center;
 }
+*/
