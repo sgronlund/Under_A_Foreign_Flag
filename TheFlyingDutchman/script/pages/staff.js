@@ -15,11 +15,10 @@ window.tfd.add_module('staff', {
     view: {
         create_table: function (table_number) {
             return (`
-                <div id="table_1" class="table_item padding">
+                <div id="table_${table_number}" class="table_item padding" onclick="window.tfd.staff.view.view_order(${table_number});">
                     <p>
                         ${table_number}
                     </p>
-                    <div class="table_order"></div>
                 </div>
             `);
         },
@@ -35,8 +34,34 @@ window.tfd.add_module('staff', {
                 html += this.view.create_table(start_number[0] + i);
             }
 
-            container.html(html);
+            container.append(html);
         },
+
+        view_order: function (table_number) {
+            let order_view = $(".table_order_view");
+
+
+            if (order_view.css("display") === "none") {
+                let order = $(".table_order");
+                let html = this.view.get_order(table_number);
+
+                order.html(html);
+                order_view.css("display", "initial");
+            } else {
+                order_view.css("display", "none");
+            }
+        },
+        // ligger antagligen på fel ställe
+        get_order: function (table_number) {
+            // TODO: make this work as it should
+            return (`
+                <div>
+                    <p>
+                        test item ${table_number}
+                    </p>
+                </div>
+            `);
+        }
     },
 
     // =====================================================================================================
