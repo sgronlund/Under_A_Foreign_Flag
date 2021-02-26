@@ -73,7 +73,7 @@ function changeBalance(username, newAmount) {
     for (let i = 0; i < DB.account.length; i++) {
         if (DB.account[i].user_id == userID) {
             // Convert 'newAmount' to a string to match the database type
-            DB.account[i].creditSEK = newAmount.toString();   // This changes the value in the JSON object.
+            DB.account[i].creditSEK = newAmount;   // This changes the value in the JSON object.
         };
     };
 }

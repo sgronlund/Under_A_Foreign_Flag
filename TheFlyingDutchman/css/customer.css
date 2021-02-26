@@ -168,9 +168,27 @@ body.view-order #order {
     color: var(--text-color-default);
 }
 
+
 body.view-menu #btn_menu, body.view-order #btn_order {
     background-color: var(--background-color-body);
     border-color: var(--border-color-dark);
+}
+
+.error button.brand:focus, .error button.brand:active, .error button.brand {
+    border: solid 3px var(--error-color);
+    color: var(--error-color-light);
+}
+
+span.error_message {
+    display: none;
+    text-align: center;
+    color: var(--error-color-light);
+}
+
+span.error_message.show {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--spacing);
 }
 
 @media screen and (max-width: 1050px) {
