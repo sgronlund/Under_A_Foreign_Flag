@@ -85,6 +85,16 @@ body {
     min-width: var(--content-min-width);
 }
 
+.nav-header {
+    width: 100%;
+    background-color: var(--background-color);
+    box-shadow: var(--box-shadow-header);
+}
+
+.sub-header {
+    height: var(--sub-header-height);
+}
+
 /* BUTTONS */
 button {
     height: var(--button-height);

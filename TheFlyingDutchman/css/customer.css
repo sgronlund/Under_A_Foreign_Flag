@@ -6,14 +6,7 @@ header {
     background-color: var(--background-color);
 }
 
-.sub-header {
-    height: var(--sub-header-height);
-}
-
 #header_nav {
-    width: 100%;
-    background-color: var(--background-color);
-    box-shadow: var(--box-shadow-header);
     position: sticky;
     top: 0;
 }

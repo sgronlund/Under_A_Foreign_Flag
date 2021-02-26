@@ -81,7 +81,8 @@ window.tfd.add_module('staff', {
     // MODULE LOAD
     //
     init: function() {
-        this.global.products = allBeverages();
+        this.global.drinks = load_drinks(DRINKS);
+        this.global.special_drinks = load_drinks(SPECIAL_DRINKS);
     },
 
     // =====================================================================================================
