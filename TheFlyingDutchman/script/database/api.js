@@ -172,24 +172,36 @@ function allBeverages() {
 // Returns a list of objects containing the name and category of each beverage in the database with
 // a alcohol percentage higher than the given strength.
 //
-function allStrongBeverages(strength) {
+function filterBasedOnStrength(strength) {
     // Using a local variable to collect the items.
     //
     const collector = [];
-
+    
     // The DB is stored in the variable DB2, with "spirits" as key element. If you need to select only certain
     // items, you may introduce filter functions in the loop... see the template within comments.
     //
     for (let i = 0; i < DB2.spirits.length; i++) {
-
+        const product = DB2.spirits[i]
         // We check if the percentage alcohol strength stored in the data base is lower than the
         // given limit strength. If the limit is set to 14, also liqueuers are listed.
         //
-        if (percentToNumber(DB2.spirits[i].alkoholhalt) > strength) {
-
+        if (percentToNumber(product.alkoholhalt) < strength) {
+            console.log(product.namn);
             // The key for the beverage name is "namn", and beverage type is "varugrupp".
             //
-            collector.push({ namn: DB2.spirits[i].namn, varugrupp: DB2.spirits[i].varugrupp });
+            const description = {
+                forpackning: get_beverage_description_string(product.forpackning),
+                producent: get_beverage_description_string(product.producent),
+                alkoholhalt: get_beverage_description_string(product.alkoholhalt),
+            };
+
+            collector[product.nr] = {
+                nr: product.nr,
+                namn: product.namn,
+                prisinklmoms: parseFloat(product.prisinklmoms), // Convert to float
+                description,
+            };
+
         };
     };
 
