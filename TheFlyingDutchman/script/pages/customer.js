@@ -81,15 +81,6 @@ window.tfd.add_module('customer', {
     },
 
     // =====================================================================================================
-    // MODULE LOAD
-    //
-    init: function() {
-        // Load products into global state
-        this.global.drinks = load_drinks(DRINKS);
-        this.global.special_drinks = load_drinks(SPECIAL_DRINKS)
-    },
-
-    // =====================================================================================================
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {

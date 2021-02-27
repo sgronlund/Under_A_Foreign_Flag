@@ -2,12 +2,9 @@ window.tfd = {
     // =====================================================================================================
     // PUBLIC FIELDS
     //
-    // Contains model state that is shared between modules
-    global: {
-        logged_in: false,
-        user_details: null,
-        products: null,
-    },
+    // Contains model state that is shared between modules.
+    // Modules can make use of this by specifying the 'global' key in their module, similiar to the regular model.
+    global: {},
 
     // =====================================================================================================
     // PUBLIC FUNCTIONS
@@ -22,14 +19,6 @@ window.tfd = {
         if (!name) {
             console.error('Name of module can not be undefined/null!');
             return;
-        }
-
-        if (
-            !module.hasOwnProperty('model') ||
-            !module.hasOwnProperty('view') ||
-            !module.hasOwnProperty('controller')
-        ) {
-            console.error('The module must contain model, view and controller object keys!');
         }
 
         if (this.hasOwnProperty(name)) {
@@ -53,14 +42,25 @@ window.tfd = {
 
         const context = this[name];
 
-        // Go through each defined controller function
-        for (const fn_name of Object.keys(module.controller)) {
-            this[name].controller[fn_name] = module.controller[fn_name].bind(context);
+        if (module.hasOwnProperty('controller')) {
+            // Go through each defined controller function
+            for (const fn_name of Object.keys(module.controller)) {
+                this[name].controller[fn_name] = module.controller[fn_name].bind(context);
+            }
         }
 
-        // Go through each defined view function
-        for (const fn_name of Object.keys(module.view)) {
-            this[name].view[fn_name] = module.view[fn_name].bind(context);
+        if (module.hasOwnProperty('view')) {
+            // Go through each defined view function
+            for (const fn_name of Object.keys(module.view)) {
+                this[name].view[fn_name] = module.view[fn_name].bind(context);
+            }
+        }
+
+        // Check if module has registered a global model
+        if (module.hasOwnProperty('global')) {
+            // Assign the global model to the global model state,
+            // overwriting any existing values.
+            Object.assign(this.global, module.global);
         }
 
         // Check if the module has registered a document ready event handler
