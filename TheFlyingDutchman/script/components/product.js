@@ -14,21 +14,15 @@ window.tfd.add_module('product', {
     // VIEW
     //
     view: {
-        update_products: function(container_id, products) {
+        update_products: function(container_id, products, vip) {
             const container = $(container_id);
             const total_products = $(this.model.ids.total_products);
 
             let html = "";
             let total = 0;
 
-            // TODO: This completely fucks the performance
-            for (const product of Object.values(products)) {
-                // FIXME: Temporary performance fix
-                if (total == 50) {
-                    break;
-                }
-
-                html += this.view.create_product(product);
+            for (const product_id of products) {
+                html += this.view.create_product(this.global.drinks[product_id], vip);
                 total++;
             }
 
@@ -48,10 +42,10 @@ window.tfd.add_module('product', {
             $("[data-quantity-id='" + id + "']").val(1);
         },
 
-        create_product: function(product) {
+        create_product: function(product, vip) {
             const { namn, prisinklmoms } = product;
             const description = this.view.create_product_description(product);
-            const actions = this.view.create_product_actions(product);
+            const actions = this.view.create_product_actions(product, vip);
 
             return (`
                 <article class="product card box">
@@ -69,9 +63,12 @@ window.tfd.add_module('product', {
             `);
         },
 
-        create_product_actions: function(product) {
-            const { nr, vip } = product;
+        create_product_actions: function(product, vip) {
+            const { nr } = product;
 
+            // Products on the special menu is not added to an order like other products.
+            // They will be simply be removed from inventory when selected, and you may only
+            // purchase one at a time.
             if (vip) {
                 return (`
                     <button class="extra-light small fill-width" onclick="window.tfd.vip.controller.select_special_drink(${nr})">
@@ -170,19 +167,17 @@ window.tfd.add_module('product', {
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {
-        // Render the default drinks list
-        render_products: function() {
+        menus_updated: function() {
             this.view.update_products(
                 this.model.ids.container,
-                this.global.drinks,
+                this.global.menu,
+                false,
             );
-        },
 
-        // Render the VIP drinks list
-        render_special_products: function() {
             this.view.update_products(
                 this.model.ids.container_special,
-                this.global.special_drinks,
+                this.global.special_menu,
+                true,
             );
         },
     },

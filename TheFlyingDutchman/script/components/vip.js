@@ -74,12 +74,10 @@ window.tfd.add_module('vip', {
         select_special_drink: function(id) {
             // Reset generated code
             this.model.generated_code = null;
-            this.model.selected_drink = this.global.special_drinks[id];
+            this.model.selected_drink = this.global.drinks[id];
             this.view.update_special_drink_modal();
             window.tfd.modal.controller.show_special_drink();
         },
-
-        
 
         confirm_special_drink: function() {
             if (!this.model.selected_drink) {
@@ -108,10 +106,10 @@ window.tfd.add_module('vip', {
                 this.view.update_footer(); //Updates the view, showing the new balance
                 return true;
             }
-            
+
         },
 
-       
+
     },
 
     // =====================================================================================================
@@ -119,7 +117,6 @@ window.tfd.add_module('vip', {
     //
     signal: {
         login: function() {
-            this.trigger('render_special_products');
             this.view.update_footer();
         },
 
