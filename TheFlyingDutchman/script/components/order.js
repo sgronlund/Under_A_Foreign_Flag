@@ -9,16 +9,20 @@ window.tfd.add_module('order', {
             total_items: 0,
             total_price: 0,
         },
-        ids: {
-            container: '#order',
-            total_items: '#btn_order_count',
-            total_amount: '#order_total_amount',
-            total_items_header: '#order_total_products_count',
-            insufficient_funds: '#insufficient',
-        },
         body_classes: {
             order_empty: 'order-empty',
         },
+    },
+
+    // =====================================================================================================
+    // DOM ELEMENTS
+    //
+    element: {
+        container: '#order',
+        total_items: '#btn_order_count',
+        total_amount: '#order_total_amount',
+        total_items_header: '#order_total_products_count',
+        insufficient_funds: '#insufficient',
     },
 
     // =====================================================================================================
@@ -37,18 +41,17 @@ window.tfd.add_module('order', {
         update_checkout_error: function(show) {
             // Displays text for insufficient funds
             if (show) {
-                $(this.model.ids.insufficient_funds).addClass('show')
+                this.element.insufficient_funds.addClass('show')
             } else {
-                $(this.model.ids.insufficient_funds).removeClass('show');
+                this.element.insufficient_funds.removeClass('show');
             }
         },
 
         update_order: function() {
-            const container = $(this.model.ids.container);
             let html = "";
 
             if (this.model.order.total_items === 0) {
-                container.html('');
+                this.element.container.html('');
                 return;
             }
 
@@ -56,14 +59,14 @@ window.tfd.add_module('order', {
                 html += this.view.create_order_item(item);
             }
 
-            container.html(html);
+            this.element.container.html(html);
             window.tfd.localization.view.update_localization_component('product');
         },
 
         update_order_details: function() {
-            const total_items = $(this.model.ids.total_items);
-            const total_amount = $(this.model.ids.total_amount);
-            const total_items_header = $(this.model.ids.total_items_header);
+            const total_items = this.element.total_items;
+            const total_amount = this.element.total_amount;
+            const total_items_header = this.element.total_items_header;
 
             if (this.model.order.total_items === 0) {
                 total_amount.text('0 SEK');

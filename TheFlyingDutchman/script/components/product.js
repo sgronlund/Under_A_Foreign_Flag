@@ -4,21 +4,22 @@ window.tfd.add_module('product', {
     //
     model: {
         max_quantity: 10,
-        ids: {
-            container: '#menu',
-            container_special: '#special_drinks',
-            total_products: '#total_products_count',
-        },
+    },
+
+    // =====================================================================================================
+    // DOM ELEMENTS
+    //
+    element: {
+        container: '#menu',
+        container_special: '#special_drinks',
+        total_products: '#total_products_count',
     },
 
     // =====================================================================================================
     // VIEW
     //
     view: {
-        update_products: function(container_id, products, vip) {
-            const container = $(container_id);
-            const total_products = $(this.model.ids.total_products);
-
+        update_products: function(container, products, vip) {
             let html = "";
             let total = 0;
 
@@ -28,7 +29,7 @@ window.tfd.add_module('product', {
             }
 
             container.html(html);
-            total_products.text(total);
+            this.element.total_products.text(total);
 
             // Reapply the localization data for the current component (and only the current component).
             // It is unnecessary to reapply all localization data.
@@ -184,13 +185,13 @@ window.tfd.add_module('product', {
     signal: {
         menus_updated: function() {
             this.view.update_products(
-                this.model.ids.container,
+                this.element.container,
                 this.global.menu,
                 false,
             );
 
             this.view.update_products(
-                this.model.ids.container_special,
+                this.element.container_special,
                 this.global.special_menu,
                 true,
             );

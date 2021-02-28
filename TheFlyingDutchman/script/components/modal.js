@@ -3,14 +3,9 @@ window.tfd.add_module('modal', {
     // MODEL
     //
     model: {
+        previous_modal: null,
         current_modal: null,
         has_error: false,
-        ids: {
-            login_modal: '#login_modal',
-            filter_modal: '#filter_modal',
-            checkout_modal: '#checkout_modal',
-            special_drink_modal: '#special_drink_modal',
-        },
         classes: {
             show: 'show',
             error: 'error',
@@ -18,23 +13,28 @@ window.tfd.add_module('modal', {
     },
 
     // =====================================================================================================
+    // DOM ELEMENTS
+    //
+    element: {
+        login_modal: '#login_modal',
+        filter_modal: '#filter_modal',
+        checkout_modal: '#checkout_modal',
+        special_drink_modal: '#special_drink_modal',
+    },
+
+    // =====================================================================================================
     // VIEW
     //
     view: {
         update_current_modal: function() {
-            if (!this.model.current_modal) {
-                // Hide all modals
-                // TODO: Probably not the best solution but it works
-                $(this.model.ids.login_modal).removeClass(this.model.classes.show);
-                $(this.model.ids.filter_modal).removeClass(this.model.classes.show);
-                $(this.model.ids.checkout_modal).removeClass(this.model.classes.show);
-                $(this.model.ids.special_drink_modal).removeClass(this.model.classes.show);
-
-                return;
+            if (this.model.previous_modal) {
+                this.model.previous_modal.removeClass(this.model.classes.show);
             }
 
             // Show the selected modal
-            $(this.model.current_modal).addClass(this.model.classes.show);
+            if (this.model.current_modal) {
+                this.model.current_modal.addClass(this.model.classes.show);
+            }
         },
 
         update_current_modal_error: function() {
@@ -44,11 +44,11 @@ window.tfd.add_module('modal', {
             }
 
             if (!this.model.has_error) {
-                $(this.model.current_modal).removeClass(this.model.classes.error);
+                this.model.current_modal.removeClass(this.model.classes.error);
                 return;
             }
 
-            $(this.model.current_modal).addClass(this.model.classes.error);
+            this.model.current_modal.addClass(this.model.classes.error);
         },
     },
 
@@ -56,29 +56,30 @@ window.tfd.add_module('modal', {
     // CONTROLLER
     //
     controller: {
-        hide: function() {
-            this.model.current_modal = null;
+       show: function(new_modal) {
+            this.model.previous_modal = this.model.current_modal;
+            this.model.current_modal = new_modal;
             this.view.update_current_modal();
+        },
+
+        hide: function() {
+            this.controller.show(null);
         },
 
         show_login: function() {
-            this.model.current_modal = this.model.ids.login_modal;
-            this.view.update_current_modal();
+            this.controller.show(this.element.login_modal);
         },
 
         show_special_drink: function() {
-            this.model.current_modal = this.model.ids.special_drink_modal;
-            this.view.update_current_modal();
+            this.controller.show(this.element.special_drink_modal);
         },
 
         show_filter: function() {
-            this.model.current_modal = this.model.ids.filter_modal;
-            this.view.update_current_modal();
+            this.controller.show(this.element.filter_modal);
         },
 
         show_checkout: function() {
-            this.model.current_modal = this.model.ids.checkout_modal;
-            this.view.update_current_modal();
+            this.controller.show(this.element.checkout_modal);
         },
 
         show_error: function() {

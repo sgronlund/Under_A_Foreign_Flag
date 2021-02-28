@@ -11,17 +11,20 @@ window.tfd.add_module('login', {
     // MODEL
     //
     model: {
-        ids: {
-            modal: '#login_modal',
-            username: '#username',
-            password: '#password',
-        },
+        storage_key: 'user',
         classes: {
             logged_in: 'logged-in',
             error: 'error',
             show: 'show',
         },
-        storage_key: 'user',
+    },
+
+    // =====================================================================================================
+    // DOM ELEMENTS
+    //
+    element: {
+        username: '#username',
+        password: '#password',
     },
 
     // =====================================================================================================
@@ -37,8 +40,8 @@ window.tfd.add_module('login', {
         },
 
         reset_input_fields: function() {
-            $(this.model.ids.username).val('');
-            $(this.model.ids.password).val('');
+            this.element.username.val('');
+            this.element.password.val('');
         },
     },
 
@@ -47,8 +50,8 @@ window.tfd.add_module('login', {
     //
     controller: {
         login: function(redirect) {
-            const username_element = $(this.model.ids.username);
-            const password_element = $(this.model.ids.password);
+            const username_element = this.element.username;
+            const password_element = this.element.password;
 
             // Fetch details from database
             const details = userDetails(username_element.val());
