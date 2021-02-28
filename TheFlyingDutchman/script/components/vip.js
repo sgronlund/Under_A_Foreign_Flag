@@ -85,11 +85,13 @@ window.tfd.add_module('vip', {
                 return;
             }
 
-            const price = this.model.selected_drink.prisinklmoms;
+            const { nr, prisinklmoms } = this.model.selected_drink;
 
-            if (this.controller.update_balance(price)) {
+            if (this.controller.update_balance(prisinklmoms)) {
                 this.controller.generate_special_drink_code();
-                // TODO: Decrease stock
+
+                // Decrease stock of the selected drink
+                window.tfd.backend.controller.complete_special_drink_selection(nr);
             };
         },
 
@@ -108,8 +110,6 @@ window.tfd.add_module('vip', {
             }
 
         },
-
-
     },
 
     // =====================================================================================================

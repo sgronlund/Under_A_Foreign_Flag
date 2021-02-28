@@ -92,27 +92,44 @@ window.tfd.add_module('backend', {
             window.localStorage.setItem(this.model.storage_keys.next_order_id, this.model.next_order_id);
         },
 
+        update_stock_for_product: function(product_id, change) {
+            const inventory_item = this.global.inventory[product_id];
+
+            // Update the quantity in stock.
+            // For simplicity, we assume that orders are always valid
+            // and do not exceed the current stock of a product.
+            // This should be checked before a product is even added to the order.
+            //
+            // To make this function more generalized, we add the change in stock
+            // to the existing stock. This way we can both increase and decrease the
+            // stock by simply passing in the difference, e.g. -10.
+            inventory_item.stock += change;
+
+            // Item will no longer be available, so we must make sure to update the
+            // menu to reflect this.
+            if (inventory_item.stock <= 0) {
+                return true;
+            }
+
+            // Product is still in stock, return false to indicate that
+            // a menu update is not required for this product.
+            return false;
+        },
+
         update_inventory_for_order: function(order) {
             // We only have to update and re-render the menu iff
             // a product in the order has a stock of 0 after decreasing.
             let should_update_menus = false;
 
-            // TODO: Remove products from stock
             // Iterate and remove all items from order, "simulating" paying for the items to a staff member.
             for (const product_id of Object.keys(order.items)) {
                 const order_item = order.items[product_id];
-                const inventory_item = this.global.inventory[product_id];
 
-                // Update the quantity in stock.
-                // For simplicity, we assume that orders are always valid
-                // and do not exceed the current stock of a product.
+                // If any of the products in the order gets a stock of 0, 'should_update_menus' will
+                // be set to true.
                 //
-                // This should be checked before a product is even added to the order.
-                inventory_item.stock -= order_item.quantity;
-
-                // Item will no longer be available, so we must make sure to update the
-                // menu to reflect this.
-                if (inventory_item.stock <= 0) {
+                // We must make sure to multiply the quantity with -1 to decrease the stock.
+                if (this.controller.update_stock_for_product(product_id, (-1) * order_item.quantity)) {
                     should_update_menus = true;
                 }
             }
@@ -166,6 +183,13 @@ window.tfd.add_module('backend', {
 
             // Save the current state
             this.controller.save();
+        },
+
+        complete_special_drink_selection: function(product_id) {
+            // Check if the stock update causes the product to be out of stock
+            if (this.controller.update_stock_for_product(product_id, -1)) {
+                this.controller.update_menus();
+            }
         },
     },
 
