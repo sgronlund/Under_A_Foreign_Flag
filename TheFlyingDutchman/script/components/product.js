@@ -139,7 +139,7 @@ window.tfd.add_module('product', {
         },
 
         add_to_order: function(id) {
-            const quantity = this.controller.get_quantity(id);
+            let quantity = this.controller.get_quantity(id);
             const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
 
             if (quantity > this.model.max_quantity) {
