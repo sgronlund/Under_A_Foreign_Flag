@@ -282,27 +282,44 @@
             </div>
 
             <div class="modal-content">
-                    <li>
-                        <input type="checkbox" id="gluten">
+                <div class="box margin-bottom-lg">
+                    <div class="filter-item">
                         <label for="gluten">Gluten</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="koscher">
+                        <input type="checkbox" id="gluten">
+                    </div>
+
+                    <div class="filter-item">
                         <label for="koscher">Koscher</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="tannins">
+                        <input type="checkbox" id="koscher">
+                    </div>
+
+                    <div class="filter-item">
                         <label for="tannins">Tannins</label>
-                    </li>
-                    <li>
+                        <input type="checkbox" id="tannins">
+                    </div>
+
+                    <div class="filter-item">
+                        <label for="alfree" id="filter_non_alcoholic"></label>
                         <input type="checkbox" id="alcfree">
-                        <label for="alfree">Non-alcoholic drinks</label>
-                    </li>
-                    <button id="filter" type="button" onclick="window.tfd.product.controller.filter(true)">
-                    <label for="filter">Filter</label>
-                    <button id="filter_restore" type="button" onclick="window.tfd.product.controller.filter(false)">
-                    <label for="filter_restore">Restore filter</label>
-                </form>
+                    </div>
+                </div>
+                <div class="box row">
+                    <button id="filter_restore" class="gray fill margin-right" type="button" onclick="window.tfd.product.controller.filter(false)">
+                        <span id="btn_filter_restore_text"></span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5
+                                     7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                        </svg>
+                    </button>
+                    <button id="filter" class="extra-light fill" type="button" onclick="window.tfd.product.controller.filter(true)">
+                        <span id="btn_filter_apply_text"></span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
