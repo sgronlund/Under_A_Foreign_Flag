@@ -49,6 +49,28 @@ window.tfd.add_module('backend', {
             this.global.inventory = INVENTORY;
         },
 
+        save: function() {
+            // Save pending and completed orders
+            for (const key of Object.keys(this.model.storage_keys.order)) {
+                window.localStorage.setItem(key, JSON.stringify(this.global[key]));
+            }
+
+            // Save the next order id so that we do not create duplicate order id's after reload
+            window.localStorage.setItem(this.model.storage_keys.next_order_id, this.model.next_order_id);
+        },
+
+        get_stock_of_product: function(product_id) {
+            // Since orders that have been checked out decrease the stock of a product,
+            // we only have to check the available stock in the inventory.
+            if (!this.global.inventory.hasOwnProperty(product_id)) {
+                // No stock if the product does not exist
+                console.error(`Could not get stock of invalid product id: ${product_id}`);
+                return 0;
+            }
+
+            return this.global.inventory[product_id].stock;
+        },
+
         update_menus: function() {
             if (!this.global.inventory) {
                 console.error('Inventory database has not been loaded!');
@@ -80,16 +102,6 @@ window.tfd.add_module('backend', {
 
             // Trigger event so that other modules can re-render products
             this.trigger('menus_updated');
-        },
-
-        save: function() {
-            // Save pending and completed orders
-            for (const key of Object.keys(this.model.storage_keys.order)) {
-                window.localStorage.setItem(key, JSON.stringify(this.global[key]));
-            }
-
-            // Save the next order id so that we do not create duplicate order id's after reload
-            window.localStorage.setItem(this.model.storage_keys.next_order_id, this.model.next_order_id);
         },
 
         update_stock_for_product: function(product_id, change) {
@@ -159,6 +171,11 @@ window.tfd.add_module('backend', {
             // Increase the order id
             this.model.next_order_id += 1;
 
+            // Update the inventory by decreasing the stock for each product in the order.
+            // This is done before the order is completed since we do not want
+            // multiple orders to compete for the same stock.
+            this.controller.update_inventory_for_order(this.global.orders[order_id]);
+
             // Save the order
             this.controller.save();
 
@@ -174,9 +191,6 @@ window.tfd.add_module('backend', {
 
             // Mark order as complete
             this.global.completed_orders[order_id] = this.global.orders[order_id];
-
-            // Update the inventory by decreasing the stock for each product in the order
-            this.controller.update_inventory_for_order(this.global.orders[order_id]);
 
             // Remove the order from the pending orders list
             delete this.global.orders[order_id];

@@ -3,6 +3,7 @@ window.tfd.add_module('order', {
     // MODEL
     //
     model: {
+        max_order_items: 10,
         order: {
             items: {},
             total_items: 0,
@@ -140,25 +141,38 @@ window.tfd.add_module('order', {
 
             const product = this.global.drinks[id];
             const total = product.prisinklmoms * quantity;
+            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
 
-            if (this.model.order.total_items + quantity > 10) {
+            if (this.model.order.total_items + quantity > this.model.max_order_items) {
                 console.log('Could not add item to order - order is full');
                 return;
             }
 
-            this.model.order.total_price += total;
-            this.model.order.total_items += quantity;
-
             if (this.model.order.items.hasOwnProperty(id)) {
+                // Make sure that the total quantity in cart and new quantity is in stock
+                if (this.model.order.items[id].quantity + quantity > max_quantity) {
+                    console.log('Could not add product to order - exceeds available stock');
+                    return;
+                }
+
                 // If the item already exists in the order, simply update the quantity
                 this.model.order.items[id].total += total;
                 this.model.order.items[id].quantity += quantity;
 
                 console.log(`Updated quantity of ${id} in order to: ${quantity}`);
 
+                this.model.order.total_price += total;
+                this.model.order.total_items += quantity;
+
                 // Update the order item quantity only
                 this.view.update_item_quantity(id);
             } else {
+                // Make sure that there is enough stock of the product
+                if (quantity > max_quantity) {
+                    console.log('Could not add product to order - exceeds available stock');
+                    return;
+                }
+
                 // Add new item to order
                 this.model.order.items[id] = {
                     product_nr: product.nr,
@@ -167,6 +181,9 @@ window.tfd.add_module('order', {
                 };
 
                 console.log(`Added new product ${id} to order with quantity: ${quantity}`);
+
+                this.model.order.total_price += total;
+                this.model.order.total_items += quantity;
 
                 // Only reapply body classes and order items if we add new items
                 this.view.update_body();
@@ -209,8 +226,8 @@ window.tfd.add_module('order', {
             const product = this.global.drinks[item.product_nr];
 
             // Only allow a total of 10 items (and at least 1) in the order
-            if (this.model.order.total_items + change > 10 || item.quantity + change < 1) {
-                console.log('Could not change quantity - new total out of bounds (0 <= n <= 10)');
+            if (this.model.order.total_items + change > this.model.max_order_items || item.quantity + change < 1) {
+                console.log(`Could not change quantity - new total out of bounds (0 <= n <= ${this.model.max_order_items})`);
                 return;
             }
 

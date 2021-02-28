@@ -3,6 +3,7 @@ window.tfd.add_module('product', {
     // MODEL
     //
     model: {
+        max_quantity: 10,
         ids: {
             container: '#menu',
             container_special: '#special_drinks',
@@ -90,7 +91,7 @@ window.tfd.add_module('product', {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                         </svg>
                     </button>
-                    <input data-quantity-id="${nr}" class="product-quantity no-spinner" min="1" max="10" value="1" type="number"/>
+                    <input data-quantity-id="${nr}" class="product-quantity no-spinner" min="1" max="${this.model.max_quantity}" value="1" type="number"/>
                     <button class="gray small square no-icon-spacing" onclick="window.tfd.product.controller.increase_quantity(${nr})">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -139,14 +140,28 @@ window.tfd.add_module('product', {
 
         add_to_order: function(id) {
             const quantity = this.controller.get_quantity(id);
+            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
+
+            if (quantity > this.model.max_quantity) {
+                // Make sure that we stay below the max quantity of orders
+                console.warn(`Quantity of product exceeded the max quantity, changed to: ${this.model.max_quantity}`);
+                quantity = this.model.max_quantity;
+            } else if (quantity > max_quantity) {
+                // Make sure that we do not exceed the available stock.
+                // This might happen if the user manually changes the value of the input field.
+                console.warn(`Quantity of product exceeded the available stock, changed to: ${max_quantity}`);
+                quantity = max_quantity;
+            }
+
             this.trigger('add_to_order', id, quantity);
             this.view.reset_product_quantity(id);
         },
 
         change_quantity: function(id, change) {
             const new_quantity = this.controller.get_quantity(id) + change;
+            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
 
-            if (new_quantity < 1 || new_quantity > 10) {
+            if (new_quantity < 1 || new_quantity > max_quantity || new_quantity > this.model.max_quantity) {
                 console.log(`Could not update quantity of product to: ${new_quantity}`);
                 return;
             }
