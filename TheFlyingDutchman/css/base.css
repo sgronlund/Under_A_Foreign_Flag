@@ -95,6 +95,8 @@ header {
     width: 100%;
     background-color: var(--background-color);
     box-shadow: var(--box-shadow-header);
+    position: sticky;
+    top: 0;
 }
 
 .sub-header {
@@ -650,6 +652,14 @@ footer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-column-gap: var(--spacing-lg);
+}
+
+.item-grid {
+    padding-bottom: var(--footer-height-offset);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-row-gap: var(--spacing);
+    grid-column-gap: var(--spacing);
 }
 
 /* MENU */

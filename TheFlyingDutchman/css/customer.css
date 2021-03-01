@@ -1,11 +1,6 @@
 /* Import base styles */
 @import url('base.css');
 
-#header_nav {
-    position: sticky;
-    top: 0;
-}
-
 .product-count {
     color: var(--text-color-light);
     font-size: var(--font-size-sm);
@@ -26,11 +21,7 @@
 }
 
 #menu, #special_drinks, #order {
-    padding-bottom: var(--footer-height-offset);
     display: none;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-row-gap: var(--spacing);
-    grid-column-gap: var(--spacing);
 }
 
 #btn_order_count {

@@ -268,7 +268,7 @@ window.tfd.add_module('order', {
         // TODO: discuss design, whether this should be one or two functions
         checkout_bar_or_table: function() {
             // TODO: Add dynamic table id?
-            const table_id = 20;
+            const table_id = 1;
 
             if (!this.model.order.total_price > 0) {
                 console.error('Could not checkout - order is empty');

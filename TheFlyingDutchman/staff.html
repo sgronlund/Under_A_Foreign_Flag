@@ -38,6 +38,7 @@
     <script type="text/javascript" src="script/i18n/checkout.js"></script>
     <script type="text/javascript" src="script/i18n/product.js"></script>
     <script type="text/javascript" src="script/i18n/special_drink.js"></script>
+    <script type="text/javascript" src="script/i18n/staff.js"></script>
 
     <!-- CURRENT PAGE -->
     <script type="text/javascript" src="script/pages/staff.js"></script>
@@ -95,16 +96,30 @@
     </section>
 
     <main class="container-wrapper">
-        <div class="container box row">
+        <!--TABLE VIEW-->
+        <div class="container box row" id="table_view">
             <!-- TABLE VIEW -->
             <div id="tables_view" class="padding"></div>
-
+        </div>
+        
+        <!--ORDERS VIEW-->
+        <div class="container box row" id="orders_view">
+            <!--PENDING ORDERS -->
+            <section id="pending_orders" class="itme-grid box fill"></section>
+            
+            <!--COMPLETED ORDERS -->
+            <section id="completed_orders" class="item-grid box fill"></section>
+        </div>
+       
+       <!--INVENTORY VIEW-->
+        <div class="container box row" id="inventory_view">
+            <!--INVENTORY VIEW CONTENT-->
+        </div>
+        
+        <!--MENU VIEW-->
+        <div class="container box row margin-top" id="menu_view">
             <!--MENU VIEW CONTENT-->
-            <div id="menu_view" class="container margin-top-lg">
-                <div class="box row v-center fill-height">
-                </div>
-                <section id="menu" class="container padding-h-lg"></section>
-            </div>
+            <section id="menu" class="item-grid fill"></section>
         </div>
     </main>
 
@@ -113,13 +128,32 @@
         <nav class="container-wrapper">
             <div class="container">
                 <div class="box row center padding-v-sm padding-h-lg">
+                    <button id="btn_tables" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_tables()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 
+                                     2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"
+                            />
+                        </svg>
+                        <span id="btn_tables_text"></span>
+                    </button>
+                    
                     <button id="btn_inventory" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_inventory()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                             />
                         </svg>
-                        <span id="btn_inventory_text">Inventory</span>
+                        <span id="btn_inventory_text"></span>
+                    </button>
+                    <button id="btn_orders" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_orders()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0
+                                     00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                            />
+                        </svg>
+                        <span id="btn_orders_text"></span>
                     </button>
                     <button id="btn_menu" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_menu()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -129,15 +163,6 @@
                             />
                         </svg>
                         <span id="btn_menu_text"></span>
-                    </button>
-                    <button id="btn_orders" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_orders()">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0
-                                     00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                            />
-                        </svg>
-                        <span id="btn_orders_text">Orders</span>
                     </button>
                     <button id="btn_logout" class="menu-item fill icon-left" onclick="window.tfd.login.controller.logout()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
