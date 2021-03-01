@@ -3,19 +3,26 @@ window.tfd.add_module('order', {
     // MODEL
     //
     model: {
-        items: {},
-        total_items: 0,
-        total_price: 0,
-        ids: {
-            container: '#order',
-            total_items: '#btn_order_count',
-            total_amount: '#order_total_amount',
-            total_items_header: '#order_total_products_count',
-            insufficient_funds: '#insufficient',
+        max_order_items: 10,
+        order: {
+            items: {},
+            total_items: 0,
+            total_price: 0,
         },
         body_classes: {
             order_empty: 'order-empty',
         },
+    },
+
+    // =====================================================================================================
+    // DOM ELEMENTS
+    //
+    element: {
+        container: '#order',
+        total_items: '#btn_order_count',
+        total_amount: '#order_total_amount',
+        total_items_header: '#order_total_products_count',
+        insufficient_funds: '#insufficient',
     },
 
     // =====================================================================================================
@@ -24,7 +31,7 @@ window.tfd.add_module('order', {
     view: {
         update_body: function() {
             // Show/hide order empty text
-            if (this.model.total_items === 0) {
+            if (this.model.order.total_items === 0) {
                 $(document.body).addClass(this.model.body_classes.order_empty);
             } else {
                 $(document.body).removeClass(this.model.body_classes.order_empty);
@@ -34,54 +41,56 @@ window.tfd.add_module('order', {
         update_checkout_error: function(show) {
             // Displays text for insufficient funds
             if (show) {
-                $(this.model.ids.insufficient_funds).addClass('show')
+                this.element.insufficient_funds.addClass('show')
             } else {
-                $(this.model.ids.insufficient_funds).removeClass('show');
+                this.element.insufficient_funds.removeClass('show');
             }
         },
 
         update_order: function() {
-            const container = $(this.model.ids.container);
             let html = "";
 
-            if (this.model.total_items === 0) {
-                container.html('');
+            if (this.model.order.total_items === 0) {
+                this.element.container.html('');
                 return;
             }
 
-            for (const item of Object.values(this.model.items)) {
+            for (const item of Object.values(this.model.order.items)) {
                 html += this.view.create_order_item(item);
             }
 
-            container.html(html);
+            this.element.container.html(html);
             window.tfd.localization.view.update_localization_component('product');
         },
 
         update_order_details: function() {
-            const total_items = $(this.model.ids.total_items);
-            const total_amount = $(this.model.ids.total_amount);
-            const total_items_header = $(this.model.ids.total_items_header);
+            const total_items = this.element.total_items;
+            const total_amount = this.element.total_amount;
+            const total_items_header = this.element.total_items_header;
 
-            if (this.model.total_items === 0) {
+            if (this.model.order.total_items === 0) {
                 total_amount.text('0 SEK');
                 total_items.text('0');
                 total_items_header.text('0');
                 return;
             }
 
-            total_amount.text(this.model.total_price + " SEK");
-            total_items.text(this.model.total_items);
-            total_items_header.text(this.model.total_items);
+            total_amount.text(this.model.order.total_price + " SEK");
+            total_items.text(this.model.order.total_items);
+            total_items_header.text(this.model.order.total_items);
         },
 
         update_item_quantity: function(id) {
-            const { quantity } = this.model.items[id];
+            const item = this.model.order.items[id];
+            const { quantity } = this.global.drinks[item.product_nr];
+
             $("[data-order-quantity-id='" + id + "']").val(quantity);
         },
 
         create_order_item: function(item) {
-            const { nr, namn, prisinklmoms } = item.product;
-            const description = window.tfd.product.view.create_product_description(item.product);
+            const product = this.global.drinks[item.product_nr];
+            const { nr, namn, prisinklmoms } = product;
+            const description = window.tfd.product.view.create_product_description(product);
 
             return (`
                 <article class="product card">
@@ -135,33 +144,49 @@ window.tfd.add_module('order', {
 
             const product = this.global.drinks[id];
             const total = product.prisinklmoms * quantity;
+            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
 
-            if (this.model.total_items + quantity > 10) {
+            if (this.model.order.total_items + quantity > this.model.max_order_items) {
                 console.log('Could not add item to order - order is full');
                 return;
             }
 
-            this.model.total_price += total;
-            this.model.total_items += quantity;
+            if (this.model.order.items.hasOwnProperty(id)) {
+                // Make sure that the total quantity in cart and new quantity is in stock
+                if (this.model.order.items[id].quantity + quantity > max_quantity) {
+                    console.log('Could not add product to order - exceeds available stock');
+                    return;
+                }
 
-            if (this.model.items.hasOwnProperty(id)) {
                 // If the item already exists in the order, simply update the quantity
-                this.model.items[id].total += total;
-                this.model.items[id].quantity += quantity;
+                this.model.order.items[id].total += total;
+                this.model.order.items[id].quantity += quantity;
 
                 console.log(`Updated quantity of ${id} in order to: ${quantity}`);
+
+                this.model.order.total_price += total;
+                this.model.order.total_items += quantity;
 
                 // Update the order item quantity only
                 this.view.update_item_quantity(id);
             } else {
+                // Make sure that there is enough stock of the product
+                if (quantity > max_quantity) {
+                    console.log('Could not add product to order - exceeds available stock');
+                    return;
+                }
+
                 // Add new item to order
-                this.model.items[id] = {
-                    product,
+                this.model.order.items[id] = {
+                    product_nr: product.nr,
                     quantity,
                     total,
                 };
 
                 console.log(`Added new product ${id} to order with quantity: ${quantity}`);
+
+                this.model.order.total_price += total;
+                this.model.order.total_items += quantity;
 
                 // Only reapply body classes and order items if we add new items
                 this.view.update_body();
@@ -173,19 +198,19 @@ window.tfd.add_module('order', {
         },
 
         remove: function(id) {
-            if (!this.model.items.hasOwnProperty(id)) {
+            if (!this.model.order.items.hasOwnProperty(id)) {
                 console.error(`Could not remove product not in order: ${id}`);
                 return;
             }
 
-            const { quantity, total } = this.model.items[id];
+            const { quantity, total } = this.model.order.items[id];
 
             // Update order totals
-            this.model.total_items -= quantity;
-            this.model.total_price -= total;
+            this.model.order.total_items -= quantity;
+            this.model.order.total_price -= total;
 
             // Remove key from order items
-            delete this.model.items[id];
+            delete this.model.order.items[id];
 
             console.log(`Removed product ${id} from order`);
 
@@ -195,34 +220,35 @@ window.tfd.add_module('order', {
         },
 
         change_quantity: function(id, change) {
-            if (!this.model.items.hasOwnProperty(id)) {
+            if (!this.model.order.items.hasOwnProperty(id)) {
                 console.error(`Could not change quantity of product not in order: ${id}`);
                 return;
             }
 
-            const item = this.model.items[id];
+            const item = this.model.order.items[id];
+            const product = this.global.drinks[item.product_nr];
 
             // Only allow a total of 10 items (and at least 1) in the order
-            if (this.model.total_items + change > 10 || item.quantity + change < 1) {
-                console.log('Could not change quantity - new total out of bounds (0 <= n <= 10)');
+            if (this.model.order.total_items + change > this.model.max_order_items || item.quantity + change < 1) {
+                console.log(`Could not change quantity - new total out of bounds (0 <= n <= ${this.model.max_order_items})`);
                 return;
             }
 
             // If the new quantity is 0, remove the item
-            if (this.model.total_items + change == 0) {
+            if (this.model.order.total_items + change == 0) {
                 this.controller.remove(id);
                 return;
             }
 
-            const price_change = item.product.prisinklmoms * change;
+            const price_change = product.prisinklmoms * change;
 
             // Increase the total item price in order
             item.total += price_change
             item.quantity += change;
 
             // Update the total order items and price
-            this.model.total_items += change;
-            this.model.total_price += price_change;
+            this.model.order.total_items += change;
+            this.model.order.total_price += price_change;
 
             console.log(`Updated quantity of product ${id} in order to: ${item.quantity}`);
 
@@ -241,51 +267,65 @@ window.tfd.add_module('order', {
 
         // TODO: discuss design, whether this should be one or two functions
         checkout_bar_or_table: function() {
-            if (this.model.total_price > 0) {
-                // Hide any previous display of errors
-                this.view.update_checkout_error(false);
-                window.tfd.modal.controller.hide_error();
+            // TODO: Add dynamic table id?
+            const table_id = 20;
 
-                // Iterate and remove all items from order, "simulating" paying for the items to a staff member.
-                var items = this.model.items;
-                for (const key of Object.keys(items)) {
-                    this.controller.remove(key);
-                    //TODO : Update stock after removing, check each individuals items quantity and decrement from stock
-                    // What should happen if we don't have a item in stock? Should that be handled when adding to our order?
-                }
-                window.tfd.modal.controller.hide(); //Closes popout window for checkout.
+            if (!this.model.order.total_price > 0) {
+                console.error('Could not checkout - order is empty');
+                return;
             }
+
+            // Checkout the order and mark as pending for the staff
+            const order_id = window.tfd.backend.controller.checkout_order(table_id, this.model.order);
+
+            // Clear order
+            this.model.order.items = {};
+            this.model.order.total_price = 0;
+            this.model.order.total_items = 0;
+
+            // Update order
+            this.view.update_body();
+            this.view.update_order();
+            this.view.update_order_details();
+
+            // Hide any previous display of errors
+            this.view.update_checkout_error(false);
+
+            // Hide the modal and remove any errors
+            window.tfd.modal.controller.hide_error();
+            window.tfd.modal.controller.hide();
+
+            return order_id;
         },
 
         checkout_balance: function() {
-            const total_amount = this.model.total_price;
-            if (this.global.logged_in && total_amount > 0) { //Checks if user is logged in and we have items to checkout
+            const total_amount = this.model.order.total_price;
 
-                // TODO: We could move the balance update code to the VIP module instead
-                // Get users details
-                const user = this.global.user_details.username;
-                const details = this.global.user_details;
+            // Must be logged in as VIP to pay with credit
+            if (!this.global.logged_in) {
+                console.error('Could not checkout with balance - not logged in');
+                return;
+            }
 
-                // Compute the new balance by subtracting the value of the order
-                //var current_balance = parseFloat(details.creditSEK);
-                //const updated_balance = current_balance - total_amount;
+            // Can not checkout when the order is empty
+            if (this.model.order.total_price <= 0) {
+                console.error('Could not checkout with balance - order is empty');
+                return;
+            }
 
-                // Checks if user can make the purchase with its current balance.
-                if (window.tfd.vip.controller.update_balance(total_amount)) {
-                    //Hides previous display of errors
-                    this.view.update_checkout_error(false);
-                    window.tfd.modal.controller.hide_error();
-                    this.controller.checkout_bar_or_table(); //Removes the products from the order
+            // Checks if user can make the purchase with its current balance.
+            if (window.tfd.vip.controller.update_balance(total_amount)) {
+                // Get the generated order id
+                const order_id = this.controller.checkout_bar_or_table();
 
-                    window.tfd.modal.controller.hide(); // Close the checkout windoow
-                } else {
-                    console.log("Not sufficient funds");
+                // Complete the order directly, since the payment has already been made using credit
+                window.tfd.backend.controller.complete_order(order_id);
+            } else {
+                console.log("Insufficient funds");
 
-                    // Style elements to tell user this action was not allowed.
-                    window.tfd.modal.controller.show_error();
-                    this.view.update_checkout_error(true);
-                }
-
+                // Style elements to tell user this action was not allowed.
+                this.view.update_checkout_error(true);
+                window.tfd.modal.controller.show_error();
             }
         },
     },

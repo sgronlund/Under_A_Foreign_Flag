@@ -3,43 +3,39 @@ window.tfd.add_module('product', {
     // MODEL
     //
     model: {
-        ids: {
-            container: '#menu',
-            container_special: '#special_drinks',
-            total_products: '#total_products_count',
-        },
         checkbox_ids: {
             gluten: '#gluten',
             koscher: '#koscher',
             tannins: '#tannins',
             alcfree: '#alcfree',
         },
+        max_quantity: 10,
+    },
+
+    // =====================================================================================================
+    // DOM ELEMENTS
+    //
+    element: {
+        container: '#menu',
+        container_special: '#special_drinks',
+        total_products: '#total_products_count',
     },
 
     // =====================================================================================================
     // VIEW
     //
     view: {
-        update_products: function(container_id, products) {
-            const container = $(container_id);
-            const total_products = $(this.model.ids.total_products);
-
+        update_products: function(container, products, vip) {
             let html = "";
             let total = 0;
 
-            // TODO: This completely fucks the performance
-            for (const product of Object.values(products)) {
-                // FIXME: Temporary performance fix
-                if (total == 50) {
-                    break;
-                }
-
-                html += this.view.create_product(product);
+            for (const product_id of products) {
+                html += this.view.create_product(this.global.drinks[product_id], vip);
                 total++;
             }
 
             container.html(html);
-            total_products.text(total);
+            this.element.total_products.text(total);
 
             // Reapply the localization data for the current component (and only the current component).
             // It is unnecessary to reapply all localization data.
@@ -54,10 +50,10 @@ window.tfd.add_module('product', {
             $("[data-quantity-id='" + id + "']").val(1);
         },
 
-        create_product: function(product) {
+        create_product: function(product, vip) {
             const { namn, prisinklmoms } = product;
             const description = this.view.create_product_description(product);
-            const actions = this.view.create_product_actions(product);
+            const actions = this.view.create_product_actions(product, vip);
 
             return (`
                 <article class="product card box">
@@ -75,9 +71,12 @@ window.tfd.add_module('product', {
             `);
         },
 
-        create_product_actions: function(product) {
-            const { nr, vip } = product;
+        create_product_actions: function(product, vip) {
+            const { nr } = product;
 
+            // Products on the special menu is not added to an order like other products.
+            // They will be simply be removed from inventory when selected, and you may only
+            // purchase one at a time.
             if (vip) {
                 return (`
                     <button class="extra-light small fill-width" onclick="window.tfd.vip.controller.select_special_drink(${nr})">
@@ -99,7 +98,7 @@ window.tfd.add_module('product', {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                         </svg>
                     </button>
-                    <input data-quantity-id="${nr}" class="product-quantity no-spinner" min="1" max="10" value="1" type="number"/>
+                    <input data-quantity-id="${nr}" class="product-quantity no-spinner" min="1" max="${this.model.max_quantity}" value="1" type="number"/>
                     <button class="gray small square no-icon-spacing" onclick="window.tfd.product.controller.increase_quantity(${nr})">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -147,15 +146,29 @@ window.tfd.add_module('product', {
         },
 
         add_to_order: function(id) {
-            const quantity = this.controller.get_quantity(id);
+            let quantity = this.controller.get_quantity(id);
+            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
+
+            if (quantity > this.model.max_quantity) {
+                // Make sure that we stay below the max quantity of orders
+                console.warn(`Quantity of product exceeded the max quantity, changed to: ${this.model.max_quantity}`);
+                quantity = this.model.max_quantity;
+            } else if (quantity > max_quantity) {
+                // Make sure that we do not exceed the available stock.
+                // This might happen if the user manually changes the value of the input field.
+                console.warn(`Quantity of product exceeded the available stock, changed to: ${max_quantity}`);
+                quantity = max_quantity;
+            }
+
             this.trigger('add_to_order', id, quantity);
             this.view.reset_product_quantity(id);
         },
 
         change_quantity: function(id, change) {
             const new_quantity = this.controller.get_quantity(id) + change;
+            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
 
-            if (new_quantity < 1 || new_quantity > 10) {
+            if (new_quantity < 1 || new_quantity > max_quantity || new_quantity > this.model.max_quantity) {
                 console.log(`Could not update quantity of product to: ${new_quantity}`);
                 return;
             }
@@ -175,17 +188,17 @@ window.tfd.add_module('product', {
             if (restore) {
                 for(const key of Object.keys(this.model.checkbox_ids)) {
                     if (document.getElementById(key).checked) {
-                        this.view.update_products(this.model.ids.container, {});
+                        this.view.update_products(this.element.container, {});
                         //FIXME: Horrible solution, need to redo this.
-                        if (key === "koscher") this.view.update_products(this.model.ids.container, filterKosher(DRINKS));
-                        if (key === "gluten") this.view.update_products(this.model.ids.container, filterGluten(DRINKS));
-                        if (key === "tannins") this.view.update_products(this.model.ids.container, filterTannins(DRINKS));
-                        if (key === "alcfree") this.view.update_products(this.model.ids.container, filterAlcoholFree(DRINKS));
+                        if (key === "koscher") this.view.update_products(this.element.container, filterKosher(DRINKS));
+                        if (key === "gluten") this.view.update_products(this.element.container, filterGluten(DRINKS));
+                        if (key === "tannins") this.view.update_products(this.element.container, filterTannins(DRINKS));
+                        if (key === "alcfree") this.view.update_products(this.element.container, filterAlcoholFree(DRINKS));
                     }
                 } 
             } else {
                 console.log(this.global.drinks);
-                this.view.update_products(this.model.ids.container, this.global.drinks);
+                this.view.update_products(this.element.container, this.global.drinks);
             }
             window.tfd.modal.controller.hide(); //Closes filter window
         },
@@ -195,19 +208,17 @@ window.tfd.add_module('product', {
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {
-        // Render the default drinks list
-        render_products: function() {
+        menus_updated: function() {
             this.view.update_products(
-                this.model.ids.container,
-                this.global.drinks,
+                this.element.container,
+                this.global.menu,
+                false,
             );
-        },
 
-        // Render the VIP drinks list
-        render_special_products: function() {
             this.view.update_products(
-                this.model.ids.container_special,
-                this.global.special_drinks,
+                this.element.container_special,
+                this.global.special_menu,
+                true,
             );
         },
     },
