@@ -222,6 +222,9 @@ window.tfd.add_module('product', {
         },
     },
 
+    // =====================================================================================================
+    // DOCUMENT READY EVENT
+    //
     ready: function() {
         this.view.reset_filter_checkboxes();
     },

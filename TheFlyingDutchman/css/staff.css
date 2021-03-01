@@ -44,6 +44,10 @@
     left: 0;
 }
 
+.inventory-item-data {
+    font-size: var(--font-size-sm);
+}
+
 body.view-menu #btn_menu,
 body.view-orders #btn_orders,
 body.view-tables #btn_tables,
@@ -56,6 +60,7 @@ body.view-inventory #btn_inventory {
 #table_view,
 #orders_view,
 #inventory_view {
+    padding-bottom: var(--footer-height-offset);
     display: none;
 }
 

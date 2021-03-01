@@ -19,7 +19,6 @@
     <script type="text/javascript" src="script/database/users.js"></script>
     <script type="text/javascript" src="script/database/drinks.js"></script>
     <script type="text/javascript" src="script/database/inventory.js"></script>
-    <script type="text/javascript" src="script/database/tables.js"></script>
     <script type="text/javascript" src="script/database/backend.js"></script>
 
     <!-- COMPONENTS -->
@@ -29,6 +28,7 @@
     <script type="text/javascript" src="script/components/order.js"></script>
     <script type="text/javascript" src="script/components/product.js"></script>
     <script type="text/javascript" src="script/components/theme.js"></script>
+    <script type="text/javascript" src="script/components/manager.js"></script>
 
     <!-- LOCALIZATION -->
     <script type="text/javascript" src="script/i18n/flag.js"></script>
@@ -97,13 +97,13 @@
 
     <main class="container-wrapper">
         <!--TABLE VIEW-->
-        <div class="container box row" id="table_view">
+        <div class="container box row padding-lg" id="table_view">
             <!-- TABLE VIEW -->
-            <div id="tables_view" class="padding"></div>
+            <div id="tables_view"></div>
         </div>
         
         <!--ORDERS VIEW-->
-        <div class="container box row" id="orders_view">
+        <div class="container box row padding-lg" id="orders_view">
             <!--PENDING ORDERS -->
             <section id="pending_orders" class="itme-grid box fill"></section>
             
@@ -112,12 +112,12 @@
         </div>
        
        <!--INVENTORY VIEW-->
-        <div class="container box row" id="inventory_view">
+        <div class="container box padding-lg" id="inventory_view">
             <!--INVENTORY VIEW CONTENT-->
         </div>
         
         <!--MENU VIEW-->
-        <div class="container box row margin-top" id="menu_view">
+        <div class="container box row padding-lg" id="menu_view">
             <!--MENU VIEW CONTENT-->
             <section id="menu" class="item-grid fill"></section>
         </div>
