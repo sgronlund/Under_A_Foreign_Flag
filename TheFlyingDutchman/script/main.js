@@ -2,12 +2,9 @@ window.tfd = {
     // =====================================================================================================
     // PUBLIC FIELDS
     //
-    // Contains model state that is shared between modules
-    global: {
-        logged_in: false,
-        user_details: null,
-        products: null,
-    },
+    // Contains model state that is shared between modules.
+    // Modules can make use of this by specifying the 'global' key in their module, similiar to the regular model.
+    global: {},
 
     // =====================================================================================================
     // PUBLIC FUNCTIONS
@@ -24,14 +21,6 @@ window.tfd = {
             return;
         }
 
-        if (
-            !module.hasOwnProperty('model') ||
-            !module.hasOwnProperty('view') ||
-            !module.hasOwnProperty('controller')
-        ) {
-            console.error('The module must contain model, view and controller object keys!');
-        }
-
         if (this.hasOwnProperty(name)) {
             console.error(`Could not add module. Name collides with an internal key: ${name}`);
             return;
@@ -44,6 +33,9 @@ window.tfd = {
             controller: {},
             signal: {},
 
+            // Selectors for elements in the DOM to find and cache
+            element: module.element,
+
             // Helper function for triggering signals
             trigger: window.tfd.__trigger_signal,
 
@@ -53,14 +45,25 @@ window.tfd = {
 
         const context = this[name];
 
-        // Go through each defined controller function
-        for (const fn_name of Object.keys(module.controller)) {
-            this[name].controller[fn_name] = module.controller[fn_name].bind(context);
+        if (module.hasOwnProperty('controller')) {
+            // Go through each defined controller function
+            for (const fn_name of Object.keys(module.controller)) {
+                this[name].controller[fn_name] = module.controller[fn_name].bind(context);
+            }
         }
 
-        // Go through each defined view function
-        for (const fn_name of Object.keys(module.view)) {
-            this[name].view[fn_name] = module.view[fn_name].bind(context);
+        if (module.hasOwnProperty('view')) {
+            // Go through each defined view function
+            for (const fn_name of Object.keys(module.view)) {
+                this[name].view[fn_name] = module.view[fn_name].bind(context);
+            }
+        }
+
+        // Check if module has registered a global model
+        if (module.hasOwnProperty('global')) {
+            // Assign the global model to the global model state,
+            // overwriting any existing values.
+            Object.assign(this.global, module.global);
         }
 
         // Check if the module has registered a document ready event handler
@@ -91,6 +94,9 @@ window.tfd = {
                 }
             }
         }
+
+        // Save the registered module name
+        this.__registered_modules.push(name);
     },
 
     // Adds a function callback to a list of functions that should run when the document
@@ -114,9 +120,28 @@ window.tfd = {
     // has been registered as callback for that signal.
     __signals: {},
 
+    // Array containing all the registered module names
+    __registered_modules: [],
+
     // =====================================================================================================
     // PRIVATE FUNCTIONS
     //
+    // Finds and caches elements in the DOM based on the specified module selectors.
+    // Each element can be accessed using the 'this.element.<element name>' namespace.
+    __find_elements: function() {
+        for (const name of this.__registered_modules) {
+            const module = this[name];
+
+            if (!module.element) {
+                continue;
+            }
+
+            for (const key of Object.keys(module.element)) {
+                this[name].element[key] = $(this[name].element[key]);
+            }
+        }
+    },
+
     // Executes each added ready callback function once the document is ready.
     // Adding functions to this list can either be done using the 'add_ready_callback()' function,
     // or by adding a function to the 'ready' key in a module.
@@ -161,6 +186,9 @@ window.tfd = {
 
 // Register a handler for the document ready event
 $(document).ready(function() {
+    // Find all specified elements based on the selectors in the 'selector' object of each module
+    window.tfd.__find_elements();
+
     // Make sure to register signal handlers before executing the ready function callbacks.
     // This is because functions that run on ready might trigger signals themselves.
     window.tfd.__register_signal_handlers();

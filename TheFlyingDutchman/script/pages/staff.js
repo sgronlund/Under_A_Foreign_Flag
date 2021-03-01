@@ -4,11 +4,15 @@ window.tfd.add_module('staff', {
     //
     model: {
         selected_table: null,
-        ids: {
-            container: '#tables_view',
-            modal_content: '#order_modal_content',
-        },
         tables: DB_tables.tables,
+    },
+
+    // =====================================================================================================
+    // DOCUMENT ELEMENTS
+    //
+    element: {
+        container: '#tables_view',
+        modal_content: '#order_modal_content',
     },
 
     // =====================================================================================================
@@ -16,9 +20,8 @@ window.tfd.add_module('staff', {
     //
     view: {
         update_tables: function() {
-            const container = $(this.model.ids.container);
-
             let html = '';
+            // TODO: Cache these DOM lookups?
             const num_tables = $(this.model.tables.num_tables);
             const start_number = $(this.model.tables.table_numbering_start);
 
@@ -26,13 +29,13 @@ window.tfd.add_module('staff', {
                 html += this.view.create_table(start_number[0] + i);
             }
 
-            container.append(html);
+            this.element.container.append(html);
         },
 
         update_order_modal: function() {
             const order_details = this.view.create_order_details();
 
-            $(this.model.ids.modal_content).html(order_details);
+            this.element.modal_content.html(order_details);
         },
 
         create_order_details: function() {
@@ -77,13 +80,5 @@ window.tfd.add_module('staff', {
     ready: function() {
         this.trigger('render_products'); // TODO: fix so this renders in a better way?
         this.view.update_tables();
-    },
-
-    // =====================================================================================================
-    // MODULE LOAD
-    //
-    init: function() {
-        this.global.drinks = load_drinks(DRINKS);
-        this.global.special_drinks = load_drinks(SPECIAL_DRINKS);
     },
 });

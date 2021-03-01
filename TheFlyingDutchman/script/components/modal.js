@@ -6,17 +6,21 @@ window.tfd.add_module('modal', {
         previous_modal: null,
         current_modal: null,
         has_error: false,
-        ids: {
-            login_modal: '#login_modal',
-            filter_modal: '#filter_modal',
-            checkout_modal: '#checkout_modal',
-            special_drink_modal: '#special_drink_modal',
-            order_modal: '#order_modal',
-        },
         classes: {
             show: 'show',
             error: 'error',
         },
+    },
+
+    // =====================================================================================================
+    // DOM ELEMENTS
+    //
+    element: {
+        login_modal: '#login_modal',
+        filter_modal: '#filter_modal',
+        checkout_modal: '#checkout_modal',
+        special_drink_modal: '#special_drink_modal',
+        order_modal: '#order_modal',
     },
 
     // =====================================================================================================
@@ -25,12 +29,12 @@ window.tfd.add_module('modal', {
     view: {
         update_current_modal: function() {
             if (this.model.previous_modal) {
-                $(this.model.previous_modal).removeClass(this.model.classes.show);
+                this.model.previous_modal.removeClass(this.model.classes.show);
             }
 
+            // Show the selected modal
             if (this.model.current_modal) {
-                // Show the selected modal
-                $(this.model.current_modal).addClass(this.model.classes.show);
+                this.model.current_modal.addClass(this.model.classes.show);
             }
         },
 
@@ -41,11 +45,11 @@ window.tfd.add_module('modal', {
             }
 
             if (!this.model.has_error) {
-                $(this.model.current_modal).removeClass(this.model.classes.error);
+                this.model.current_modal.removeClass(this.model.classes.error);
                 return;
             }
 
-            $(this.model.current_modal).addClass(this.model.classes.error);
+            this.model.current_modal.addClass(this.model.classes.error);
         },
     },
 
@@ -64,23 +68,23 @@ window.tfd.add_module('modal', {
         },
 
         show_login: function() {
-            this.controller.show(this.model.ids.login_modal);
+            this.controller.show(this.element.login_modal);
         },
 
         show_special_drink: function() {
-            this.controller.show(this.model.ids.special_drink_modal);
+            this.controller.show(this.element.special_drink_modal);
         },
 
         show_filter: function() {
-            this.controller.show(this.model.ids.filter_modal);
+            this.controller.show(this.element.filter_modal);
         },
 
         show_checkout: function() {
-            this.controller.show(this.model.ids.checkout_modal);
+            this.controller.show(this.element.checkout_modal);
         },
 
         show_order: function() {
-            this.controller.show(this.model.ids.order_modal);
+            this.controller.show(this.element.order_modal);
         },
 
         show_error: function() {
