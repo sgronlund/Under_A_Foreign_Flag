@@ -53,6 +53,7 @@ window.tfd.add_module('customer', {
         set_subview: function(new_subview) {
             this.model.previous_subview = this.model.current_subview;
             this.model.current_subview = this.model.views[new_subview];
+            
             this.view.update_body();
         },
 

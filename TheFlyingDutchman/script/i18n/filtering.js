@@ -19,7 +19,7 @@ window.tfd.localization.controller.add('filtering', {
             filtering_modal_title: 'Filtering',
             btn_filter_apply_text: 'Apply filter',
             btn_filter_restore_text: 'Remove filter',
-            filter_non_alcoholic: 'Non-alcoholic drinks',
+            filter_non_alcoholic: 'Alcoholic drinks',
         },
     },
     sv : {
@@ -27,7 +27,7 @@ window.tfd.localization.controller.add('filtering', {
             filtering_modal_title: 'Filtrering',
             btn_filter_apply_text: 'Filtrera',
             btn_filter_restore_text: 'Ta bort filter',
-            filter_non_alcoholic: 'Alkoholfria drycker',
+            filter_non_alcoholic: 'Alkoholhaltiga drycker',
         },
     }
 });

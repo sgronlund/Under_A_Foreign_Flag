@@ -155,53 +155,48 @@ function filterBasedOnStrength(strength, data) {
     return collector;
 }
 
-function filterTannins(data) {
-    const collector = {};
-    for(let i = 0; i < data.spirits.length; i++) {
-        const product = data.spirits[i];
-        // All wines contains tannins therefore we check if the type of the product is wine
-        if (!product.varugrupp.toLowerCase().includes("vin")) {
-            collector[product.nr] = filter(product);
-        }
-    }
-    return collector;
+function is_tannins(product) {
+    return !product.description.hasOwnProperty('druva');
 }
 
-function filterGluten(data) {
-    const collector = {};
-    for(let i = 0; i < data.spirits.length; i++) {
-        const product = data.spirits[i];
-        // Checks if the type contains wheat, eg. a Weissbier
-        if (!product.varugrupp.toLowerCase().includes("vete")) {
-            collector[product.nr] = filter(product);
-        }
+function is_gluten(product) {
+    if (product.description.hasOwnProperty('sort')) {
+        return !product.description.sort.toLowerCase().includes("vete");
+    } else {
+        return true;
     }
-    return collector;
+}
+
+function is_koscher(product) {
+    return product.description.koscher === "1";
+}
+
+function is_alcohol_free(product) {
+    return percentToNumber(product.description.alkoholhalt) < 2.5;
+}
+
+function apply_filters(drinks, menu, filters) {
+    const filtered_menu = [];
     
-}
-
-function filterKosher(data) {
-    const collector = {};
-    for(let i = 0; i < data.spirits.length; i++) {
-        const product = data.spirits[i];
-        // Checks if the koscher field for the drink is set to 1, i.e. the drink is koscher.
-        if (product.koscher == "1") {
-            collector[product.nr] = filter(product);
+    for (const product_id of menu) {
+        // Get product information from all drinks
+        let passes_filters = true;
+        const product = drinks[product_id];
+        
+        // Apply filters to product
+        for (const filter of filters) {
+            if (!filter(product)) {
+                passes_filters = false; 
+            }
+        }
+        
+        // Only add product to filtered menu iff is passes all filters
+        if (passes_filters) {
+            filtered_menu.push(product_id);
         }
     }
-    return collector;
-}
-
-function filterAlcoholFree(data) {
-    const collector = {};
-    for(let i = 0; i < data.spirits.length; i++) {
-        const product = data.spirits[i];
-        // Checks if the alcohol content is less than 2.5%
-        if (percentToNumber(product.alkoholhalt) < 2.5) {
-            collector[product.nr] = filter(product);
-        }
-    }
-    return collector;
+    
+    return filtered_menu;
 }
 
 // Formats the description/content of a drink based on its type, eg. with a Wine we also include the grape variety.
@@ -232,11 +227,13 @@ function filter(product) {
         nr: product.nr,
         namn: product.namn,
         prisinklmoms: parseFloat(product.prisinklmoms), // Convert to float
+        koscher: product.koscher,
         description,
         
         // Indicates if a product is only for VIP guests
         vip: product.vip == true,
     };
+    
     return filtered;
 }
 
