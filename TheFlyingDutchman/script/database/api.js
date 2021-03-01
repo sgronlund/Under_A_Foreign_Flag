@@ -126,47 +126,14 @@ function get_beverage_type(category_string) {
 function load_drinks(data) {
     // Using a local variable to collect the items.
     const collector = {};
-
-    // The DB is stored in the variable DB2, with "spirits" as key element. If you need to select only certain
+    // The DB is stored in the variable data, with "spirits" as key element. If you need to select only certain
     // items, you may introduce filter functions in the loop... see the template within comments.
     //
     for (let i = 0; i < data.spirits.length; i++) {
         const product = data.spirits[i];
+        collector[product.nr] = filter(product);
+    };
 
-        // Contains all the values that describe the beverage.
-        // These are different based on the type of drink.
-        const description = {
-            forpackning: get_beverage_description_string(product.forpackning),
-            producent: get_beverage_description_string(product.producent),
-            alkoholhalt: get_beverage_description_string(product.alkoholhalt),
-        };
-
-        // Extract type-specific description items
-        if (product.varugrupp.toLowerCase().includes("öl")) {
-            // Description for beers
-            description['sort'] = get_beverage_sort(product.varugrupp);
-            description['ursprunglandnamn'] = get_beverage_description_string(product.ursprunglandnamn);
-        } else if (product.varugrupp.toLowerCase().includes("vin")) {
-            // Description for wine
-            description['typ'] = get_beverage_type(product.varugrupp);
-            description['argang'] = get_beverage_description_string(product.argang);
-            description['druva'] = get_beverage_description_string(product.namn2);
-        } else {
-            // Description for other
-            description['ursprunglandnamn'] = get_beverage_description_string(product.ursprunglandnamn);
-            description['sort'] = get_beverage_description_string(product.varugrupp);
-        }
-
-        collector[product.nr] = {
-            nr: product.nr,
-            namn: product.namn,
-            prisinklmoms: parseFloat(product.prisinklmoms), // Convert to float
-            description,
-
-            // Indicates if a product is only for VIP guests
-            vip: product.vip == true,
-        };
-    }
 
     return collector;
 }
@@ -175,30 +142,99 @@ function load_drinks(data) {
 // Returns a list of objects containing the name and category of each beverage in the database with
 // a alcohol percentage higher than the given strength.
 //
-function allStrongBeverages(strength) {
-    // Using a local variable to collect the items.
-    //
-    const collector = [];
-
-    // The DB is stored in the variable DB2, with "spirits" as key element. If you need to select only certain
-    // items, you may introduce filter functions in the loop... see the template within comments.
-    //
-    for (let i = 0; i < DB2.spirits.length; i++) {
-
-        // We check if the percentage alcohol strength stored in the data base is lower than the
-        // given limit strength. If the limit is set to 14, also liqueuers are listed.
-        //
-        if (percentToNumber(DB2.spirits[i].alkoholhalt) > strength) {
-
-            // The key for the beverage name is "namn", and beverage type is "varugrupp".
-            //
-            collector.push({ namn: DB2.spirits[i].namn, varugrupp: DB2.spirits[i].varugrupp });
+function filterBasedOnStrength(strength, data) {
+    const collector = {};
+    for (let i = 0; i < data.spirits.length; i++) {
+        const product = data.spirits[i]
+        
+        // Checks if the alcohol content of the drink is greater than the supplied strength
+        if (percentToNumber(product.alkoholhalt) > strength) {
+            collector[product.nr] = filter(product);
         };
     };
-
-    // Don't forget to return the result.
-    //
     return collector;
+}
+
+function is_tannins(product) {
+    return !product.description.hasOwnProperty('druva');
+}
+
+function is_gluten(product) {
+    if (product.description.hasOwnProperty('sort')) {
+        return !product.description.sort.toLowerCase().includes("vete");
+    } else {
+        return true;
+    }
+}
+
+function is_koscher(product) {
+    return product.description.koscher === "1";
+}
+
+function is_alcohol_free(product) {
+    return percentToNumber(product.description.alkoholhalt) < 2.5;
+}
+
+function apply_filters(drinks, menu, filters) {
+    const filtered_menu = [];
+    
+    for (const product_id of menu) {
+        // Get product information from all drinks
+        let passes_filters = true;
+        const product = drinks[product_id];
+        
+        // Apply filters to product
+        for (const filter of filters) {
+            if (!filter(product)) {
+                passes_filters = false; 
+            }
+        }
+        
+        // Only add product to filtered menu iff is passes all filters
+        if (passes_filters) {
+            filtered_menu.push(product_id);
+        }
+    }
+    
+    return filtered_menu;
+}
+
+// Formats the description/content of a drink based on its type, eg. with a Wine we also include the grape variety.
+function filter(product) {
+    const description = {
+        forpackning: get_beverage_description_string(product.forpackning),
+        producent: get_beverage_description_string(product.producent),
+        alkoholhalt: get_beverage_description_string(product.alkoholhalt),
+    };
+
+    // Extract type-specific description items
+    if (product.varugrupp.toLowerCase().includes("öl")) {
+        // Description for beers
+        description['sort'] = get_beverage_sort(product.varugrupp);
+        description['ursprunglandnamn'] = get_beverage_description_string(product.ursprunglandnamn);
+    } else if (product.varugrupp.toLowerCase().includes("vin")) {
+        // Description for wine
+        description['typ'] = get_beverage_type(product.varugrupp);
+        description['argang'] = get_beverage_description_string(product.argang);
+        description['druva'] = get_beverage_description_string(product.namn2);
+    } else {
+        // Description for other
+        description['ursprunglandnamn'] = get_beverage_description_string(product.ursprunglandnamn);
+        description['sort'] = get_beverage_description_string(product.varugrupp);
+    }
+
+    filtered = {
+        nr: product.nr,
+        namn: product.namn,
+        prisinklmoms: parseFloat(product.prisinklmoms), // Convert to float
+        koscher: product.koscher,
+        description,
+        
+        // Indicates if a product is only for VIP guests
+        vip: product.vip == true,
+    };
+    
+    return filtered;
 }
 
 // =====================================================================================================
@@ -208,8 +244,8 @@ function allStrongBeverages(strength) {
 function beverageTypes() {
     const types = [];
 
-    for (let i = 0; i < DB2.spirits.length; i++) {
-        addToSet(types, DB2.spirits[i].varugrupp);
+    for (let i = 0; i < data.spirits.length; i++) {
+        addToSet(types, data.spirits[i].varugrupp);
     };
 
     return types;

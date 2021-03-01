@@ -3,6 +3,12 @@ window.tfd.add_module('product', {
     // MODEL
     //
     model: {
+        checkbox_ids: {
+            gluten: '#gluten',
+            koscher: '#koscher',
+            tannins: '#tannins',
+            alcfree: '#alcfree',
+        },
         max_quantity: 10,
     },
 
@@ -42,6 +48,13 @@ window.tfd.add_module('product', {
 
         reset_product_quantity: function(id) {
             $("[data-quantity-id='" + id + "']").val(1);
+        },
+        
+        reset_filter_checkboxes: function() {
+            $(this.model.checkbox_ids.alcfree).prop('checked', true);
+            $(this.model.checkbox_ids.gluten).prop('checked', true);
+            $(this.model.checkbox_ids.koscher).prop('checked', true);
+            $(this.model.checkbox_ids.tannins).prop('checked', true);
         },
 
         create_product: function(product, vip) {
@@ -177,6 +190,40 @@ window.tfd.add_module('product', {
         decrease_quantity: function(id) {
             this.controller.change_quantity(id, -1);
         },
+        filter: function(apply_filter) {
+            //const old = this.global.drinks;
+            const filters = [];
+            
+            if (apply_filter) {
+                for (const key of Object.keys(this.model.checkbox_ids)) {
+                    if (!document.getElementById(key).checked) {
+                        if (key === 'koscher') {
+                            filters.push(is_koscher);
+                        } else if (key === 'tannins') {
+                            filters.push(is_tannins)
+                        } else if (key === 'gluten') {
+                            filters.push(is_gluten) 
+                        } else {
+                            filters.push(is_alcohol_free);
+                        }
+                    }
+                } 
+            } else {
+                this.view.reset_filter_checkboxes();   
+            }
+            
+            if (filters.length > 0) {
+                // TODO: Filtering with both menus
+                //this.view.update_products(this.element.container, {}, false);
+                this.view.update_products(this.element.container, apply_filters(this.global.drinks, this.global.menu, filters), false);
+            } else {
+                this.view.update_products(this.element.container, this.global.menu, false);
+            }
+        },
+    },
+
+    ready: function() {
+        this.view.reset_filter_checkboxes();
     },
 
     // =====================================================================================================
