@@ -1,3 +1,13 @@
+// =====================================================================================================
+// Functions for handling and rendering products
+// =====================================================================================================
+// Authors: Namn, 2020
+//
+// This file contains functions for filtering the products, adding the products to the users order aswell
+// as rendering all the products from the pubs inventory
+//
+
+
 window.tfd.add_module('product', {
     // =====================================================================================================
     // MODEL
@@ -51,6 +61,7 @@ window.tfd.add_module('product', {
         },
         
         reset_filter_checkboxes: function() {
+            // When the users restores the filter we also restore all the filter options to be checked
             $(this.model.checkbox_ids.alcfree).prop('checked', true);
             $(this.model.checkbox_ids.gluten).prop('checked', true);
             $(this.model.checkbox_ids.koscher).prop('checked', true);
@@ -191,12 +202,13 @@ window.tfd.add_module('product', {
             this.controller.change_quantity(id, -1);
         },
         filter: function(apply_filter) {
-            //const old = this.global.drinks;
-            const filters = [];
             
+            const filters = [];
+            /// Checks which filters has been unchecked and stores the coresponding functions in an array which will later will be used to filter the current menu.
             if (apply_filter) {
                 for (const key of Object.keys(this.model.checkbox_ids)) {
-                    if (!document.getElementById(key).checked) {
+                    // Checks which checksbox has been unchecked
+                    if (!document.getElementById(key).checked) { 
                         if (key === 'koscher') {
                             filters.push(is_koscher);
                         } else if (key === 'tannins') {
@@ -209,15 +221,14 @@ window.tfd.add_module('product', {
                     }
                 } 
             } else {
-                this.view.reset_filter_checkboxes();   
+                this.view.reset_filter_checkboxes();   //If apply_filter is false it means that the user wishes to restore the orignal menu and we should check all the boxes again.
             }
             
             if (filters.length > 0) {
                 // TODO: Filtering with both menus
-                //this.view.update_products(this.element.container, {}, false);
                 this.view.update_products(this.element.container, apply_filters(this.global.drinks, this.global.menu, filters), false);
             } else {
-                this.view.update_products(this.element.container, this.global.menu, false);
+                this.view.update_products(this.element.container, this.global.menu, false); // If no filters were chosen we simply render the original menu
             }
         },
     },

@@ -1,3 +1,11 @@
+// =====================================================================================================
+//  Functions for rendering and handling the pubs inventory
+// =====================================================================================================
+// Authors: Namn, 2021
+// 
+// These function allow the manager to see which items are in the different menus, remove and add different
+// items from the inventory and update the stock on items currently in inventory
+
 window.tfd.add_module('manager', {
     // =====================================================================================================
     // MODEL

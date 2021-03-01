@@ -1,3 +1,10 @@
+// =====================================================================================================
+// Functions for handling and rendering orders.
+// =====================================================================================================
+// Authors: Namn, 2020
+//
+//
+
 window.tfd.add_module('order', {
     // =====================================================================================================
     // MODEL
@@ -146,6 +153,7 @@ window.tfd.add_module('order', {
             const total = product.prisinklmoms * quantity;
             const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
 
+            // Makes sure that the quantity of the order cannot exceed 10 total items
             if (this.model.order.total_items + quantity > this.model.max_order_items) {
                 console.log('Could not add item to order - order is full');
                 return;
@@ -265,7 +273,7 @@ window.tfd.add_module('order', {
             this.controller.change_quantity(id, -1);
         },
 
-        // TODO: discuss design, whether this should be one or two functions
+
         checkout_bar_or_table: function() {
             // TODO: Add dynamic table id?
             const table_id = 1;

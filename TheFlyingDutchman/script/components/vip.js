@@ -100,14 +100,15 @@ window.tfd.add_module('vip', {
         },
 
         update_balance: function(price) {
+            //Calculates the new balanced based on a price, this price can be any form of transaction
             const current_balance = this.global.user_details.creditSEK;
             const updated_balance = current_balance - price;
 
             if (updated_balance < 0) {
                 return false;
             } else {
-                changeBalance(this.global.user_details.username, updated_balance); //Updates the database temporarily
-                this.global.user_details = userDetails(this.global.user_details.username); //Fetches new data
+                changeBalance(this.global.user_details.username, updated_balance); //Updates the database
+                this.global.user_details = userDetails(this.global.user_details.username); //Fetches new data from database
 
                 this.view.update_footer(); //Updates the view, showing the new balance
                 return true;

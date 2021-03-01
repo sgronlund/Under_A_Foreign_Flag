@@ -1,3 +1,11 @@
+// =====================================================================================================
+//  Functions for logging in and out
+// =====================================================================================================
+// Authors: Namn, 2021
+//
+// This functionality is resused on every page where a user can login. At the moment redirection is also handled here, 
+// however at some point we'll only have a single html-page and no redirection can be done
+//
 window.tfd.add_module('login', {
     // =====================================================================================================
     // GLOBAL MODEL
@@ -133,6 +141,7 @@ window.tfd.add_module('login', {
     // MODULE LOAD
     //
     init: function() {
+        // TODO: Redirection not allowed, can only have one HTML-page
         const user = window.sessionStorage.getItem(this.model.storage_key);
 
         // Extract html page from current location.

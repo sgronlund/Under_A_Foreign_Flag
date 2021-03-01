@@ -1,3 +1,12 @@
+// =====================================================================================================
+//  Functions for rendering the menu and the special drinks menu
+// =====================================================================================================
+// Authors: Namn, 2021
+//
+// Theses functions render the different views/options the customer can access, i.e. the special drinks menu (if the customer is VIP), 
+// the ordinary drinks menu and the order.
+//
+
 window.tfd.add_module('customer', {
     // =====================================================================================================
     // MODEL

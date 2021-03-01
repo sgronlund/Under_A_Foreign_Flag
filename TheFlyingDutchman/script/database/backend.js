@@ -1,3 +1,13 @@
+// =====================================================================================================
+// Backend functions for the orders, inventory and menus.
+// =====================================================================================================
+// Authors: Namn, 2021
+//
+// This file contains functions which handles the stock of the items in the pubs inventory, i.e. updating the 
+// inventory if an item has run out of stock, aswell as saving the orders handled by system.
+//
+
+
 window.tfd.add_module('backend', {
     // =====================================================================================================
     // GLOBAL MODEL

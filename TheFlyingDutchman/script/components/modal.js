@@ -1,3 +1,13 @@
+// =====================================================================================================
+// Functions for updating and rendering the modal
+// =====================================================================================================
+// Authors: Namn, 2020
+//
+// This file contains functions for handling and rendering the modal, i.e. the "popup" window, which is
+// shown eg. when to user logs in or filters the products.
+//
+
+
 window.tfd.add_module('modal', {
     // =====================================================================================================
     // MODEL
@@ -58,6 +68,7 @@ window.tfd.add_module('modal', {
     //
     controller: {
         show: function(new_modal) {
+            //Updates the current modal with a new one and store the previous version
             this.model.previous_modal = this.model.current_modal;
             this.model.current_modal = new_modal;
             this.view.update_current_modal();
