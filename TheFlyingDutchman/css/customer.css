@@ -1,19 +1,7 @@
 /* Import base styles */
 @import url('base.css');
 
-header {
-    width: 100%;
-    background-color: var(--background-color);
-}
-
-.sub-header {
-    height: var(--sub-header-height);
-}
-
 #header_nav {
-    width: 100%;
-    background-color: var(--background-color);
-    box-shadow: var(--box-shadow-header);
     position: sticky;
     top: 0;
 }
@@ -36,26 +24,6 @@ header {
 .credit-container {
     background-color: var(--price-color);
 }
-
-.menu-item {
-    background-color: transparent;
-}
-
-footer {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    background-color: var(--background-color-highlight);
-    box-shadow: var(--box-shadow-footer);
-    z-index: var(--footer-z-index);
-    color: var(--text-color-default);
-}
-
-.menu-item {
-    border: 1px solid transparent;
-    border-radius: var(--border-radius-lg);
-}
-
 
 #menu, #special_drinks, #order {
     padding-bottom: var(--footer-height-offset);
@@ -112,59 +80,6 @@ body.view-menu.subview-special-drinks #btn_special_drinks {
     border-bottom-color: var(--brand-color);
 }
 
-.product-price, .order-product-price {
-    font-size: var(--font-size-sm);
-    font-weight: bold;
-    color: var(--price-color-text);
-    min-width: 6rem;
-    text-align: right;
-}
-
-.order-product-price {
-    font-size: var(--font-size);
-}
-
-.order-product-price-each {
-    font-size: var(--font-size-sm);
-    font-weight: bold;
-}
-
-.product-actions {
-    border-top: 1px solid var(--border-color);
-}
-
-.product-description-item {
-   font-size: var(--font-size-xsm);
-   display: flex;
-   flex-direction: row;
-   justify-content: space-between;
-}
-
-.product-description-item > span:first-of-type {
-    font-weight: bold;
-}
-
-.product-quantity {
-    width: 1.5rem;
-    margin: 0 var(--spacing-sm);
-    padding: 0;
-    border: 0;
-    font-size: var(--font-size-sm);
-    font-weight: bold;
-    text-align: center;
-}
-
-.product-add-to-order {
-    padding-left: var(--spacing-lg);
-    padding-right: var(--spacing-lg);
-}
-
-.product-description-order {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-column-gap: var(--spacing-lg);
-}
-
 #order_total {
     font-size: var(--font-size);
 }
@@ -176,8 +91,8 @@ body.view-menu.subview-special-drinks #btn_special_drinks {
     color: var(--text-color-default);
 }
 
-
-body.view-menu #btn_menu, body.view-order #btn_order {
+body.view-menu #btn_menu,
+body.view-order #btn_order {
     background-color: var(--background-color-body);
     border-color: var(--border-color-dark);
 }

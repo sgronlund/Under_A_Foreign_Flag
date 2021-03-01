@@ -20,6 +20,7 @@ window.tfd.add_module('modal', {
         filter_modal: '#filter_modal',
         checkout_modal: '#checkout_modal',
         special_drink_modal: '#special_drink_modal',
+        order_modal: '#order_modal',
     },
 
     // =====================================================================================================
@@ -56,7 +57,7 @@ window.tfd.add_module('modal', {
     // CONTROLLER
     //
     controller: {
-       show: function(new_modal) {
+        show: function(new_modal) {
             this.model.previous_modal = this.model.current_modal;
             this.model.current_modal = new_modal;
             this.view.update_current_modal();
@@ -80,6 +81,10 @@ window.tfd.add_module('modal', {
 
         show_checkout: function() {
             this.controller.show(this.element.checkout_modal);
+        },
+
+        show_order: function() {
+            this.controller.show(this.element.order_modal);
         },
 
         show_error: function() {
