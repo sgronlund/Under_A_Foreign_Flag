@@ -509,10 +509,14 @@ label {
     color: var(--error-color);
 }
 
-/* TEXT */
+/* TEXT AND LINKS */
 h1, h2, h3, h4, p {
     margin: 0;
     color: inherit;
+}
+
+a {
+    text-decoration: none;
 }
 
 .logo {
