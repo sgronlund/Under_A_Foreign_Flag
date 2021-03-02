@@ -29,6 +29,7 @@
     <script type="text/javascript" src="script/components/product.js"></script>
     <script type="text/javascript" src="script/components/theme.js"></script>
     <script type="text/javascript" src="script/components/manager.js"></script>
+    <script type="text/javascript" src="script/components/tables.js"></script>
 
     <!-- LOCALIZATION -->
     <script type="text/javascript" src="script/i18n/flag.js"></script>
@@ -101,21 +102,21 @@
             <!-- TABLE VIEW -->
             <div id="tables_view"></div>
         </div>
-        
+
         <!--ORDERS VIEW-->
         <div class="container box row padding-lg" id="orders_view">
             <!--PENDING ORDERS -->
             <section id="pending_orders" class="itme-grid box fill"></section>
-            
+
             <!--COMPLETED ORDERS -->
             <section id="completed_orders" class="item-grid box fill"></section>
         </div>
-       
+
        <!--INVENTORY VIEW-->
         <div class="container box padding-lg" id="inventory_view">
             <!--INVENTORY VIEW CONTENT-->
         </div>
-        
+
         <!--MENU VIEW-->
         <div class="container box row padding-lg" id="menu_view">
             <!--MENU VIEW CONTENT-->
@@ -130,14 +131,14 @@
                 <div class="box row center padding-v-sm padding-h-lg">
                     <button id="btn_tables" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_tables()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2
                                      2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"
                             />
                         </svg>
                         <span id="btn_tables_text"></span>
                     </button>
-                    
+
                     <button id="btn_inventory" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_inventory()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
