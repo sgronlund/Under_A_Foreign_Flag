@@ -185,8 +185,13 @@ button.small {
     border-radius: var(--border-radius-lg);
 }
 
+button.square:not(.small) {
+    width: var(--button-height);
+}
+
 button.small.square {
     padding: var(--spacing-sm);
+    width: var(--button-height-sm);
 }
 
 #btn_lang {
@@ -639,6 +644,7 @@ footer {
 
 .product-quantity {
     width: 1.5rem;
+    height: var(--button-height-sm);
     margin: 0 var(--spacing-sm);
     padding: 0;
     border: 0;
