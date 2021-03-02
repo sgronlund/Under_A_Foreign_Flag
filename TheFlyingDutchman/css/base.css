@@ -62,6 +62,9 @@
     --lang-button-z-index: 11;
     --theme-button-z-index: 11;
     --security-button-z-index: 11;
+
+    --hover-filter: brightness(95%);
+    --transition-time: 0.1s;
 }
 
 :root body.dark{
@@ -74,6 +77,7 @@
     --border-color-focus: #cacaca;
     --price-color-text: #37FEB5;
     --error-color: #FF7474;
+    --hover-filter: brightness(92%);
 }
 
 body {
@@ -119,6 +123,12 @@ button {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition-property: filter;
+    transition-duration: var(--transition-time);
+}
+
+button:hover {
+    filter: var(--hover-filter);
 }
 
 button.brand {
@@ -129,6 +139,14 @@ button.brand {
 button.gray {
     background-color: var(--background-color-body);
     color: var(--text-color-default);
+}
+
+button.gray:hover {
+    filter: var(--hover-filter);
+}
+
+body.dark button.gray:hover {
+    filter: brightness(150%);
 }
 
 button.light {

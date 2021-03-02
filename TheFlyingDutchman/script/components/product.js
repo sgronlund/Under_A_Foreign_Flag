@@ -59,7 +59,7 @@ window.tfd.add_module('product', {
         reset_product_quantity: function(id) {
             $("[data-quantity-id='" + id + "']").val(1);
         },
-        
+
         reset_filter_checkboxes: function() {
             // When the users restores the filter we also restore all the filter options to be checked
             $(this.model.checkbox_ids.alcfree).prop('checked', true);
@@ -201,34 +201,38 @@ window.tfd.add_module('product', {
         decrease_quantity: function(id) {
             this.controller.change_quantity(id, -1);
         },
+
         filter: function(apply_filter) {
-            
             const filters = [];
-            /// Checks which filters has been unchecked and stores the coresponding functions in an array which will later will be used to filter the current menu.
+
+            // Checks which filters has been unchecked and stores the coresponding functions in an array which will later will be used to filter the current menu.
             if (apply_filter) {
                 for (const key of Object.keys(this.model.checkbox_ids)) {
                     // Checks which checksbox has been unchecked
-                    if (!document.getElementById(key).checked) { 
+                    if (!document.getElementById(key).checked) {
                         if (key === 'koscher') {
                             filters.push(is_koscher);
                         } else if (key === 'tannins') {
                             filters.push(is_tannins)
                         } else if (key === 'gluten') {
-                            filters.push(is_gluten) 
+                            filters.push(is_gluten)
                         } else {
                             filters.push(is_alcohol_free);
                         }
                     }
-                } 
+                }
             } else {
-                this.view.reset_filter_checkboxes();   //If apply_filter is false it means that the user wishes to restore the orignal menu and we should check all the boxes again.
+                // If apply_filter is false it means that the user wishes to restore
+                // the orignal menu and we should check all the boxes again.
+                this.view.reset_filter_checkboxes();
             }
-            
+
             if (filters.length > 0) {
                 // TODO: Filtering with both menus
                 this.view.update_products(this.element.container, apply_filters(this.global.drinks, this.global.menu, filters), false);
             } else {
-                this.view.update_products(this.element.container, this.global.menu, false); // If no filters were chosen we simply render the original menu
+                // If no filters were chosen we simply render the original menu
+                this.view.update_products(this.element.container, this.global.menu, false);
             }
         },
     },
