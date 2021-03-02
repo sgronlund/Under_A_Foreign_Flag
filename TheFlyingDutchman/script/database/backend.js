@@ -31,6 +31,7 @@ window.tfd.add_module('backend', {
                 orders: 'orders',
                 completed_orders: 'completed_orders',
             },
+            inventory: 'inventory',
             next_order_id: 'next_order_id',
         },
     },
@@ -45,6 +46,17 @@ window.tfd.add_module('backend', {
                 const state = window.localStorage.getItem(this.model.storage_keys.order[key]);
                 Object.assign(this.global[key], JSON.parse(state));
             }
+            
+            // Load inventory from localStorage and merge with the default inventory in INVENTORY
+            const inventory = window.localStorage.getItem(this.model.storage_keys.inventory);
+            
+            if (!inventory) {
+                // If no inventory is saved, use the default inventory
+                this.global.inventory = INVENTORY;
+            } else {
+                this.global.inventory = JSON.parse(inventory);
+            }
+            
 
             // Load the next order id
             const next_order_id = window.localStorage.getItem(this.model.storage_keys.next_order_id);
@@ -56,7 +68,6 @@ window.tfd.add_module('backend', {
 
             // Load drinks from database and store in global model
             this.global.drinks = load_drinks(DRINKS);
-            this.global.inventory = INVENTORY;
         },
 
         save: function() {
@@ -67,6 +78,9 @@ window.tfd.add_module('backend', {
 
             // Save the next order id so that we do not create duplicate order id's after reload
             window.localStorage.setItem(this.model.storage_keys.next_order_id, this.model.next_order_id);
+            
+            // Save the current inventory
+            window.localStorage.setItem(this.model.storage_keys.inventory, JSON.stringify(this.global.inventory));
         },
 
         get_stock_of_product: function(product_id) {
@@ -114,7 +128,7 @@ window.tfd.add_module('backend', {
             this.trigger('menus_updated');
         },
 
-        update_stock_for_product: function(product_id, change) {
+        update_stock_for_product: function(product_id, change, min) {
             const inventory_item = this.global.inventory[product_id];
 
             // Update the quantity in stock.
@@ -127,9 +141,14 @@ window.tfd.add_module('backend', {
             // stock by simply passing in the difference, e.g. -10.
             inventory_item.stock += change;
 
+            // Stock can not be negative
+            if (inventory_item.stock < 0) {
+                inventory_item.stock = 0;
+            }
+
             // Item will no longer be available, so we must make sure to update the
             // menu to reflect this.
-            if (inventory_item.stock <= 0) {
+            if (inventory_item.stock < min) {
                 return true;
             }
 
@@ -151,7 +170,7 @@ window.tfd.add_module('backend', {
                 // be set to true.
                 //
                 // We must make sure to multiply the quantity with -1 to decrease the stock.
-                if (this.controller.update_stock_for_product(product_id, (-1) * order_item.quantity)) {
+                if (this.controller.update_stock_for_product(product_id, (-1) * order_item.quantity), 1) {
                     should_update_menus = true;
                 }
             }
@@ -229,7 +248,7 @@ window.tfd.add_module('backend', {
 
         complete_special_drink_selection: function(product_id) {
             // Check if the stock update causes the product to be out of stock
-            if (this.controller.update_stock_for_product(product_id, -1)) {
+            if (this.controller.update_stock_for_product(product_id, -1), 1) {
                 this.controller.update_menus();
             }
         },

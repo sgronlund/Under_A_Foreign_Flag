@@ -3,7 +3,8 @@ window.tfd.localization.controller.add('staff', {
         'btn_tables_text',
         'btn_inventory_text',
         'btn_orders_text',
-        'empty_table_text',
+        'pending_orders_title',
+        'completed_orders_title',
     ],
     alt_keys: [],
     placeholder_keys: [],
@@ -19,7 +20,6 @@ window.tfd.localization.controller.add('staff', {
             btn_tables_text: 'Tables',
             btn_inventory_text: 'Inventory',
             btn_orders_text: 'Orders',
-            empty_table_text: 'No orders for this table!'
         }
     },
     sv : {
@@ -27,8 +27,6 @@ window.tfd.localization.controller.add('staff', {
             btn_tables_text: 'Bordsplacering',
             btn_inventory_text: 'Lager',
             btn_orders_text: 'Beställningar',
-            empty_table_text: 'Finns inga beställningar för detta bord!'
-            
         }
     }
 });

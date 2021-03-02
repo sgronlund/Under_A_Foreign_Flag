@@ -33,7 +33,7 @@ window.tfd.add_module('orders', {
 
             // Update staff localization strings, since some of the content is dynamic
             // TODO: Move this localization to separate file?
-            window.tfd.localization.view.update_localization_component('staff');
+            window.tfd.localization.view.update_localization_component('orders');
         },
 
         create_order_details: function(orders, order_id) {
@@ -46,7 +46,7 @@ window.tfd.add_module('orders', {
                     <div class="box row v-center fill-width space-between">
                         <div class="box row v-center">
                             <h4 class="order-item-id">
-                                <span class="order_item_table_label">Table</span> 
+                                <span class="order_item_table_label"></span> 
                                 #${order.table_id}
                             </h4>
                         </div>
@@ -61,18 +61,18 @@ window.tfd.add_module('orders', {
                         </button>
                     </div>
                     <div class="box fill margin-top">
-                        <label>Order contents</label>
+                        <label class="order_item_order_contents"></label>
                         <ol>
                             ${items}
                         </ol>
                     </div>
                     <div class="box row fill space-between separator-top padding-top margin-top">
                         <p>
-                            <span class="order_item_total_items">Total items:</span> 
+                            <span class="order_item_total_items"></span> 
                             <span class="bold">${order.total_items}</span>
                         </p>
                         <p>
-                            <span class="order_item_total_price">Total price:</span> 
+                            <span class="order_item_total_price"></span> 
                             <span class="bold product-price">${order.total_price.toFixed(2)} SEK</span>
                         </p>
                     </div>
