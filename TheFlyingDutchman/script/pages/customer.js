@@ -3,7 +3,7 @@
 // =====================================================================================================
 // Authors: Namn, 2021
 //
-// Theses functions render the different views/options the customer can access, i.e. the special drinks menu (if the customer is VIP), 
+// Theses functions render the different views/options the customer can access, i.e. the special drinks menu (if the customer is VIP),
 // the ordinary drinks menu and the order.
 //
 
@@ -62,7 +62,7 @@ window.tfd.add_module('customer', {
         set_subview: function(new_subview) {
             this.model.previous_subview = this.model.current_subview;
             this.model.current_subview = this.model.views[new_subview];
-            
+
             this.view.update_body();
         },
 
