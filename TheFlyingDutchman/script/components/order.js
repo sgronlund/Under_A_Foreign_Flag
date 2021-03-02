@@ -251,7 +251,7 @@ window.tfd.add_module('order', {
             const price_change = product.prisinklmoms * change;
 
             // Increase the total item price in order
-            item.total += price_change
+            item.total += price_change;
             item.quantity += change;
 
             // Update the total order items and price

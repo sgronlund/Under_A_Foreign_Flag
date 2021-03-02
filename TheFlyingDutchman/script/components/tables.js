@@ -1,4 +1,4 @@
-window.tfd.add_module('tables', {
+window.tfd.add_module('orders', {
     // =====================================================================================================
     // MODEL
     //
@@ -12,62 +12,69 @@ window.tfd.add_module('tables', {
     // DOCUMENT ELEMENTS
     //
     element: {
-        container: '#tables_view',
-        modal_content: '#order_modal_content',
+        pending_orders_container: '#pending_orders',
+        completed_orders_container: '#completed_orders',
     },
 
     // =====================================================================================================
     // VIEW
     //
     view: {
-        update_tables: function() {
+        update_orders: function(container, orders) {
             let html = '';
-            // TODO: Cache these DOM lookups?
-
-            for (let i = 0; i < this.model.num_tables; i++) {
-                html += this.view.create_table(this.model.table_numbering_start + i);
-            }
-
-            this.element.container.append(html);
-        },
-
-        update_order_modal: function() {
-            let html = '';
-
+    
             // Only one pending order is allowed per table,
             // which means that each each pending order will be for a unique table.
-            for (const key of Object.keys(this.global.orders)) {
-                const order = this.global.orders[key];
-
-                if (this.model.selected_table == order.table_id) {
-                    html += this.view.create_order_details(key);
-                }
+            for (const key of Object.keys(orders)) {
+                html += this.view.create_order_details(orders, key);
             }
 
-            // Check if orders was found
-            if (!html) {
-                html = '<span id="empty_table_text"></span>'
-            }
-
-            this.element.modal_content.html(html);
+            container.html(html);
 
             // Update staff localization strings, since some of the content is dynamic
+            // TODO: Move this localization to separate file?
             window.tfd.localization.view.update_localization_component('staff');
         },
 
-        create_order_details: function(order_id) {
+        create_order_details: function(orders, order_id) {
             // TODO: make this work as it should
-            const order = this.global.orders[order_id];
+            const order = orders[order_id];
             const items = this.view.create_order_contents(order.items);
 
             return (`
-                <article class="box separator-top margin-top padding-top">
-                    <p>${order.table_id}</p>
-                    <p>total price: ${order.total_price}</p>
-                    <p>total items: ${order.total_items}</p>
-                    <p>Order:</p>
-                    <div class="box fill">
-                        ${items}
+                <article id=${order_id} draggable="true" ondragstart="window.tfd.staff.controller.drag(event)" class="order card box separator-top margin-top padding-top">
+                    <div class="box row v-center fill-width space-between">
+                        <div class="box row v-center">
+                            <h4 class="order-item-id">
+                                <span class="order_item_table_label">Table</span> 
+                                #${order.table_id}
+                            </h4>
+                        </div>
+                        <button class="extra-light small">
+                            <span class="order_item_edit">Edit</span>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 
+                                         0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" 
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="box fill margin-top">
+                        <label>Order contents</label>
+                        <ol>
+                            ${items}
+                        </ol>
+                    </div>
+                    <div class="box row fill space-between separator-top padding-top margin-top">
+                        <p>
+                            <span class="order_item_total_items">Total items:</span> 
+                            <span class="bold">${order.total_items}</span>
+                        </p>
+                        <p>
+                            <span class="order_item_total_price">Total price:</span> 
+                            <span class="bold product-price">${order.total_price.toFixed(2)} SEK</span>
+                        </p>
                     </div>
                 </article>
             `);
@@ -87,23 +94,13 @@ window.tfd.add_module('tables', {
             const { namn } = this.global.drinks[item.product_nr];
 
             return (`
-                <div class="box row fill">
-                    <p class="bold fill">${namn}</p>
-                    <p>${item.quantity}</p>
-                    <p class="bold margin-left">${item.total}</p>
-                </div>
-            `);
-        },
-
-        create_table: function (table_number) {
-            return (`
-                <div id="table_${table_number}" class="box center" onclick="window.tfd.tables.controller.show_order_details(${table_number})">
-                    <div class="table_item">
-                        <p>
-                            ${table_number}
-                        </p>
+                <li>
+                    <div class="box row margin-left">
+                        <p class="bold fill">${namn}</p>
+                        <p>${item.quantity}</p>
+                        <p class="bold margin-left">${item.total} SEK</p>
                     </div>
-                </div>
+                </li>
             `);
         },
     },
@@ -111,25 +108,24 @@ window.tfd.add_module('tables', {
     // =====================================================================================================
     // CONTROLLER
     //
-    controller: {
-        show_order_details: function(table_number) {
-            // Update model with the selected table number
-            this.model.selected_table = table_number;
-
-            // Update the modal content
-            this.view.update_order_modal();
-
-            // Show order modal
-            window.tfd.modal.controller.show_order();
-        },
-    },
+    controller: {},
 
     // =====================================================================================================
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {
-        render_tables: function() {
-            this.view.update_tables();
+        render_orders: function() {
+            // Render pending orders
+            this.view.update_orders(
+                this.element.pending_orders_container,
+                this.global.orders
+            );
+            
+            // Render completed orders
+            this.view.update_orders(
+                this.element.completed_orders_container,
+                this.global.completed_orders
+            );
         },
     }
 });

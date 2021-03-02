@@ -83,7 +83,7 @@
 body {
     font-size: var(--font-size);
     font-family: 'Noto Sans', sans-serif;
-    color: var(--text-color);
+    color: var(--text-color-default);
     background-color: var(--background-color-body);
     margin: 0;
     padding: 0;
@@ -105,6 +105,12 @@ header {
 
 .sub-header {
     height: var(--sub-header-height);
+}
+
+ul, ol {
+    color: var(--text-color-default);
+    margin-top: 0;
+    padding-left: var(--spacing-lg);
 }
 
 /* BUTTONS */
@@ -272,12 +278,20 @@ button.icon-left > svg {
     margin-left: var(--spacing);
 }
 
+.margin-left-lg {
+    margin-left: var(--spacing-lg);
+}
+
 .margin-right {
     margin-right: var(--spacing);
 }
 
 .margin-right-sm {
     margin-right: var(--spacing-sm);
+}
+
+.margin-right-lg {
+    margin-right: var(--spacing-lg);
 }
 
 .margin-top-sm {
@@ -306,6 +320,10 @@ button.icon-left > svg {
 
 .padding {
     padding: var(--spacing);
+}
+
+.padding-right-lg {
+    padding-right: var(--spacing-lg);
 }
 
 .padding-left-lg {

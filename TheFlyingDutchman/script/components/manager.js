@@ -18,7 +18,7 @@ window.tfd.add_module('manager', {
     // DOM ELEMENTS
     //
     element: {
-        container: '#inventory_view',
+        inventory_container: '#inventory_view',
     },
 
     // =====================================================================================================
@@ -34,7 +34,7 @@ window.tfd.add_module('manager', {
                 html += this.view.create_inventory_item(key, stock, on_menu, on_special_menu);
             }
             
-            this.element.container.html(html);
+            this.element.inventory_container.html(html);
         },
         
         create_inventory_item: function(product_id, stock, on_menu, on_special_menu) {
@@ -88,12 +88,13 @@ window.tfd.add_module('manager', {
     // CONTROLLER
     //
     controller: {
+        
     },
     
     // =====================================================================================================
     // DOCUMENT READY EVENT
     //
     ready: function() {
-        this.view.update_inventory();    
+        this.view.update_inventory(); 
     },
 });

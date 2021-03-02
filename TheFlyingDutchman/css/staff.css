@@ -5,43 +5,12 @@
     z-index: var(--security-button-z-index);
 }
 
-#tables_view {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-column-gap: var(--spacing);
-    grid-row-gap: var(--spacing);
-    flex: 2;
+.order {
+    font-size: var(--font-size-sm);
 }
 
-.table_item {
-    height: 12rem;
-    width: 12rem;
-
-    /* STYLE */
-    background-color: var(--background-color-light);
-    color: white;
-    border-radius: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.table_item > p {
-    /* TEXT STYLING */
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.table_order_view {
-    /* hide the order from the begining */
-    display: none;
-    /* POSTIONING */
-    /* uses the closest position: relative; as an anchor */
-    position: absolute;
-    top: 0;
-    left: 0;
+.order-item-id {
+    font-size: var(--font-size); 
 }
 
 .inventory-item-data {

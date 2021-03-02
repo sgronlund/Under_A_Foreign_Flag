@@ -208,6 +208,24 @@ window.tfd.add_module('backend', {
             // Save the current state
             this.controller.save();
         },
+        
+        // Undo a order completion
+        uncomplete_order: function(order_id) {
+            // If no order with the specified table_id and order_id exists
+            if (!this.global.completed_orders.hasOwnProperty(order_id)) {
+                console.error(`Could not uncomplete order with order id: ${order_id} - invalid order id`);
+                return;
+            }
+
+            // Mark order as complete
+            this.global.orders[order_id] = this.global.completed_orders[order_id];
+
+            // Remove the order from the pending orders list
+            delete this.global.completed_orders[order_id];
+
+            // Save the current state
+            this.controller.save();
+        },
 
         complete_special_drink_selection: function(product_id) {
             // Check if the stock update causes the product to be out of stock
