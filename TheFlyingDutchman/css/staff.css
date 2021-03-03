@@ -10,7 +10,7 @@
 }
 
 .order-item-id {
-    font-size: var(--font-size);
+    font-size: var(--font-size-lg);
 }
 
 .order-item-table-id,
@@ -28,8 +28,8 @@
 }
 
 .order-item-price {
-    width: 4.5rem;
-    text-align: center;
+    width: 6rem;
+    text-align: right;
 }
 
 .inventory-item-id {
@@ -48,7 +48,7 @@
 }
 
 .inventory-item-price {
-    width: 9rem;
+    width: 10rem;
     text-align: center;
 }
 

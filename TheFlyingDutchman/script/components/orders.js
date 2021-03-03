@@ -70,6 +70,7 @@ window.tfd.add_module('orders', {
                         <p>
                             <span class="order_item_total_items"></span>
                             <span class="bold">${order.total_items}</span>
+                            <span class="order_item_pcs_text"></span>
                         </p>
                         <p>
                             <span class="order_item_total_price"></span>
@@ -101,7 +102,7 @@ window.tfd.add_module('orders', {
                             <span>${item.quantity}</span>
                             <span class="order_item_pcs_text"></span>
                         </p>
-                        <p class="order-item-price bold">${item.total} SEK</p>
+                        <p class="order-item-price bold">${item.total.toFixed(2)} SEK</p>
                     </div>
                 </li>
             `);

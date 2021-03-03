@@ -77,7 +77,7 @@ window.tfd.add_module('inventory', {
                             </p>
                             <p class="inventory-item-price separator-right">
                                 <span class="inventory_item_price_text">Price:</span>
-                                <span class="product-price">${prisinklmoms} SEK</span>
+                                <span class="product-price">${prisinklmoms.toFixed(2)} SEK</span>
                             </p>
                             <p class="inventory-item-availability separator-right">
                                 <span class="inventory_item_menu_text">On menu:</span>
