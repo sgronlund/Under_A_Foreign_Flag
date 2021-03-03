@@ -95,7 +95,7 @@ window.tfd.add_module('manager', {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
                         </button>
-                        <button class="extra-light small margin-left">
+                        <button class="extra-light small margin-left" onclick="window.tfd.manager.controller.remove(${product_id})">
                             <span class="inventory_item_remove_text">Remove</span>
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -112,6 +112,22 @@ window.tfd.add_module('manager', {
     // CONTROLLER
     //
     controller: {
+        remove: function(product_id) {
+            if (!this.global.inventory.hasOwnProperty(product_id)) {
+                console.error('Could not remove product not in inventory: ${product_id}');
+                return;
+            }
+
+            // Delete product from inventory object
+            delete this.global.inventory[product_id];
+
+            // Update the inventory product list
+            this.view.update_inventory();
+
+            // Save the updated inventory
+            window.tfd.backend.controller.save();
+        },
+
         decrease_stock: function(product_id) {
             if (!window.tfd.backend.controller.update_stock_for_product(product_id, -1, 0)) {
                 this.view.update_stock(product_id);
