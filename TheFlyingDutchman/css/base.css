@@ -322,6 +322,10 @@ button.icon-left > svg {
     padding: var(--spacing);
 }
 
+.padding-right {
+    padding-right: var(--spacing);
+}
+
 .padding-right-lg {
     padding-right: var(--spacing-lg);
 }

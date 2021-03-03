@@ -44,9 +44,12 @@ window.tfd.add_module('orders', {
                     <div class="box row v-center fill-width space-between">
                         <div class="box row v-center">
                             <h4 class="order-item-id">
-                                <span class="order_item_table_label"></span>
-                                #${order.table_id}
+                                Order #${order_id}
                             </h4>
+                            <p class="order-item-table-id">
+                                <span class="order_item_table_label"></span>
+                                ${order.table_id}
+                            </p>
                         </div>
                         <button class="extra-light small">
                             <span class="order_item_edit">Edit</span>
@@ -59,12 +62,11 @@ window.tfd.add_module('orders', {
                         </button>
                     </div>
                     <div class="box fill margin-top">
-                        <label class="order_item_order_contents"></label>
-                        <ol>
+                        <ol class="order-item-contents padding-top separator-top">
                             ${items}
                         </ol>
                     </div>
-                    <div class="box row fill space-between separator-top padding-top margin-top">
+                    <div class="box row fill space-between separator-top padding-top">
                         <p>
                             <span class="order_item_total_items"></span>
                             <span class="bold">${order.total_items}</span>
@@ -95,8 +97,11 @@ window.tfd.add_module('orders', {
                 <li>
                     <div class="box row margin-left">
                         <p class="bold fill">${namn}</p>
-                        <p>${item.quantity}</p>
-                        <p class="bold margin-left">${item.total} SEK</p>
+                        <p class="margin-right padding-right separator-right">
+                            <span>${item.quantity}</span>
+                            <span class="order_item_pcs_text"></span>
+                        </p>
+                        <p class="order-item-price bold">${item.total} SEK</p>
                     </div>
                 </li>
             `);

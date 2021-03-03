@@ -13,6 +13,32 @@
     font-size: var(--font-size);
 }
 
+.order-item-table-id,
+.inventory-item-id {
+    background-color: var(--brand-color);
+    border-radius: var(--border-radius-lg);
+    padding: 0.2rem 0.4rem;
+    font-weight: bold;
+    color: var(--text-color-brand);
+}
+
+.order-item-table-id {
+    font-size: 0.8rem;
+    margin-left: var(--spacing);
+}
+
+.order-item-price {
+    width: 4.5rem;
+    text-align: center;
+}
+
+.inventory-item-id {
+    width: 4.5rem;
+    text-align: center;
+    margin-right: var(--spacing);
+    font-size: 0.7rem;
+}
+
 .inventory-item-data {
     font-size: var(--font-size-sm);
 }

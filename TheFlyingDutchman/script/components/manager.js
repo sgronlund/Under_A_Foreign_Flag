@@ -50,12 +50,15 @@ window.tfd.add_module('manager', {
         },
 
         create_inventory_item: function(product_id, stock, on_menu, on_special_menu) {
-            const { namn, prisinklmoms } = this.global.drinks[product_id];
+            const { nr, namn, prisinklmoms } = this.global.drinks[product_id];
 
             return (`
                 <article class="card box row space-between margin-bottom">
                     <div class="box fill margin-right-lg">
-                        <h4>${namn}</h4>
+                        <div class="box row">
+                            <p class="inventory-item-id">ID: ${nr}</p>
+                            <h4>${namn}</h4>
+                        </div>
                         <div class="inventory-item-data box row v-center margin-top-sm">
                             <p class="inventory-item-stock separator-right">
                                 <span class="inventory_item_stock_text">Stock:</span>

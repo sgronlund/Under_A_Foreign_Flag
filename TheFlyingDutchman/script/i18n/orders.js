@@ -6,6 +6,7 @@ window.tfd.localization.controller.add('orders', {
         'order_item_total_price',
         'order_item_edit',
         'order_item_order_contents',
+        'order_item_pcs_text',
     ],
     alt_keys: [],
     placeholder_keys: [],
@@ -23,6 +24,7 @@ window.tfd.localization.controller.add('orders', {
             order_item_total_price: 'Total:',
             order_item_edit: 'Edit',
             order_item_order_contents: 'Contents',
+            order_item_pcs_text: 'pcs',
         }
     },
     sv : {
@@ -32,6 +34,7 @@ window.tfd.localization.controller.add('orders', {
             order_item_total_price: 'Summa:',
             order_item_edit: 'Ändra',
             order_item_order_contents: 'Orderns innehåll',
+            order_item_pcs_text: 'st',
         }
     }
 });
