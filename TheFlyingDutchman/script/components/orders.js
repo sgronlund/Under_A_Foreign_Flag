@@ -22,7 +22,7 @@ window.tfd.add_module('orders', {
     view: {
         update_orders: function(container, orders) {
             let html = '';
-    
+
             // Only one pending order is allowed per table,
             // which means that each each pending order will be for a unique table.
             for (const key of Object.keys(orders)) {
@@ -31,13 +31,11 @@ window.tfd.add_module('orders', {
 
             container.html(html);
 
-            // Update staff localization strings, since some of the content is dynamic
-            // TODO: Move this localization to separate file?
+            // Update order localization strings, since the content is dynamic
             window.tfd.localization.view.update_localization_component('orders');
         },
 
         create_order_details: function(orders, order_id) {
-            // TODO: make this work as it should
             const order = orders[order_id];
             const items = this.view.create_order_contents(order.items);
 
@@ -46,16 +44,16 @@ window.tfd.add_module('orders', {
                     <div class="box row v-center fill-width space-between">
                         <div class="box row v-center">
                             <h4 class="order-item-id">
-                                <span class="order_item_table_label"></span> 
+                                <span class="order_item_table_label"></span>
                                 #${order.table_id}
                             </h4>
                         </div>
                         <button class="extra-light small">
                             <span class="order_item_edit">Edit</span>
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 
-                                         0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" 
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2
+                                         0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                                 />
                             </svg>
                         </button>
@@ -68,11 +66,11 @@ window.tfd.add_module('orders', {
                     </div>
                     <div class="box row fill space-between separator-top padding-top margin-top">
                         <p>
-                            <span class="order_item_total_items"></span> 
+                            <span class="order_item_total_items"></span>
                             <span class="bold">${order.total_items}</span>
                         </p>
                         <p>
-                            <span class="order_item_total_price"></span> 
+                            <span class="order_item_total_price"></span>
                             <span class="bold product-price">${order.total_price.toFixed(2)} SEK</span>
                         </p>
                     </div>
@@ -120,7 +118,7 @@ window.tfd.add_module('orders', {
                 this.element.pending_orders_container,
                 this.global.orders
             );
-            
+
             // Render completed orders
             this.view.update_orders(
                 this.element.completed_orders_container,

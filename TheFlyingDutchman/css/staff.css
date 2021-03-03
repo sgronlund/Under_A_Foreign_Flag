@@ -10,11 +10,33 @@
 }
 
 .order-item-id {
-    font-size: var(--font-size); 
+    font-size: var(--font-size);
 }
 
 .inventory-item-data {
     font-size: var(--font-size-sm);
+}
+
+.inventory-item-stock {
+    width: 7.5rem;
+}
+
+.inventory-item-price {
+    width: 9rem;
+    text-align: center;
+}
+
+.inventory-item-availability {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    max-width: 11rem;
+}
+
+.inventory-item-availability > input {
+    margin-left: var(--spacing-sm);
 }
 
 body.view-menu #btn_menu,

@@ -2,7 +2,7 @@
 //  Functions for rendering and handling the pubs inventory
 // =====================================================================================================
 // Authors: Namn, 2021
-// 
+//
 // These function allow the manager to see which items are in the different menus, remove and add different
 // items from the inventory and update the stock on items currently in inventory
 
@@ -11,9 +11,12 @@ window.tfd.add_module('manager', {
     // MODEL
     //
     model: {
-        
+        menu_keys: {
+            regular: 'on_menu',
+            special: 'on_special_menu',
+        },
     },
-    
+
     // =====================================================================================================
     // DOM ELEMENTS
     //
@@ -27,48 +30,53 @@ window.tfd.add_module('manager', {
     view: {
         update_stock: function(product_id) {
             const stock = this.global.inventory[product_id].stock;
-            
+
             $(`[data-stock-id="${product_id}"]`).text(stock);
             $(`[data-stock-input-id="${product_id}"]`).val(stock);
         },
-        
+
         update_inventory: function() {
             let html = ''
             const inventory = this.global.inventory;
-            
+
             for (const key of Object.keys(inventory)) {
                 const { stock, on_menu, on_special_menu } = inventory[key];
                 html += this.view.create_inventory_item(key, stock, on_menu, on_special_menu);
             }
-            
+
             this.element.inventory_container.html(html);
-            
+
             window.tfd.localization.view.update_localization_component('manager');
         },
-        
+
         create_inventory_item: function(product_id, stock, on_menu, on_special_menu) {
             const { namn, prisinklmoms } = this.global.drinks[product_id];
-            
+
             return (`
                 <article class="card box row space-between margin-bottom">
-                    <div class="box">
+                    <div class="box fill margin-right-lg">
                         <h4>${namn}</h4>
-                        <div class="inventory-item-data box row margin-top-sm">
-                            <p class="margin-right">
-                                <span class="inventory_item_stock_text bold">Stock:</span>
-                                <span data-stock-id="${product_id}">${stock}</span>
-                            </p> 
-                            <p class="margin-right">
-                                <span class="inventory_item_price_text bold">Price:</span>
-                                <span>${prisinklmoms} SEK</span>
-                            </p> 
-                            <p class="margin-right">
-                                <span class="inventory_item_menu_text bold">On menu:</span>
-                                <span>${on_menu}</span>
+                        <div class="inventory-item-data box row v-center margin-top-sm">
+                            <p class="inventory-item-stock separator-right">
+                                <span class="inventory_item_stock_text">Stock:</span>
+                                <span data-stock-id="${product_id}" class="bold">${stock}</span>
+                                <span class="inventory_item_stock_pcs_text"></span>
                             </p>
-                            <p class="margin-right">
-                                <span class="inventory_item_special_menu_text bold">On special menu:</span>
-                                <span>${on_special_menu}</span>
+                            <p class="inventory-item-price separator-right">
+                                <span class="inventory_item_price_text">Price:</span>
+                                <span class="product-price">${prisinklmoms} SEK</span>
+                            </p>
+                            <p class="inventory-item-availability separator-right">
+                                <span class="inventory_item_menu_text">On menu:</span>
+                                <input type="checkbox" ${on_menu && 'checked'}
+                                       onchange="window.tfd.manager.controller.change_on_menu(event, ${product_id})"
+                                />
+                            </p>
+                            <p class="inventory-item-availability separator-right">
+                                <span class="inventory_item_special_menu_text">On special menu:</span>
+                                <input type="checkbox" ${on_special_menu && 'checked'}
+                                       onchange="window.tfd.manager.controller.change_on_special_menu(event, ${product_id})"
+                                />
                             </p>
                         </div>
                     </div>
@@ -104,26 +112,52 @@ window.tfd.add_module('manager', {
         decrease_stock: function(product_id) {
             if (!window.tfd.backend.controller.update_stock_for_product(product_id, -1, 0)) {
                 this.view.update_stock(product_id);
-                
+
                 // Save the updated inventory
                 window.tfd.backend.controller.save();
             }
         },
-        
+
         increase_stock: function(product_id) {
             if (!window.tfd.backend.controller.update_stock_for_product(product_id, 1, 0)) {
                 this.view.update_stock(product_id);
-                
+
                 // Save the updated inventory
                 window.tfd.backend.controller.save();
             }
         },
+
+        change_availability: function(product_id, menu_key, available) {
+            const inventory_item = this.global.inventory[product_id];
+
+            // Update the availability on one of the menus
+            inventory_item[menu_key] = available;
+
+            // Save the updated inventory
+            window.tfd.backend.controller.save();
+        },
+
+        change_on_menu: function(ev, product_id) {
+            this.controller.change_availability(
+                product_id,
+                this.model.menu_keys.regular,
+                ev.target.checked
+            );
+        },
+
+        change_on_special_menu: function(ev, product_id) {
+            this.controller.change_availability(
+                product_id,
+                this.model.menu_keys.special,
+                ev.target.checked
+            );
+        },
     },
-    
+
     // =====================================================================================================
     // DOCUMENT READY EVENT
     //
     ready: function() {
-        this.view.update_inventory(); 
+        this.view.update_inventory();
     },
 });

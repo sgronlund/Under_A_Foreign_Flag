@@ -2,6 +2,7 @@ window.tfd.localization.controller.add('manager', {
     use_class_identifiers: true,
     keys: [
         'inventory_item_stock_text',
+        'inventory_item_stock_pcs_text',
         'inventory_item_menu_text',
         'inventory_item_special_menu_text',
         'inventory_item_remove_text',
@@ -18,20 +19,22 @@ window.tfd.localization.controller.add('manager', {
     //
     en: {
         default: {
-            inventory_item_price_text: 'Price:', 
+            inventory_item_price_text: 'Price:',
             inventory_item_stock_text: 'Stock:',
-            inventory_item_menu_text: 'On menu:',
-            inventory_item_special_menu_text: 'On VIP menu:',
+            inventory_item_stock_pcs_text: 'pcs',
+            inventory_item_menu_text: 'Regular menu:',
+            inventory_item_special_menu_text: 'VIP menu:',
             inventory_item_remove_text: 'Remove',
-    
+
         }
     },
     sv : {
         default: {
             inventory_item_price_text: 'Pris:',
-            inventory_item_stock_text: 'I lager:',
-            inventory_item_menu_text: 'På menyn:',
-            inventory_item_special_menu_text: 'På VIP menyn:',
+            inventory_item_stock_text: 'Lager:',
+            inventory_item_stock_pcs_text: 'st',
+            inventory_item_menu_text: 'Vanliga menyn:',
+            inventory_item_special_menu_text: 'VIP menyn:',
             inventory_item_remove_text: 'Ta bort',
         }
     }
