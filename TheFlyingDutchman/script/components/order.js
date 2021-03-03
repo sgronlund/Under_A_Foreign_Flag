@@ -151,7 +151,7 @@ window.tfd.add_module('order', {
 
             const product = this.global.drinks[id];
             const total = product.prisinklmoms * quantity;
-            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
+            const max_quantity = window.tfd.inventory.controller.get_stock_of_product(id);
 
             // Makes sure that the quantity of the order cannot exceed 10 total items
             if (this.model.order.total_items + quantity > this.model.max_order_items) {

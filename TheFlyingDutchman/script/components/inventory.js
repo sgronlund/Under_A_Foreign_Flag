@@ -3,10 +3,17 @@
 // =====================================================================================================
 // Authors: Namn, 2021
 //
-// These function allow the manager to see which items are in the different menus, remove and add different
+// These function allow the inventory to see which items are in the different menus, remove and add different
 // items from the inventory and update the stock on items currently in inventory
 
-window.tfd.add_module('manager', {
+window.tfd.add_module('inventory', {
+    // =====================================================================================================
+    // GLOBAL MODEL
+    //
+    global: {
+        inventory: null,
+    },
+
     // =====================================================================================================
     // MODEL
     //
@@ -14,6 +21,9 @@ window.tfd.add_module('manager', {
         menu_keys: {
             regular: 'on_menu',
             special: 'on_special_menu',
+        },
+        storage_keys: {
+            inventory: 'inventory',
         },
     },
 
@@ -46,7 +56,7 @@ window.tfd.add_module('manager', {
 
             this.element.inventory_container.html(html);
 
-            window.tfd.localization.view.update_localization_component('manager');
+            window.tfd.localization.view.update_localization_component('inventory');
         },
 
         create_inventory_item: function(product_id, stock, on_menu, on_special_menu) {
@@ -72,30 +82,30 @@ window.tfd.add_module('manager', {
                             <p class="inventory-item-availability separator-right">
                                 <span class="inventory_item_menu_text">On menu:</span>
                                 <input type="checkbox" ${on_menu && 'checked'}
-                                       onchange="window.tfd.manager.controller.change_on_menu(event, ${product_id})"
+                                       onchange="window.tfd.inventory.controller.change_on_menu(event, ${product_id})"
                                 />
                             </p>
                             <p class="inventory-item-availability separator-right">
                                 <span class="inventory_item_special_menu_text">On special menu:</span>
                                 <input type="checkbox" ${on_special_menu && 'checked'}
-                                       onchange="window.tfd.manager.controller.change_on_special_menu(event, ${product_id})"
+                                       onchange="window.tfd.inventory.controller.change_on_special_menu(event, ${product_id})"
                                 />
                             </p>
                         </div>
                     </div>
                     <div class="box row v-center">
-                        <button class="gray small square no-icon-spacing" onclick="window.tfd.manager.controller.decrease_stock(${product_id})">
+                        <button class="gray small square no-icon-spacing" onclick="window.tfd.inventory.controller.decrease_stock(${product_id})">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                             </svg>
                         </button>
                         <input type="number" class="product-quantity no-spinner" data-stock-input-id="${product_id}" value="${stock}" min="0" />
-                        <button class="gray small square no-icon-spacing" onclick="window.tfd.manager.controller.increase_stock(${product_id})">
+                        <button class="gray small square no-icon-spacing" onclick="window.tfd.inventory.controller.increase_stock(${product_id})">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
                         </button>
-                        <button class="extra-light small margin-left" onclick="window.tfd.manager.controller.remove(${product_id})">
+                        <button class="extra-light small margin-left" onclick="window.tfd.inventory.controller.remove(${product_id})">
                             <span class="inventory_item_remove_text">Remove</span>
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -112,6 +122,67 @@ window.tfd.add_module('manager', {
     // CONTROLLER
     //
     controller: {
+        load: function() {
+            // Load inventory from localStorage and merge with the default inventory in INVENTORY
+            const inventory = window.localStorage.getItem(this.model.storage_keys.inventory);
+
+            if (!inventory) {
+                // If no inventory is saved, use the default inventory
+                this.global.inventory = INVENTORY;
+            } else {
+                this.global.inventory = JSON.parse(inventory);
+            }
+        },
+
+        save: function() {
+            // Save the current inventory
+            window.localStorage.setItem(this.model.storage_keys.inventory, JSON.stringify(this.global.inventory));
+        },
+
+        update_stock_for_product: function(product_id, change, min) {
+            const inventory_item = this.global.inventory[product_id];
+
+            // Update the quantity in stock.
+            // For simplicity, we assume that orders are always valid
+            // and do not exceed the current stock of a product.
+            // This should be checked before a product is even added to the order.
+            //
+            // To make this function more generalized, we add the change in stock
+            // to the existing stock. This way we can both increase and decrease the
+            // stock by simply passing in the difference, e.g. -10.
+            inventory_item.stock += change;
+
+            // Stock can not be negative
+            if (inventory_item.stock < 0) {
+                inventory_item.stock = 0;
+            }
+
+            // Item will no longer be available, so we must make sure to update the
+            // menu to reflect this.
+            if (inventory_item.stock < min) {
+                return true;
+            }
+
+            // Save the updated inventory
+            this.controller.save();
+
+            // Product is still in stock, return false to indicate that
+            // a menu update is not required for this product.
+            return false;
+        },
+
+        get_stock_of_product: function(product_id) {
+            // Since orders that have been checked out decrease the stock of a product,
+            // we only have to check the available stock in the inventory.
+            if (!this.global.inventory.hasOwnProperty(product_id)) {
+                // No stock if the product does not exist
+                console.error(`Could not get stock of invalid product id: ${product_id}`);
+                return 0;
+            }
+
+            return this.global.inventory[product_id].stock;
+        },
+
         remove: function(product_id) {
             if (!this.global.inventory.hasOwnProperty(product_id)) {
                 console.error('Could not remove product not in inventory: ${product_id}');
@@ -125,24 +196,24 @@ window.tfd.add_module('manager', {
             this.view.update_inventory();
 
             // Save the updated inventory
-            window.tfd.backend.controller.save();
+            this.controller.save();
         },
 
         decrease_stock: function(product_id) {
-            if (!window.tfd.backend.controller.update_stock_for_product(product_id, -1, 0)) {
+            if (!this.controller.update_stock_for_product(product_id, -1, 0)) {
                 this.view.update_stock(product_id);
 
                 // Save the updated inventory
-                window.tfd.backend.controller.save();
+                this.controller.save();
             }
         },
 
         increase_stock: function(product_id) {
-            if (!window.tfd.backend.controller.update_stock_for_product(product_id, 1, 0)) {
+            if (!this.controller.update_stock_for_product(product_id, 1, 0)) {
                 this.view.update_stock(product_id);
 
                 // Save the updated inventory
-                window.tfd.backend.controller.save();
+                this.controller.save();
             }
         },
 
@@ -153,7 +224,7 @@ window.tfd.add_module('manager', {
             inventory_item[menu_key] = available;
 
             // Save the updated inventory
-            window.tfd.backend.controller.save();
+            this.controller.save();
         },
 
         change_on_menu: function(ev, product_id) {
@@ -171,6 +242,13 @@ window.tfd.add_module('manager', {
                 ev.target.checked
             );
         },
+    },
+
+    // =====================================================================================================
+    // MODULE INIT
+    //
+    init: function() {
+        this.controller.load();
     },
 
     // =====================================================================================================

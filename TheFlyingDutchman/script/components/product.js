@@ -165,7 +165,7 @@ window.tfd.add_module('product', {
 
         add_to_order: function(id) {
             let quantity = this.controller.get_quantity(id);
-            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
+            const max_quantity = window.tfd.inventory.controller.get_stock_of_product(id);
 
             if (quantity > this.model.max_quantity) {
                 // Make sure that we stay below the max quantity of orders
@@ -184,7 +184,7 @@ window.tfd.add_module('product', {
 
         change_quantity: function(id, change) {
             const new_quantity = this.controller.get_quantity(id) + change;
-            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
+            const max_quantity = window.tfd.inventory.controller.get_stock_of_product(id);
 
             if (new_quantity < 1 || new_quantity > max_quantity || new_quantity > this.model.max_quantity) {
                 console.log(`Could not update quantity of product to: ${new_quantity}`);

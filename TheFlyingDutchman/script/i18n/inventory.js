@@ -1,4 +1,4 @@
-window.tfd.localization.controller.add('manager', {
+window.tfd.localization.controller.add('inventory', {
     use_class_identifiers: true,
     keys: [
         'inventory_item_stock_text',
