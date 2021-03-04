@@ -31,6 +31,7 @@ window.tfd.add_module('modal', {
         checkout_modal: '#checkout_modal',
         special_drink_modal: '#special_drink_modal',
         order_modal: '#order_modal',
+        edit_modal: '#edit_modal',
     },
 
     // =====================================================================================================
@@ -96,6 +97,10 @@ window.tfd.add_module('modal', {
 
         show_order: function() {
             this.controller.show(this.element.order_modal);
+        },
+
+        show_edit: function() {
+            this.controller.show(this.element.edit_modal);
         },
 
         show_error: function() {
