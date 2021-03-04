@@ -12,6 +12,7 @@ window.tfd.add_module('login', {
     //
     global: {
         logged_in: false,
+        is_manager: false,
         user_details: null,
     },
 
@@ -32,7 +33,7 @@ window.tfd.add_module('login', {
             staff: 'staff.html',
         },
         permissions: {
-            manager: 1,
+            manager: 0,
             staff: 2,
             vip: 3,
         },
@@ -86,6 +87,7 @@ window.tfd.add_module('login', {
         set_user_data: function(details) {
             this.global.logged_in = true;
             this.global.user_details = details;
+            this.global.is_manager = details.credentials == this.model.permissions.manager;
         },
 
         redirect: function() {

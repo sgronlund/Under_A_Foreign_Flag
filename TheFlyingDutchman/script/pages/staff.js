@@ -79,7 +79,6 @@ window.tfd.add_module('staff', {
     // DOCUMENT READY EVENT
     //
     ready: function() {
-        this.trigger('render_products');
         this.trigger('render_orders');
     },
 
