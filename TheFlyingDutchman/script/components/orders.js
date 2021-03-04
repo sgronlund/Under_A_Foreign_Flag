@@ -51,7 +51,7 @@ window.tfd.add_module('orders', {
                                 ${order.table_id}
                             </p>
                         </div>
-                        <button class="extra-light small">
+                        <button class="extra-light small" onclick="window.tfd.modal.controller.show_edit()">
                             <span class="order_item_edit">Edit</span>
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

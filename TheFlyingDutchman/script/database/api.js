@@ -78,6 +78,7 @@ function changeBalance(username, newAmount) {
     };
 }
 
+
 // =====================================================================================================
 // Converts empty or invalid strings in the database into '-' to indicate
 // that the information is missing
