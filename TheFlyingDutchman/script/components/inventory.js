@@ -51,7 +51,8 @@ window.tfd.add_module('inventory', {
 
             for (const key of Object.keys(inventory)) {
                 const { stock, on_menu, on_special_menu } = inventory[key];
-                html += this.view.create_inventory_item(key, stock, on_menu, on_special_menu);
+                const price = this.controller.get_price_of_product(key);
+                html += this.view.create_inventory_item(key, stock, price, on_menu, on_special_menu);
             }
 
             this.element.inventory_container.html(html);
@@ -59,8 +60,8 @@ window.tfd.add_module('inventory', {
             window.tfd.localization.view.update_localization_component('inventory');
         },
 
-        create_inventory_item: function(product_id, stock, on_menu, on_special_menu) {
-            const { nr, namn, prisinklmoms } = this.global.drinks[product_id];
+        create_inventory_item: function(product_id, stock, price, on_menu, on_special_menu) {
+            const { nr, namn } = this.global.drinks[product_id];
 
             return (`
                 <article class="card box row space-between margin-bottom">
@@ -77,7 +78,11 @@ window.tfd.add_module('inventory', {
                             </p>
                             <p class="inventory-item-price separator-right">
                                 <span class="inventory_item_price_text">Price:</span>
-                                <span class="product-price">${prisinklmoms.toFixed(2)} SEK</span>
+                                <input type="number" min="0" value="${price}" step="0.01"
+                                       class="inventory-item-price-input no-spinner"
+                                       onchange="window.tfd.inventory.controller.update_price(event, ${product_id})"
+                                />
+                                <span class="product-price">SEK</span>
                             </p>
                             <p class="inventory-item-availability separator-right">
                                 <span class="inventory_item_menu_text">On menu:</span>
@@ -88,7 +93,7 @@ window.tfd.add_module('inventory', {
                             <p class="inventory-item-availability separator-right">
                                 <span class="inventory_item_special_menu_text">On special menu:</span>
                                 <input type="checkbox" ${on_special_menu && 'checked'}
-                                       onchange="window.tfd.inventory.controller.change_on_special_menu(event, ${product_id})"
+                                       onfocusout="window.tfd.inventory.controller.change_on_special_menu(event, ${product_id})"
                                 />
                             </p>
                         </div>
@@ -183,6 +188,24 @@ window.tfd.add_module('inventory', {
             return this.global.inventory[product_id].stock;
         },
 
+        get_price_of_product: function(product_id) {
+            if (!this.global.inventory.hasOwnProperty(product_id)) {
+                console.error(`Could not get price of invalid product id: ${product_id}`);
+                return 0;
+            }
+
+            // Inventory items will only have a set price if it has been updated by the staff.
+            // If no price is set, we instead use the price of the product in the database.
+            const { price } = this.global.inventory[product_id];
+
+            // Check if the inventory item has a price
+            if (price) {
+                return parseFloat(price).toFixed(2);
+            }
+
+            return this.global.drinks[product_id].prisinklmoms.toFixed(2);
+        },
+
         remove: function(product_id) {
             if (!this.global.inventory.hasOwnProperty(product_id)) {
                 console.error('Could not remove product not in inventory: ${product_id}');
@@ -215,6 +238,30 @@ window.tfd.add_module('inventory', {
                 // Save the updated inventory
                 this.controller.save();
             }
+        },
+
+        update_price: function(ev, product_id) {
+            const input = ev.target;
+
+            if (!this.global.inventory.hasOwnProperty(product_id)) {
+                console.error(`Could not update price of invalid product: ${product_id}`);
+                return;
+            }
+
+            // Input did not pass the validation properties (e.g. type and min value)
+            if (!input.checkValidity()) {
+                return;
+            }
+
+            const new_price = parseFloat(input.value).toFixed(2);
+
+            // Add new field to inventory product containing the updated price.
+            // When rendering the menu, the renderer first checks if the inventory product
+            // has a custom price set. If not, the default price in 'this.global.drinks' is used.
+            this.global.inventory[product_id]['price'] = new_price;
+
+            // Save the updated inventory
+            this.controller.save();
         },
 
         change_availability: function(product_id, menu_key, available) {

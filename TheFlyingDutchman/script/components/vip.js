@@ -44,10 +44,11 @@ window.tfd.add_module('vip', {
                 return;
             }
 
-            const { namn, prisinklmoms } = this.model.selected_drink;
+            const { namn } = this.model.selected_drink;
+            const price = window.tfd.inventory.controller.get_price_of_product(this.model.selected_drink.nr);
 
             this.element.special_drink_name.text(namn);
-            this.element.special_drink_price.text(prisinklmoms + ' SEK');
+            this.element.special_drink_price.text(price + ' SEK');
 
             if (this.model.generated_code) {
                 // Set and show the generated code
@@ -89,9 +90,10 @@ window.tfd.add_module('vip', {
                 return;
             }
 
-            const { nr, prisinklmoms } = this.model.selected_drink;
+            const { nr } = this.model.selected_drink;
+            const price = window.tfd.inventory.controller.get_price_of_product(this.model.selected_drink.nr);
 
-            if (this.controller.update_balance(prisinklmoms)) {
+            if (this.controller.update_balance(price)) {
                 this.controller.generate_special_drink_code();
 
                 // Decrease stock of the selected drink

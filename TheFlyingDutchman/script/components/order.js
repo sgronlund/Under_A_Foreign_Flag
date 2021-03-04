@@ -96,7 +96,8 @@ window.tfd.add_module('order', {
 
         create_order_item: function(item) {
             const product = this.global.drinks[item.product_nr];
-            const { nr, namn, prisinklmoms } = product;
+            const { nr, namn } = product;
+            const price = window.tfd.inventory.controller.get_price_of_product(product.nr);
             const description = window.tfd.product.view.create_product_description(product);
 
             return (`
@@ -104,7 +105,7 @@ window.tfd.add_module('order', {
                     <div class="box row space-between v-center margin-bottom">
                         <h4 class="product-title">${namn}</h4>
                         <p class="order-product-price-each">
-                            <span>${prisinklmoms} SEK /</span>
+                            <span>${price} SEK /</span>
                             <span class="order_product_price_each_label"></span>
                         </p>
                     </div>
@@ -150,7 +151,8 @@ window.tfd.add_module('order', {
             }
 
             const product = this.global.drinks[id];
-            const total = product.prisinklmoms * quantity;
+            const price = window.tfd.inventory.controller.get_price_of_product(product.nr);
+            const total = price * quantity;
             const max_quantity = window.tfd.inventory.controller.get_stock_of_product(id);
 
             // Makes sure that the quantity of the order cannot exceed 10 total items
@@ -248,7 +250,8 @@ window.tfd.add_module('order', {
                 return;
             }
 
-            const price_change = product.prisinklmoms * change;
+            const price = window.tfd.inventory.controller.get_price_of_product(product.nr);
+            const price_change = price * change;
 
             // Increase the total item price in order
             item.total += price_change;

@@ -48,8 +48,18 @@
 }
 
 .inventory-item-price {
-    width: 10rem;
+    width: 12rem;
     text-align: center;
+}
+
+.inventory-item-price-input {
+    width: 5rem;
+    font-size: var(--font-size-sm);
+    font-weight: bold;
+    color: var(--price-color-text);
+    text-align: center;
+    padding: var(--spacing-xsm);
+    margin: 0 var(--spacing-xsm);
 }
 
 .inventory-item-availability {

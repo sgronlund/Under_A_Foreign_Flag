@@ -78,7 +78,7 @@ const INVENTORY = {
         stock: 92,
         on_menu: false,
         on_special_menu: false,
-    }, 
+    },
     "132501": {
         stock: 14,
         on_menu: true,

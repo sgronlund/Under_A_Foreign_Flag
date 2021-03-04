@@ -69,7 +69,8 @@ window.tfd.add_module('product', {
         },
 
         create_product: function(product, vip) {
-            const { namn, prisinklmoms } = product;
+            const { namn } = product;
+            const price = window.tfd.inventory.controller.get_price_of_product(product.nr);
             const description = this.view.create_product_description(product);
             const actions = this.view.create_product_actions(product, vip);
 
@@ -77,7 +78,7 @@ window.tfd.add_module('product', {
                 <article class="product card box">
                     <div class="box row space-between v-center margin-bottom">
                         <h4 class="product-title">${namn}</h4>
-                        <p class="product-price">${prisinklmoms} SEK</p>
+                        <p class="product-price">${price} SEK</p>
                     </div>
                     <div class="box v-start fill padding-bottom">
                         <div class="box">${description}</div>
