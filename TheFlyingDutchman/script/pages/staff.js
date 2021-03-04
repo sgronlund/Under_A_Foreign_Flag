@@ -80,6 +80,7 @@ window.tfd.add_module('staff', {
     //
     ready: function() {
         this.trigger('render_orders');
+        this.trigger('render_product_dropdown');
     },
 
     signal: {

@@ -203,10 +203,10 @@ window.tfd.add_module('inventory', {
 
             // Check if the inventory item has a price
             if (price) {
-                return parseFloat(price).toFixed(2);
+                return parseFloat(price);
             }
 
-            return this.global.drinks[product_id].prisinklmoms.toFixed(2);
+            return parseFloat(this.global.drinks[product_id].prisinklmoms);
         },
 
         remove: function(product_id) {
@@ -306,5 +306,14 @@ window.tfd.add_module('inventory', {
     //
     ready: function() {
         this.view.update_inventory();
+    },
+    
+    // =====================================================================================================
+    // CUSTOM SIGNAL HANDLERS
+    //
+    signal: {
+        render_inventory: function() {
+            this.view.update_inventory();
+        },
     },
 });

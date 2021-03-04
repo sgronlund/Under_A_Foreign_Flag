@@ -36,9 +36,11 @@ window.tfd.add_module('orders', {
         },
 
         create_order_details: function(orders, order_id) {
+            const list_name = orders === this.global.orders ? 'orders' : 'completed_orders';
+            
             const order = orders[order_id];
             const items = this.view.create_order_contents(order.items);
-
+            
             return (`
                 <article id=${order_id} draggable="true" ondragstart="window.tfd.staff.controller.drag(event)" class="order card box separator-top margin-top padding-top">
                     <div class="box row v-center fill-width space-between">
@@ -51,7 +53,7 @@ window.tfd.add_module('orders', {
                                 ${order.table_id}
                             </p>
                         </div>
-                        <button class="extra-light small" onclick="window.tfd.modal.controller.show_edit()">
+                        <button class="extra-light small" onclick="window.tfd.edit_orders.controller.edit(${order_id}, '${list_name}')">
                             <span class="order_item_edit">Edit</span>
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
