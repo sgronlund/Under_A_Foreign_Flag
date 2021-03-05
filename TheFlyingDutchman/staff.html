@@ -55,6 +55,7 @@
             <section class="box row v-center space-between padding-lg separator-bottom-light">
                 <div class="box v-center">
                     <a href="index.html"><h1 class="logo">The Flying Dutchman</h1></a>
+                    <h3 id="slogan" class="slogan"></h3>
                 </div>
                 <div class="box row v-center">
                     <button id="btn_theme" class="light no-icon-spacing" onclick="window.tfd.theme.controller.toggle()">
@@ -189,20 +190,25 @@
             <!-- TODO: Add option to put product on the house, change quantity in order and edit price of product -->
             <div class="modal-content">
                 <label id="edit_order_contents_label" for="edit_order_contents">Order contents</label>
-                <div class="box fill margin-top" id="edit_order_contents">
+                <div class="box fill margin-bottom" id="edit_order_contents">
                     <!--TODO: Use existing order contents renderer from orders.js and add remove icon on the left side of each item -->
                 </div>
-                
+
                 <label for="add_products" id="add_products_label">Add product</label>
                 <div class="box row fill-width">
-                    <select id="add_products" class="fill margin-right"></select>
+                    <div class="select-container fill margin-right">
+                        <select id="add_products"></select>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
                     <button class="brand small square no-icon-spacing" onclick="window.tfd.edit_orders.controller.add_product()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                     </button>
                 </div>
-                
+
                 <div class="box row fill-width margin-top padding-top separator-top">
                     <button class="gray fill margin-right icon-left" onclick="window.tfd.edit_orders.controller.undo()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

@@ -535,6 +535,47 @@ input:focus, input:active {
     border-color: var(--border-color-focus);
 }
 
+select {
+    font-weight: bold;
+    box-sizing: border-box;
+    background-color: var(--background-color-default);
+    color: var(--text-color-default);
+    border: 2px solid var(--border-color-dark);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
+}
+
+select:focus {
+    border-color: var(--border-color-focus);
+}
+
+.select-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.select-container > select {
+    height: 100%;
+    width: 100%;
+
+    /* Hide default arrow */
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.select-container > svg {
+    position: absolute;
+    right: var(--spacing-sm);
+    background-color: inherit;
+    height: 100%;
+    width: 1.5rem;
+
+    /* Pointer events should be handled by the select element, not the icon */
+    pointer-events: none;
+}
+
 label {
     font-size: var(--font-size-xsm);
     margin-bottom: var(--spacing-xsm);
