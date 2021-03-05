@@ -276,7 +276,6 @@ window.tfd.add_module('order', {
             this.controller.change_quantity(id, -1);
         },
 
-
         checkout_bar_or_table: function() {
             // TODO: Add dynamic table id?
             const table_id = 1;

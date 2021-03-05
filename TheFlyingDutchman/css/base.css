@@ -29,10 +29,12 @@
     --border-radius-lg: 8px;
     --modal-width: 325px;
     --modal-width-lg: 400px;
+    --modal-width-xlg: 550px;
     --content-width: 1200px;
     --content-min-width: 400px;
     --lang-button-width: 4.2rem;
     --sub-header-height: 3.2rem;
+    --button-height-xsm: 1.8rem;
     --button-height-sm: 2.4rem;
     --button-height: 2.7rem;
     --button-height-lg: 3.3rem;
@@ -202,20 +204,34 @@ button.large {
     padding: var(--spacing) var(--spacing-lg);
 }
 
-button.small {
-    height: var(--button-height-sm);
+button.small,
+button.extra-small {
     font-size: var(--font-size-sm);
     padding: var(--spacing-sm) var(--spacing);
     border-radius: var(--border-radius-lg);
 }
 
-button.square:not(.small) {
+button.small {
+    height: var(--button-height-sm);
+}
+
+button.extra-small {
+    height: var(--button-height-xsm);
+}
+
+button.square:not(.small),
+button.square:not(.extra-small) {
     width: var(--button-height);
 }
 
 button.small.square {
     padding: var(--spacing-sm);
     width: var(--button-height-sm);
+}
+
+button.extra-small.square {
+    padding: 0.35rem;
+    width: var(--button-height-xsm);
 }
 
 #btn_lang {
@@ -298,6 +314,10 @@ button.icon-left > svg {
     margin-top: var(--spacing-sm);
 }
 
+.margin-bottom-sm {
+    margin-bottom: var(--spacing-sm);
+}
+
 .margin-top-lg {
     margin-top: var(--spacing-lg);
 }
@@ -316,6 +336,14 @@ button.icon-left > svg {
 
 .padding-top {
     padding-top: var(--spacing);
+}
+
+.padding-top-sm {
+    padding-top: var(--spacing-sm);
+}
+
+.padding-bottom-sm {
+    padding-bottom: var(--spacing-sm);
 }
 
 .padding {
@@ -448,6 +476,10 @@ body.dark .card {
 
 .modal-lg {
     width: var(--modal-width-lg);
+}
+
+.modal-xlg {
+    width: var(--modal-width-xlg);
 }
 
 .modal-top {

@@ -37,10 +37,10 @@ window.tfd.add_module('orders', {
 
         create_order_details: function(orders, order_id) {
             const list_name = orders === this.global.orders ? 'orders' : 'completed_orders';
-            
+
             const order = orders[order_id];
             const items = this.view.create_order_contents(order.items);
-            
+
             return (`
                 <article id=${order_id} draggable="true" ondragstart="window.tfd.staff.controller.drag(event)" class="order card box separator-top margin-top padding-top">
                     <div class="box row v-center fill-width space-between">
@@ -98,7 +98,7 @@ window.tfd.add_module('orders', {
 
             return (`
                 <li>
-                    <div class="box row margin-left">
+                    <div class="box row v-center margin-left">
                         <p class="bold fill">${namn}</p>
                         <p class="margin-right padding-right separator-right">
                             <span>${item.quantity}</span>
