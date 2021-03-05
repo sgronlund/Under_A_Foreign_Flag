@@ -130,8 +130,8 @@ window.tfd.add_module('edit_orders', {
                 // Can not exceed existing stock
                 // We have already updated the stock when creating the initial order.
                 // Therefore, we must only compare the updated order item quantity
-                // TODO: Shit no worky
-                if (stock < quantity) {
+                if (stock < 0) {
+                    console.log("couldnt add, now in stock");
                     return;
                 }
 
@@ -148,7 +148,11 @@ window.tfd.add_module('edit_orders', {
                     quantity: 1,
                 };
             }
-
+            window.tfd.inventory.controller.update_stock_for_product(
+                product_id,
+                (-1),
+                0
+            );
             this.model.order.total_items += 1;
             this.model.order.total_price += price;
 
@@ -175,7 +179,11 @@ window.tfd.add_module('edit_orders', {
             }
 
             const { quantity, total } = this.model.order.items[product_id];
-
+            window.tfd.inventory.controller.update_stock_for_product(
+                product_id,
+                quantity,
+                0
+            );
             this.model.order.total_items -= quantity;
             this.model.order.total_price -= total;
 
