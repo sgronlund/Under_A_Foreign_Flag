@@ -22,14 +22,20 @@ window.tfd.add_module('orders', {
     view: {
         update_orders: function(container, orders) {
             let html = '';
+            let count = 0;
 
             // Only one pending order is allowed per table,
             // which means that each each pending order will be for a unique table.
             for (const key of Object.keys(orders)) {
                 html += this.view.create_order_details(orders, key);
+                count++;
             }
 
-            container.html(html);
+            if (count == 0) {
+                container.html(this.view.create_empty_message());
+            } else {
+                container.html(html);
+            }
 
             // Update order localization strings, since the content is dynamic
             window.tfd.localization.view.update_localization_component('orders');
@@ -42,7 +48,12 @@ window.tfd.add_module('orders', {
             const items = this.view.create_order_contents(order.items);
 
             return (`
-                <article id=${order_id} draggable="true" ondragstart="window.tfd.staff.controller.drag(event)" class="order card box separator-top margin-top padding-top">
+                <article
+                    id=${order_id}
+                     class="order card box separator-top margin-top padding-top"
+                     draggable="true"
+                     ondragstart="window.tfd.orders.controller.drag(event)"
+                >
                     <div class="box row v-center fill-width space-between">
                         <div class="box row v-center">
                             <h4 class="order-item-id">
@@ -53,15 +64,21 @@ window.tfd.add_module('orders', {
                                 ${order.table_id}
                             </p>
                         </div>
-                        <button class="extra-light small" onclick="window.tfd.edit_orders.controller.edit(${order_id}, '${list_name}')">
-                            <span class="order_item_edit">Edit</span>
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2
-                                         0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                />
-                            </svg>
-                        </button>
+                        <div class="box row v-center">
+                            <button
+                                class="extra-light small margin-right"
+                                onclick="window.tfd.edit_orders.controller.edit(${order_id}, '${list_name}')"
+                            >
+                                <span class="order_item_edit">Edit</span>
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2
+                                             0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                    />
+                                </svg>
+                            </button>
+                            ${this.view.create_move_button(order_id, list_name)}
+                        </div>
                     </div>
                     <div class="box fill margin-top">
                         <ol class="order-item-contents padding-top separator-top">
@@ -80,6 +97,34 @@ window.tfd.add_module('orders', {
                         </p>
                     </div>
                 </article>
+            `);
+        },
+
+        create_move_button: function(order_id, list_name) {
+            if (list_name === 'orders') {
+                return (`
+                    <button
+                        class="success small btn-order-move"
+                        onclick="window.tfd.orders.controller.move(${order_id}, '${list_name}')"
+                    >
+                        <span class="order_item_move_completed">Set completed</span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                `);
+            }
+
+            return (`
+                <button
+                    class="gray small icon-left btn-order-move"
+                    onclick="window.tfd.orders.controller.move(${order_id}, '${list_name}')"
+                >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    <span class="order_item_move_pending">Set pending</span>
+                </button>
             `);
         },
 
@@ -109,18 +154,19 @@ window.tfd.add_module('orders', {
                 </li>
             `);
         },
+
+        create_empty_message: function() {
+            return (`
+                <p class="order_empty_list_message margin-top-sm"></p>
+            `);
+        },
     },
 
     // =====================================================================================================
     // CONTROLLER
     //
-    controller: {},
-
-    // =====================================================================================================
-    // CUSTOM SIGNAL HANDLERS
-    //
-    signal: {
-        render_orders: function() {
+    controller: {
+        render_all_orders: function() {
             // Render pending orders
             this.view.update_orders(
                 this.element.pending_orders_container,
@@ -132,6 +178,48 @@ window.tfd.add_module('orders', {
                 this.element.completed_orders_container,
                 this.global.completed_orders
             );
+        },
+
+        move: function(order_id, list_name) {
+            // Move the order to the correct list
+            if (list_name === 'orders') {
+                window.tfd.backend.controller.complete_order(order_id);
+            } else {
+                window.tfd.backend.controller.uncomplete_order(order_id);
+            }
+
+            // Re-render all orders
+            this.controller.render_all_orders();
+        },
+
+        // Drag and drop
+        allowDrop: function(ev) {
+            ev.preventDefault();
+        },
+
+        drag: function(ev) {
+            ev.dataTransfer.setData("text/plain", ev.target.id);
+        },
+
+        drop: function(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            ev.currentTarget.prepend(document.getElementById(data));
+
+            if(ev.currentTarget.id == "pending_orders"){
+                window.tfd.backend.controller.uncomplete_order(data);
+            } else {
+                window.tfd.backend.controller.complete_order(data);
+            }
+        },
+    },
+
+    // =====================================================================================================
+    // CUSTOM SIGNAL HANDLERS
+    //
+    signal: {
+        render_orders: function() {
+            this.controller.render_all_orders();
         },
     }
 });

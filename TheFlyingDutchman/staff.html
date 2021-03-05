@@ -110,15 +110,25 @@
         <!--ORDERS VIEW-->
         <div class="container box row padding-lg" id="orders_view">
             <!--PENDING ORDERS -->
-            <div class="box fill margin-right-lg">
+            <div class="orders-view-list box fill margin-right-lg">
                 <h3 id="pending_orders_title">Pending orders</h3>
-                <section id="pending_orders" class="box fill-width fill-height" ondragover="window.tfd.staff.controller.allowDrop(event)" ondrop="window.tfd.staff.controller.drop(event)"></section>
+                <section
+                    id="pending_orders"
+                    class="box fill-width fill-height"
+                    ondragover="window.tfd.orders.controller.allowDrop(event)"
+                    ondrop="window.tfd.orders.controller.drop(event)"
+                ></section>
             </div>
 
             <!--COMPLETED ORDERS -->
-            <div class="box fill margin-left-lg">
+            <div class="orders-view-list box fill margin-left-lg">
                 <h3 id="completed_orders_title">Completed orders</h3>
-                <section id="completed_orders" class="box fill-width fill-height" ondrop="window.tfd.staff.controller.drop(event)" ondragover="window.tfd.staff.controller.allowDrop(event)"></section>
+                <section
+                    id="completed_orders"
+                    class="box fill-width fill-height"
+                    ondrop="window.tfd.orders.controller.drop(event)"
+                    ondragover="window.tfd.orders.controller.allowDrop(event)"
+                ></section>
             </div>
         </div>
 
@@ -126,13 +136,6 @@
         <div class="container box padding-lg" id="inventory_view">
             <!--INVENTORY VIEW CONTENT-->
         </div>
-
-        <!--MENU VIEW-->
-        <!--<div class="container box row padding-lg" id="menu_view">-->
-            <!--MENU VIEW CONTENT-->
-        <!--    <section id="menu" class="item-grid fill"></section>-->
-        <!--    <section id="special_drinks" class="item-grid fill"></section>-->
-        <!--</div>-->
     </main>
 
     <footer>
@@ -157,15 +160,6 @@
                         </svg>
                         <span id="btn_orders_text"></span>
                     </button>
-                    <!--<button id="btn_menu" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_menu()">-->
-                    <!--    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">-->
-                    <!--        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
-                    <!--              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2-->
-                    <!--                 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"-->
-                    <!--        />-->
-                    <!--    </svg>-->
-                    <!--    <span id="btn_menu_text"></span>-->
-                    <!--</button>-->
                     <button id="btn_logout" class="menu-item fill icon-left" onclick="window.tfd.login.controller.logout()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

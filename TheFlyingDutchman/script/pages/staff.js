@@ -23,7 +23,7 @@ window.tfd.add_module('staff', {
 
             $(document.body).addClass(this.model.current_view);
         },
-        
+
         security_notification: function() {
             window.alert("Security has been notified!");
         },
@@ -49,29 +49,6 @@ window.tfd.add_module('staff', {
 
         show_inventory: function() {
             this.controller.set_view('inventory');
-        },
-        
-        // Drag and drop
-        allowDrop: function(ev) {
-            ev.preventDefault();
-        },
-        
-        drag: function(ev) {
-            ev.dataTransfer.setData("text/plain", ev.target.id);
-        },
-        
-        drop: function(ev) {
-            ev.preventDefault();
-            const data = ev.dataTransfer.getData("text");
-            ev.currentTarget.prepend(document.getElementById(data));
-            
-            if(ev.currentTarget.id == "pending_orders"){
-                window.tfd.backend.controller.uncomplete_order(data);
-            } else {
-                window.tfd.backend.controller.complete_order(data);
-            }
-            
-            this.view.update_body();
         },
     },
 
