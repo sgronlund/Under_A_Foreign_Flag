@@ -46,6 +46,7 @@ window.tfd.localization.controller.add('staff', {
             add_products_label: 'Lägg till produkt',
             btn_edit_order_undo: 'Ångra',
             btn_edit_order_redo: 'Gör om',
+            empty_order_list: 'Den här listan är tom!',
         }
     }
 });

@@ -32,6 +32,15 @@
     text-align: right;
 }
 
+.btn-order-move > svg {
+    margin-left: var(--spacing-xsm);
+}
+
+.btn-order-move.icon-left > svg {
+    margin-left: 0;
+    margin-right: var(--spacing-xsm);
+}
+
 .inventory-item-id {
     width: 4.5rem;
     text-align: center;
@@ -116,4 +125,15 @@ body.view-tables #table_view,
 body.view-orders #orders_view,
 body.view-inventory #inventory_view {
     display: flex;
+}
+
+@media screen and (max-width: 1024px) {
+    #orders_view {
+        flex-direction: column;
+    }
+
+    .orders-view-list {
+        margin: 0;
+        margin-bottom: var(--spacing-lg);
+    }
 }

@@ -7,6 +7,9 @@ window.tfd.localization.controller.add('orders', {
         'order_item_edit',
         'order_item_order_contents',
         'order_item_pcs_text',
+        'order_item_move_pending',
+        'order_item_move_completed',
+        'order_empty_list_message',
     ],
     alt_keys: [],
     placeholder_keys: [],
@@ -25,7 +28,10 @@ window.tfd.localization.controller.add('orders', {
             order_item_edit: 'Edit',
             order_item_order_contents: 'Contents',
             order_item_pcs_text: 'pcs',
-        }
+            order_item_move_pending: 'Set pending',
+            order_item_move_completed: 'Set completed',
+            order_empty_list_message: 'No orders in this list!',
+        },
     },
     sv : {
         default: {
@@ -35,6 +41,9 @@ window.tfd.localization.controller.add('orders', {
             order_item_edit: 'Ändra',
             order_item_order_contents: 'Orderns innehåll',
             order_item_pcs_text: 'st',
-        }
-    }
+            order_item_move_pending: 'Sätt pågående',
+            order_item_move_completed: 'Sätt klar',
+            order_empty_list_message: 'Inga ordrar i denna lista!',
+        },
+    },
 });
