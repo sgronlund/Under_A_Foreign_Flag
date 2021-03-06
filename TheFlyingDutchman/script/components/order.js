@@ -158,14 +158,14 @@ window.tfd.add_module('order', {
             // Makes sure that the quantity of the order cannot exceed 10 total items
             if (this.model.order.total_items + quantity > this.model.max_order_items) {
                 console.log('Could not add item to order - order is full');
-                return;
+                return false;
             }
 
             if (this.model.order.items.hasOwnProperty(id)) {
                 // Make sure that the total quantity in cart and new quantity is in stock
                 if (this.model.order.items[id].quantity + quantity > max_quantity) {
                     console.log('Could not add product to order - exceeds available stock');
-                    return;
+                    return false;
                 }
 
                 // If the item already exists in the order, simply update the quantity
@@ -183,7 +183,7 @@ window.tfd.add_module('order', {
                 // Make sure that there is enough stock of the product
                 if (quantity > max_quantity) {
                     console.log('Could not add product to order - exceeds available stock');
-                    return;
+                    return false;
                 }
 
                 // Add new item to order
@@ -205,6 +205,8 @@ window.tfd.add_module('order', {
 
             // Update the total items and amount
             this.view.update_order_details();
+
+            return true;
         },
 
         remove: function(id) {
@@ -276,7 +278,7 @@ window.tfd.add_module('order', {
             this.controller.change_quantity(id, -1);
         },
 
-        checkout_bar_or_table: function() {
+        checkout: function() {
             // TODO: Add dynamic table id?
             const table_id = 1;
 
@@ -326,7 +328,7 @@ window.tfd.add_module('order', {
             // Checks if user can make the purchase with its current balance.
             if (window.tfd.vip.controller.update_balance(total_amount)) {
                 // Get the generated order id
-                const order_id = this.controller.checkout_bar_or_table();
+                const order_id = this.controller.checkout();
 
                 // Complete the order directly, since the payment has already been made using credit
                 window.tfd.backend.controller.complete_order(order_id);
@@ -337,16 +339,6 @@ window.tfd.add_module('order', {
                 this.view.update_checkout_error(true);
                 window.tfd.modal.controller.show_error();
             }
-        },
-    },
-
-    // =====================================================================================================
-    // CUSTOM SIGNAL HANDLERS
-    //
-    signal: {
-        // Signal for adding a product to the current order
-        add_to_order: function(id, quantity) {
-            this.controller.add(id, quantity);
         },
     },
 });

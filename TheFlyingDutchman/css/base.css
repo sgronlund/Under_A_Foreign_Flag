@@ -131,6 +131,7 @@ button {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    position: relative;
     transition-property: filter;
     transition-duration: var(--transition-time);
 }
@@ -266,19 +267,37 @@ body.dark #theme_icon_light {
     display: none;
 }
 
-button > svg {
+button svg {
     height: var(--button-icon-height);
     margin-left: var(--spacing-sm);
     color: inherit;
 }
 
-button.large > svg {
+button.large svg {
     height: var(--button-icon-height-lg);
 }
 
-button.icon-left > svg {
+button.icon-left svg {
     margin-left: 0;
     margin-right: var(--spacing-sm);
+}
+
+button.show-overlay .btn-overlay {
+    opacity: 1;
+}
+
+.btn-overlay {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--price-color);
+    color: white;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--transition-time);
 }
 
 /* SPACING */

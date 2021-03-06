@@ -22,6 +22,7 @@ window.tfd.add_module('product', {
             alcfree: '#alcfree',
         },
         max_quantity: 10,
+        button_overlay_hide_delay: 1500, // ms
     },
 
     // =====================================================================================================
@@ -72,6 +73,19 @@ window.tfd.add_module('product', {
 
         update_product_quantity: function(id, quantity) {
             $("[data-quantity-id='" + id + "']").val(quantity);
+        },
+
+        start_button_animation: function(btn) {
+            const button = $(btn);
+
+            // Add class and show button overlay
+            button.addClass('show-overlay');
+
+            setTimeout(function() {
+                // Remove the class and hide the button overlay after
+                // the delay has passed.
+                button.removeClass('show-overlay');
+            }, this.model.button_overlay_hide_delay);
         },
 
         reset_product_quantity: function(id) {
@@ -142,11 +156,17 @@ window.tfd.add_module('product', {
                         </svg>
                     </button>
                 </div>
-                <button class="extra-light small" onclick="window.tfd.product.controller.add_to_order(${nr})">
+                <button class="extra-light small" onclick="window.tfd.product.controller.add_to_order(this, ${nr})">
                     <span class="product_add_to_order_label"></span>
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
+                    <div class="btn-overlay box row center">
+                        <span class="product_added_to_order_label"></span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
                 </button>
             `);
         },
@@ -182,7 +202,7 @@ window.tfd.add_module('product', {
             return parseInt(input_element.val());
         },
 
-        add_to_order: function(id) {
+        add_to_order: function(btn, id) {
             let quantity = this.controller.get_quantity(id);
             const max_quantity = window.tfd.inventory.controller.get_stock_of_product(id);
 
@@ -197,7 +217,12 @@ window.tfd.add_module('product', {
                 quantity = max_quantity;
             }
 
-            this.trigger('add_to_order', id, quantity);
+            // Check if the product could be added to the order
+            if (!window.tfd.order.controller.add(id, quantity)) {
+                return;
+            }
+
+            this.view.start_button_animation(btn);
             this.view.reset_product_quantity(id);
         },
 
