@@ -64,6 +64,7 @@
     --lang-button-z-index: 11;
     --theme-button-z-index: 11;
     --security-button-z-index: 11;
+    --notification-z-index: 12;
 
     --hover-filter: brightness(95%);
     --transition-time: 0.1s;
@@ -114,6 +115,13 @@ ul, ol {
     color: var(--text-color-default);
     margin-top: 0;
     padding-left: var(--spacing-lg);
+}
+
+svg {
+    height: var(--button-icon-height);
+    width: var(--button-icon-height);
+    color: inherit;
+    margin-right: var(--spacing-sm);
 }
 
 /* BUTTONS */
@@ -835,4 +843,46 @@ footer {
 
 .error #login_error_container {
     display: flex;
+}
+
+/* NOTIFICATIONS */
+#notification_container {
+    flex-direction: row;
+    color: var(--text-color-default);
+    background-color: transparent;
+    position: fixed;
+    bottom: 4.5rem;
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--notification-z-index);
+    pointer-events: none;
+}
+
+#notification {
+    background-color: var(--price-color);
+    color: white;
+    font-weight: bold;
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-header);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+#notification.show {
+    opacity: 1;
+}
+
+#notification.error {
+    background-color: var(--error-color);
+    color: var(--error-color-text);
 }

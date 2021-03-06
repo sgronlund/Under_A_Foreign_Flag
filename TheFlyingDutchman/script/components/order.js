@@ -45,15 +45,6 @@ window.tfd.add_module('order', {
             }
         },
 
-        update_checkout_error: function(show) {
-            // Displays text for insufficient funds
-            if (show) {
-                this.element.insufficient_funds.addClass('show')
-            } else {
-                this.element.insufficient_funds.removeClass('show');
-            }
-        },
-
         update_order: function() {
             let html = "";
 
@@ -158,6 +149,7 @@ window.tfd.add_module('order', {
             // Makes sure that the quantity of the order cannot exceed 10 total items
             if (this.model.order.total_items + quantity > this.model.max_order_items) {
                 console.log('Could not add item to order - order is full');
+                window.tfd.notification.controller.show_order_full_notification();
                 return false;
             }
 
@@ -165,6 +157,7 @@ window.tfd.add_module('order', {
                 // Make sure that the total quantity in cart and new quantity is in stock
                 if (this.model.order.items[id].quantity + quantity > max_quantity) {
                     console.log('Could not add product to order - exceeds available stock');
+                    window.tfd.notification.controller.show_out_of_stock_notification();
                     return false;
                 }
 
@@ -183,6 +176,7 @@ window.tfd.add_module('order', {
                 // Make sure that there is enough stock of the product
                 if (quantity > max_quantity) {
                     console.log('Could not add product to order - exceeds available stock');
+                    window.tfd.notification.controller.show_out_of_stock_notification();
                     return false;
                 }
 
@@ -243,6 +237,7 @@ window.tfd.add_module('order', {
             // Only allow a total of 10 items (and at least 1) in the order
             if (this.model.order.total_items + change > this.model.max_order_items || item.quantity + change < 1) {
                 console.log(`Could not change quantity - new total out of bounds (0 <= n <= ${this.model.max_order_items})`);
+                window.tfd.notification.controller.show_order_full_notification();
                 return;
             }
 
@@ -284,6 +279,7 @@ window.tfd.add_module('order', {
 
             if (!this.model.order.total_price > 0) {
                 console.error('Could not checkout - order is empty');
+                window.tfd.notification.controller.show_order_empty_notification();
                 return;
             }
 
@@ -299,9 +295,6 @@ window.tfd.add_module('order', {
             this.view.update_body();
             this.view.update_order();
             this.view.update_order_details();
-
-            // Hide any previous display of errors
-            this.view.update_checkout_error(false);
 
             // Hide the modal and remove any errors
             window.tfd.modal.controller.hide_error();
@@ -322,6 +315,7 @@ window.tfd.add_module('order', {
             // Can not checkout when the order is empty
             if (this.model.order.total_price <= 0) {
                 console.error('Could not checkout with balance - order is empty');
+                window.tfd.notification.controller.show_order_empty_notification();
                 return;
             }
 
@@ -334,10 +328,7 @@ window.tfd.add_module('order', {
                 window.tfd.backend.controller.complete_order(order_id);
             } else {
                 console.log("Insufficient funds");
-
-                // Style elements to tell user this action was not allowed.
-                this.view.update_checkout_error(true);
-                window.tfd.modal.controller.show_error();
+                window.tfd.notification.controller.show_insufficent_funds_notification();
             }
         },
     },
