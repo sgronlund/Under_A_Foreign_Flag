@@ -135,23 +135,14 @@ span.error_message.show {
     }
 }
 
-/* For tablets */
-@media screen and (max-width: 800px) {
-    #vip_footer_content {
-        flex-direction: column;
-    }
-
-    .credit-container {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .product-description-order {
+/* For mobile devices */
+@media screen and (max-width: 740px) {
+    #menu,
+    #special_drinks {
         grid-template-columns: 1fr;
     }
 
-    #menu,
-    #special_drinks {
+    .product-description-order {
         grid-template-columns: 1fr;
     }
 }
