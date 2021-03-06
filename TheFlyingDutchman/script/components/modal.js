@@ -72,7 +72,12 @@ window.tfd.add_module('modal', {
             //Updates the current modal with a new one and store the previous version
             this.model.previous_modal = this.model.current_modal;
             this.model.current_modal = new_modal;
+
+            // Hide any previous errors
+            this.model.has_error = false;
+
             this.view.update_current_modal();
+            this.view.update_current_modal_error();
         },
 
         hide: function() {

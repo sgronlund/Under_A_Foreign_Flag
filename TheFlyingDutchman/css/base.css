@@ -23,7 +23,7 @@
     --price-color: #008253;
     --price-color-text: var(--price-color);
     --error-color: #8B0000;
-    --error-color-light: #FF4949;
+    --error-color-text: white;
 
     --border-radius: 5px;
     --border-radius-lg: 8px;
@@ -79,6 +79,7 @@
     --border-color-focus: #cacaca;
     --price-color-text: #37FEB5;
     --error-color: #FF7474;
+    --error-color-text: #000;
     --hover-filter: brightness(92%);
 }
 
@@ -179,7 +180,7 @@ button.success {
 }
 
 button.error {
-    background-color: var(--error-color-light);
+    background-color: var(--error-color);
     color: white;
 }
 
@@ -526,7 +527,7 @@ body.dark .card {
 }
 
 .modal-close:hover {
-    color: var(--error-color-light);
+    color: var(--error-color);
 }
 
 .modal-content {
@@ -813,4 +814,25 @@ footer {
     background-color: transparent;
     border: 1px solid transparent;
     border-radius: var(--border-radius-lg);
+}
+
+/* LOGIN */
+#login_error_container {
+    display: none;
+    background-color: var(--error-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-xsm);
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--error-color-text);
+}
+
+#login_error_container > svg {
+    height: var(--button-icon-height);
+    width: var(--button-icon-height);
+    margin-right: var(--spacing-xsm);
+}
+
+.error #login_error_container {
+    display: flex;
 }
