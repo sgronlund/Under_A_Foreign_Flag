@@ -6,13 +6,15 @@
 // This file contains functions for filtering the products, adding the products to the users order aswell
 // as rendering all the products from the pubs inventory
 //
-
-
 window.tfd.add_module('product', {
     // =====================================================================================================
     // MODEL
     //
     model: {
+        current_menu: null,
+        current_container: null,
+        current_full_menu: null,
+        has_filters: false,
         checkbox_ids: {
             gluten: '#gluten',
             koscher: '#koscher',
@@ -35,17 +37,33 @@ window.tfd.add_module('product', {
     // VIEW
     //
     view: {
-        update_products: function(container, products, vip) {
-            let html = "";
-            let total = 0;
+        update_current_menu: function() {
+            this.view.update_products();
 
-            for (const product_id of products) {
+            // Update the total products, since products might be removed
+            // from the menu if the stock is 0.
+            this.view.update_total_products();
+
+            // Reset filter checkboxes if no filters are applied
+            if (!this.model.has_filters) {
+                this.view.reset_filter_checkboxes();
+            }
+        },
+
+        update_total_products: function() {
+            const total = this.model.current_menu.length;
+            this.element.total_products.text(total);
+        },
+
+        update_products: function() {
+            let html = "";
+            const vip = this.model.current_container === this.element.container_special;
+
+            for (const product_id of this.model.current_menu) {
                 html += this.view.create_product(this.global.drinks[product_id], vip);
-                total++;
             }
 
-            container.html(html);
-            this.element.total_products.text(total);
+            this.model.current_container.html(html);
 
             // Reapply the localization data for the current component (and only the current component).
             // It is unnecessary to reapply all localization data.
@@ -229,12 +247,29 @@ window.tfd.add_module('product', {
             }
 
             if (filters.length > 0) {
-                // TODO: Filtering with both menus
-                this.view.update_products(this.element.container, apply_filters(this.global.drinks, this.global.menu, filters), false);
+                // Create new filtered menu based on the full menu and the applied filters
+                this.model.current_menu = apply_filters(
+                    this.global.drinks,
+                    this.model.current_full_menu,
+                    filters
+                );
+
+                this.model.has_filters = true;
             } else {
                 // If no filters were chosen we simply render the original menu
-                this.view.update_products(this.element.container, this.global.menu, false);
+                this.model.current_menu = this.model.current_full_menu;
+                this.model.has_filters = false;
             }
+
+            // Re-render the products with the applied filters
+            this.view.update_current_menu();
+        },
+
+        set_current_menu: function(new_menu, container) {
+            this.model.has_filters = false;
+            this.model.current_menu = new_menu;
+            this.model.current_full_menu = new_menu;
+            this.model.current_container = container;
         },
     },
 
@@ -249,18 +284,29 @@ window.tfd.add_module('product', {
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {
+        // Triggered whenever the menu has updated, e.g. when a product
+        // goes out of stock and should be removed from the menu.
         menus_updated: function() {
-            this.view.update_products(
-                this.element.container,
-                this.global.menu,
-                false,
-            );
+            if (!this.model.current_menu) {
+                // The selected menu on load is the default menu
+                this.controller.set_current_menu(this.global.menu, this.element.container);
+            }
 
-            this.view.update_products(
-                this.element.container_special,
-                this.global.special_menu,
-                true,
-            );
+            // When switching menus, the new menu is automatically updated
+            this.view.update_current_menu();
+        },
+
+        // Triggered when the user switches to the "Drinks" subview
+        // on the customer page. These signals must be handled so that
+        // we can update the total items and the filtering target list.
+        show_drinks: function() {
+            this.controller.set_current_menu(this.global.menu, this.element.container);
+            this.view.update_current_menu();
+        },
+
+        show_special_drinks: function() {
+            this.controller.set_current_menu(this.global.special_menu, this.element.container_special);
+            this.view.update_current_menu();
         },
     },
 });

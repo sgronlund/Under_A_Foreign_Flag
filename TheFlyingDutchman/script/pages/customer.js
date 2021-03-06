@@ -6,7 +6,6 @@
 // Theses functions render the different views/options the customer can access, i.e. the special drinks menu (if the customer is VIP),
 // the ordinary drinks menu and the order.
 //
-
 window.tfd.add_module('customer', {
     // =====================================================================================================
     // MODEL
@@ -56,6 +55,7 @@ window.tfd.add_module('customer', {
         set_view: function(new_view) {
             this.model.previous_view = this.model.current_view;
             this.model.current_view = this.model.views[new_view];
+
             this.view.update_body();
         },
 
@@ -76,10 +76,12 @@ window.tfd.add_module('customer', {
 
         show_drinks: function() {
             this.controller.set_subview('drinks');
+            this.trigger('show_drinks');
         },
 
         show_special_drinks: function() {
             this.controller.set_subview('special_drinks');
+            this.trigger('show_special_drinks');
         },
     },
 

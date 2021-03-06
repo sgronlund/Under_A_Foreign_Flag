@@ -74,8 +74,12 @@ window.tfd.add_module('backend', {
             }
 
             // Reset the menu's to account for changes to the inventory
-            this.global.menu = [];
-            this.global.special_menu = [];
+            // The menu arrays might have saved references in other variables
+            // which means that they won't get the updated menu unless the read
+            // from the global variable again. By setting the length property,
+            // we mutate the original array (and therefore any other references).
+            this.global.menu.length = 0;
+            this.global.special_menu.length = 0;
 
             for (const product_id of Object.keys(this.global.inventory)) {
                 const item = this.global.inventory[product_id];
