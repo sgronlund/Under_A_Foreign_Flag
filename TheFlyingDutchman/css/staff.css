@@ -104,6 +104,10 @@
     width: 100%;
 }
 
+#header_nav_menu {
+    display: none;
+}
+
 body.view-menu #btn_menu,
 body.view-orders #btn_orders,
 body.view-tables #btn_tables,
@@ -127,13 +131,39 @@ body.view-inventory #inventory_view {
     display: flex;
 }
 
+body.subview-pending-orders #btn_pending_orders,
+body.subview-completed-orders #btn_completed_orders {
+    border-bottom-color: var(--brand-color);
+}
+
 @media screen and (max-width: 1024px) {
+    #header_nav_menu {
+        display: flex;
+    }
+
     #orders_view {
         flex-direction: column;
     }
 
     .orders-view-list {
         margin: 0;
-        margin-bottom: var(--spacing-lg);
+        margin-bottom: 0;
+    }
+
+    .order_empty_list_message,
+    .orders-view-list .card:first-of-type {
+        margin-top: 0;
+    }
+
+    #pending_orders,
+    #completed_orders,
+    #pending_orders_title,
+    #completed_orders_title {
+        display: none;
+    }
+
+    body.subview-pending-orders #pending_orders,
+    body.subview-completed-orders #completed_orders {
+        display: flex;
     }
 }

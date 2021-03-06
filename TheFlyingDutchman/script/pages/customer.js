@@ -8,43 +8,25 @@
 //
 window.tfd.add_module('customer', {
     // =====================================================================================================
-    // MODEL
+    // PAGE ROUTES/VIEWS
     //
-    model: {
-        current_view: 'view-menu',
-        current_subview: 'subview-drinks',
-        previous_view: null,
-        previous_subview: null,
-        views: {
-            menu: 'view-menu',
-            order: 'view-order',
-            drinks: 'subview-drinks',
-            special_drinks: 'subview-special-drinks',
+    route: {
+        menu: {
+            body_class: 'view-menu',
+            subview: {
+                drinks: {
+                    default: true,
+                    body_class: 'subview-drinks',
+                },
+
+                special_drinks: {
+                    body_class: 'subview-special-drinks',
+                },
+            },
         },
-    },
 
-    // =====================================================================================================
-    // VIEW
-    //
-    view: {
-        update_body: function() {
-            if (this.model.previous_view) {
-                $(document.body).removeClass(this.model.previous_view);
-            }
-
-            if (this.model.previous_subview) {
-                $(document.body).removeClass(this.model.previous_subview);
-            }
-
-            if (this.model.current_view == this.model.views.menu) {
-                // Batch classes together to prevent multiple layout rerenders
-                $(document.body).addClass([
-                    this.model.current_view,
-                    this.model.current_subview
-                ]);
-            } else {
-                $(document.body).addClass(this.model.current_view);
-            }
+        order: {
+            body_class: 'view-order',
         },
     },
 
@@ -52,37 +34,28 @@ window.tfd.add_module('customer', {
     // CONTROLLER
     //
     controller: {
-        set_view: function(new_view) {
-            this.model.previous_view = this.model.current_view;
-            this.model.current_view = this.model.views[new_view];
-
-            this.view.update_body();
-        },
-
-        set_subview: function(new_subview) {
-            this.model.previous_subview = this.model.current_subview;
-            this.model.current_subview = this.model.views[new_subview];
-
-            this.view.update_body();
-        },
-
         show_menu: function() {
-            this.controller.set_view('menu');
+            this.set_route(this.route.menu);
         },
 
         show_order: function() {
-            this.controller.set_view('order');
+            this.set_route(this.route.order);
         },
 
         show_drinks: function() {
-            this.controller.set_subview('drinks');
-            this.trigger('show_drinks');
+            this.set_route(this.route.drinks);
         },
 
         show_special_drinks: function() {
-            this.controller.set_subview('special_drinks');
-            this.trigger('show_special_drinks');
+            this.set_route(this.route.special_drinks);
         },
+    },
+
+    // =====================================================================================================
+    // DOCUMENT READY EVENT
+    //
+    ready: function() {
+        this.controller.show_menu();
     },
 
     // =====================================================================================================

@@ -299,12 +299,12 @@ window.tfd.add_module('product', {
         // Triggered when the user switches to the "Drinks" subview
         // on the customer page. These signals must be handled so that
         // we can update the total items and the filtering target list.
-        show_drinks: function() {
+        route_drinks: function() {
             this.controller.set_current_menu(this.global.menu, this.element.container);
             this.view.update_current_menu();
         },
 
-        show_special_drinks: function() {
+        route_special_drinks: function() {
             this.controller.set_current_menu(this.global.special_menu, this.element.container_special);
             this.view.update_current_menu();
         },

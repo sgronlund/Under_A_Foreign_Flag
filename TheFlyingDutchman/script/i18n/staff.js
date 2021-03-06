@@ -1,5 +1,7 @@
 window.tfd.localization.controller.add('staff', {
     keys: [
+        'btn_pending_orders',
+        'btn_completed_orders',
         'btn_tables_text',
         'btn_inventory_text',
         'btn_orders_text',
@@ -22,6 +24,8 @@ window.tfd.localization.controller.add('staff', {
     //
     en: {
         default: {
+            btn_pending_orders: 'Pending orders',
+            btn_completed_orders: 'Completed orders',
             btn_tables_text: 'Tables',
             btn_inventory_text: 'Inventory',
             btn_orders_text: 'Orders',
@@ -36,6 +40,8 @@ window.tfd.localization.controller.add('staff', {
     },
     sv : {
         default: {
+            btn_pending_orders: 'Väntande ordrar',
+            btn_completed_orders: 'Färdiga ordrar',
             btn_tables_text: 'Bordsplacering',
             btn_inventory_text: 'Lager',
             btn_orders_text: 'Beställningar',

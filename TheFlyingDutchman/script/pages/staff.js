@@ -1,14 +1,24 @@
 window.tfd.add_module('staff', {
     // =====================================================================================================
-    // MODEL
+    // PAGE ROUTES/VIEWS
     //
-    model: {
-        current_view: 'view-orders',
-        previous_view: null,
-        views: {
-            menu: 'view-menu',
-            orders: 'view-orders',
-            inventory: 'view-inventory',
+    route: {
+        orders: {
+            body_class: 'view-orders',
+            subview: {
+                pending_orders: {
+                    default: true,
+                    body_class: 'subview-pending-orders',
+                },
+
+                completed_orders: {
+                    body_class: 'subview-completed-orders',
+                },
+            },
+        },
+
+        inventory: {
+            body_class: 'view-inventory',
         },
     },
 
@@ -16,14 +26,6 @@ window.tfd.add_module('staff', {
     // VIEW
     //
     view: {
-        update_body: function() {
-            if (this.model.previous_view) {
-                $(document.body).removeClass(this.model.previous_view);
-            }
-
-            $(document.body).addClass(this.model.current_view);
-        },
-
         security_notification: function() {
             window.alert("Security has been notified!");
         },
@@ -33,22 +35,20 @@ window.tfd.add_module('staff', {
     // CONTROLLER
     //
     controller: {
-        set_view: function(new_view) {
-            this.model.previous_view = this.model.current_view;
-            this.model.current_view = this.model.views[new_view];
-            this.view.update_body();
-        },
-
-        show_menu: function() {
-            this.controller.set_view('menu');
-        },
-
         show_orders: function() {
-            this.controller.set_view('orders');
+            this.set_route(this.route.orders);
+        },
+
+        show_pending_orders: function() {
+            this.set_route(this.route.pending_orders);
+        },
+
+        show_completed_orders: function() {
+            this.set_route(this.route.completed_orders);
         },
 
         show_inventory: function() {
-            this.controller.set_view('inventory');
+            this.set_route(this.route.inventory);
         },
     },
 
@@ -58,8 +58,13 @@ window.tfd.add_module('staff', {
     ready: function() {
         this.trigger('render_orders');
         this.trigger('render_product_dropdown');
+
+        this.controller.show_orders();
     },
 
+    // =====================================================================================================
+    // CUSTOM SIGNAL HANDLERS
+    //
     signal: {
         logout: function() {
             window.location.href = 'index.html'

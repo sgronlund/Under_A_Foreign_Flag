@@ -7,6 +7,30 @@ window.tfd = {
     global: {},
 
     // =====================================================================================================
+    // PRIVATE FIELDS
+    //
+    // List of functions that should be called when the document has loaded and is ready
+    __ready_callbacks: [],
+
+    // Object containing all registered signals by modules and a list of all functions that
+    // has been registered as callback for that signal.
+    __signals: {},
+
+    // Array containing all the registered module names
+    __registered_modules: [],
+
+    // Object containing all registered routes, i.e. views and subviews.
+    __routes: {},
+
+    // Private model
+    __model: {
+        current_view: null,
+        current_subview: null,
+        previous_view: null,
+        previous_subview: null,
+    },
+
+    // =====================================================================================================
     // PUBLIC FUNCTIONS
     //
     // Creates a new module consisting of a model, view and controller.
@@ -26,6 +50,10 @@ window.tfd = {
             return;
         }
 
+        // Save the current context so that we can bind it to functions
+        // inside the module context
+        const self = this;
+
         // Save the module to the global namespace
         this[name] = {
             model: module.model,
@@ -36,8 +64,14 @@ window.tfd = {
             // Selectors for elements in the DOM to find and cache
             element: module.element,
 
+            // Routes that can be "navigated" to
+            route: window.tfd.__routes,
+
             // Helper function for triggering signals
-            trigger: window.tfd.__trigger_signal,
+            trigger: window.tfd.__trigger_signal.bind(self),
+
+            // Alias to remove the need for the "window.tfd" prefix
+            set_route: window.tfd.set_route.bind(self),
 
             // Shared model state
             global: window.tfd.global,
@@ -73,12 +107,6 @@ window.tfd = {
             );
         }
 
-        // Check if the module has registered a module init event handler
-        if (module.hasOwnProperty('init')) {
-            // The init function should be called when the module is created, i.e. now
-            module.init.bind(context)();
-        }
-
         // Check if the module has registered any custom signal handlers
         if (module.hasOwnProperty('signal')) {
             for (const key of Object.keys(module.signal)) {
@@ -95,8 +123,48 @@ window.tfd = {
             }
         }
 
+        // Check if the module has registered any routes
+        if (module.hasOwnProperty('route')) {
+            for (const key of Object.keys(module.route)) {
+                const route = module.route[key];
+
+                // Add new route
+                this.__routes[key] = {
+                    path: key,
+                    body_class: route.body_class,
+                    has_subviews: !!route.subview,
+                };
+
+                // Parse any subviews of the route
+                if (route.hasOwnProperty('subview')) {
+                    for (const subkey of Object.keys(route.subview)) {
+                        const subroute = route.subview[subkey];
+
+                        // Check if the subview is the default view for the view
+                        if (subroute.default) {
+                            this.__routes[key]['default_subview'] = subkey;
+                        }
+
+                        // Save the subview in the list of all routes for fast lookups
+                        this.__routes[subkey] = {
+                            path: subkey,
+                            parent_path: key,
+                            body_class: subroute.body_class,
+                            is_subview: true,
+                        };
+                    }
+                }
+            }
+        }
+
         // Save the registered module name
         this.__registered_modules.push(name);
+
+        // Check if the module has registered a module init event handler
+        if (module.hasOwnProperty('init')) {
+            // The init function should be called when the module is created, i.e. now
+            module.init.bind(context)();
+        }
     },
 
     // Adds a function callback to a list of functions that should run when the document
@@ -110,18 +178,58 @@ window.tfd = {
         this.__ready_callbacks.push(callback);
     },
 
-    // =====================================================================================================
-    // PRIVATE FIELDS
+    // "Navigates" to the selected route by applying the specified body class.
+    // The actual view is rendered using CSS selectors. Each route is registered
+    // from within the module using the "route" key. The format of a route can be seen in the
+    // "add_module()" function.
     //
-    // List of functions that should be called when the document has loaded and is ready
-    __ready_callbacks: [],
+    // This function takes one argument which is the name of the registered route, i.e. the key
+    // in the "route" object of the module. Modules can handle any route changes using the signal
+    // with the same name as the key, prefixed with "route_".
+    set_route: function(route) {
+        if (!route) {
+            console.error(`Could not set non-existing route: ${route}`);
+            return;
+        }
 
-    // Object containing all registered signals by modules and a list of all functions that
-    // has been registered as callback for that signal.
-    __signals: {},
+        // Every view needs at least a body class to be applied
+        if (!route.hasOwnProperty('body_class')) {
+            console.error(`Routes must define the 'body_class' property`);
+            return;
+        }
 
-    // Array containing all the registered module names
-    __registered_modules: [],
+        // If the selected route is a subview
+        if (route.is_subview) {
+            // Update the current subview
+            this.__model.previous_subview = this.__model.current_subview;
+            this.__model.current_subview = route.body_class;
+
+            const parent_body_class = this.__routes[route.parent_path].body_class;
+
+            // Check if the current view is the parent of the subview.
+            // If not, we must also update the current view to the parent.
+            if (this.__model.current_view !== parent_body_class) {
+                this.__model.previous_view = this.__model.current_view;
+                this.__model.current_view = parent_body_class;
+            }
+        } else {
+            this.__model.previous_view = this.__model.current_view;
+            this.__model.current_view = route.body_class;
+
+            // If we switch views, we must check if it has a default subview.
+            // If so, we should set the current subview as well.
+            if (route.default_subview) {
+                this.__model.previous_subview = this.__model.current_subview;
+                this.__model.current_subview = this.__routes[route.default_subview].body_class;
+            }
+        }
+
+        // Trigger event so that other modules can handle the route change
+        this.__trigger_signal(`route_${route.path}`);
+
+        // Apply body classes
+        this.__update_body_classes();
+    },
 
     // =====================================================================================================
     // PRIVATE FUNCTIONS
@@ -175,12 +283,33 @@ window.tfd = {
     __trigger_signal: function(signal, ...args) {
         // Only trigger the event if the signal has registered handler(s)
         if (!window.tfd.__signals.hasOwnProperty(signal)) {
-            console.warn(`Could not trigger signal: ${signal} - No registered signal handlers`);
             return;
         }
 
         // Trigger the signal with the specified args as separate function parameters
         $(document).trigger(signal, [ ...args ]);
+    },
+
+    // Updates the current route by removing previous route body classes
+    // and applying new ones.
+    __update_body_classes: function() {
+        if (this.__model.previous_view) {
+            $(document.body).removeClass(this.__model.previous_view);
+        }
+
+        if (this.__model.previous_subview) {
+            $(document.body).removeClass(this.__model.previous_subview);
+        }
+
+        if (this.__model.current_subview) {
+            // Batch classes together to prevent multiple layout rerenders
+            $(document.body).addClass([
+                this.__model.current_view,
+                this.__model.current_subview,
+            ]);
+        } else {
+            $(document.body).addClass(this.__model.current_view);
+        }
     },
 };
 
