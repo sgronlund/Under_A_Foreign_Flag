@@ -112,6 +112,7 @@ window.tfd.add_module('edit_orders', {
         },
 
         add: function(product_id, change, should_not_push_change) {
+            
             // If no product id is specified, use the dropdown value.
             // This is because we might want to redo/undo changes.
             if (!product_id) {
@@ -120,7 +121,7 @@ window.tfd.add_module('edit_orders', {
             if (!change) {
                 change = 1;
             }
-            
+            console.log(product_id, change, should_not_push_change);
             const price = window.tfd.inventory.controller.get_price_of_product(product_id);
 
             // Maximum of 10 items in the order
@@ -159,7 +160,7 @@ window.tfd.add_module('edit_orders', {
             
             window.tfd.inventory.controller.update_stock_for_product(
                 product_id,
-                (change),
+                (-1) * (change),
                 0
             );
             
@@ -249,30 +250,26 @@ window.tfd.add_module('edit_orders', {
                 if (!this.model.order.items.hasOwnProperty(change.product_id)) {
                     return;
                 }
-                
+
                 const item = this.model.order.items[change.product_id];
                 const price = window.tfd.inventory.controller.get_price_of_product(change.product_id);
-                console.log(change.quantity)
-                console.log(item.quantity)
-                if (item.quantity <= change.quantity) {
-                    console.log("ta bort allt");
-                    this.controller.remove(change.product_id, change.quantity, true);
+                if (item.quantity <= Math.abs(change.quantity)) {
+                    this.controller.remove(change.product_id, (-1) * change.quantity, true);
                 } else {
                     item.quantity += change.quantity;
                     item.total += change.quantity * price;
+                    
                     
                     this.model.order.total_items += change.quantity;
                     this.model.order.total_price += change.quantity * price;
                     
                     window.tfd.inventory.controller.update_stock_for_product(
                         change.product_id,
-                        change.quantity,
+                        (-1) * change.quantity,
                         0
                     );
                 }
             }
-            
-            //TODO: apply change to order, i.e. adding or removing 
             this.controller.save();
         },
 
