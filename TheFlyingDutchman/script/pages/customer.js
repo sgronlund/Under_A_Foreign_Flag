@@ -63,10 +63,7 @@ window.tfd.add_module('customer', {
     //
     signal: {
         logout: function() {
-            // Special drinks can only be viewed by VIP customers
-            if (this.model.current_view == this.model.views.menu) {
-                this.controller.set_subview('drinks');
-            }
+            this.controller.show_drinks();
         },
     },
 });
