@@ -188,7 +188,7 @@ button.success {
 }
 
 button.error {
-    background-color: var(--error-color);
+    background-color: #ff3939;
     color: white;
 }
 
@@ -279,6 +279,7 @@ body.dark #theme_icon_light {
 button svg {
     height: var(--button-icon-height);
     margin-left: var(--spacing-sm);
+    margin-right: 0;
     color: inherit;
 }
 
