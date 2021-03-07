@@ -300,6 +300,8 @@ window.tfd.add_module('order', {
             window.tfd.modal.controller.hide_error();
             window.tfd.modal.controller.hide();
 
+            window.tfd.notification.controller.show_order_success_notification();
+
             return order_id;
         },
 

@@ -25,6 +25,7 @@ window.tfd.add_module('notification', {
             order_empty: 'notification_order_empty',
             out_of_stock: 'notification_out_of_stock',
             insufficient_funds: 'notification_insufficent_funds',
+            order_success: 'notification_order_success',
         },
         hide_delay: 3000, // ms
         hide_timeout: null,
@@ -106,6 +107,10 @@ window.tfd.add_module('notification', {
 
         show_insufficent_funds_notification: function() {
             this.controller.show(this.model.message_keys.insufficient_funds, true);
+        },
+
+        show_order_success_notification: function() {
+            this.controller.show(this.model.message_keys.order_success, false);
         },
     },
 });
