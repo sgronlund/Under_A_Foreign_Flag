@@ -88,20 +88,9 @@
     font-size: var(--font-size-sm);
 }
 
-.btn-edit-order-remove {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--background-color-body);
-    height: 1.8rem;
-    width: 1.8rem;
-    padding: 0.35rem;
-    border-radius: var(--border-radius-lg);
-}
-
-.btn-edit-order-remove > svg {
-    height: 100%;
-    width: 100%;
+button.is-gift {
+    background-color: var(--price-color);
+    color: white;
 }
 
 #header_nav_menu {

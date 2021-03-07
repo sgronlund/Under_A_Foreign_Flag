@@ -229,6 +229,10 @@ button.extra-small {
     height: var(--button-height-xsm);
 }
 
+button.square {
+    padding: 0;
+}
+
 button.square:not(.small),
 button.square:not(.extra-small) {
     width: var(--button-height);
@@ -240,7 +244,7 @@ button.small.square {
 }
 
 button.extra-small.square {
-    padding: 0.35rem;
+    padding: 0.3rem;
     width: var(--button-height-xsm);
 }
 
@@ -632,6 +636,7 @@ select:focus {
     background-color: inherit;
     height: 100%;
     width: 1.5rem;
+    margin: 0;
 
     /* Pointer events should be handled by the select element, not the icon */
     pointer-events: none;

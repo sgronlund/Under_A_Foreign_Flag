@@ -8,6 +8,9 @@ window.tfd.add_module('edit_orders', {
         order: null,
         order_id: null,
         orders: null,
+        classes: {
+            is_gift: 'is-gift',
+        },
     },
 
     // =====================================================================================================
@@ -52,6 +55,10 @@ window.tfd.add_module('edit_orders', {
             this.element.dropdown.html(html);
         },
 
+        toggle_gift_button: function(btn) {
+            $(btn).toggleClass(this.model.classes.is_gift);
+        },
+
         create_dropdown_option: function(product) {
             return (`
                 <option value="${product.nr}">${product.namn}</option>
@@ -70,7 +77,22 @@ window.tfd.add_module('edit_orders', {
                             <span class="order_item_pcs_text"></span>
                         </p>
 
-                        <button class="gray square extra-small no-icon-spacing margin-left" onclick="window.tfd.edit_orders.controller.remove(${item.product_nr})">
+                        <button
+                            class="gray square extra-small no-icon-spacing margin-left"
+                            onclick="window.tfd.edit_orders.controller.gift(this, ${item.product_nr})"
+                        >
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2
+                                         0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                                />
+                            </svg>
+                        </button>
+
+                        <button
+                            class="error square extra-small no-icon-spacing margin-left"
+                            onclick="window.tfd.edit_orders.controller.remove(${item.product_nr})"
+                        >
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5
@@ -112,12 +134,12 @@ window.tfd.add_module('edit_orders', {
         },
 
         add: function(product_id, change, should_not_push_change) {
-            
+
             // If no product id is specified, use the dropdown value.
             // This is because we might want to redo/undo changes.
             if (!product_id) {
                 product_id = this.element.dropdown.val();
-            } 
+            }
             if (!change) {
                 change = 1;
             }
@@ -157,19 +179,19 @@ window.tfd.add_module('edit_orders', {
                     quantity: change,
                 };
             }
-            
+
             window.tfd.inventory.controller.update_stock_for_product(
                 product_id,
                 (-1) * (change),
                 0
             );
-            
+
             this.model.order.total_items += change;
             this.model.order.total_price += price * change;
 
             // When we do changes in undo/redo, we should not push changes
             if (should_not_push_change) {
-                 
+
             } else {
                 // Push changes to undo-redo stack
                 this.model.changes_redo.push({
@@ -177,7 +199,7 @@ window.tfd.add_module('edit_orders', {
                     quantity: change,
                     type: 'add',
                 });
-    
+
                 this.model.changes_undo.push({
                     product_id: product_id,
                     quantity: (-1) * change,
@@ -188,27 +210,35 @@ window.tfd.add_module('edit_orders', {
             this.controller.save();
         },
 
+        gift: function(btn, product_id) {
+            // TODO: Remove the product total from order and re-render order card
+            // TODO: Should probably display the price in the edit order modal as well
+            //       so that it is clear what actually happens.
+
+            this.view.toggle_gift_button(btn);
+        },
+
         remove: function(product_id, change, should_not_push_change) {
             if (!this.model.order.items.hasOwnProperty(product_id)) {
                 console.error(`Could not remove invalid product from order: ${product_id}`);
                 return;
             }
-            
+
             const { quantity } = this.model.order.items[product_id];
-            
+
             if (!change) {
                 change = quantity;
             }
 
             const price = window.tfd.inventory.controller.get_price_of_product(product_id);
-            
+
             // Increase product stock
             window.tfd.inventory.controller.update_stock_for_product(
                 product_id,
                 change,
                 0
             );
-            
+
             this.model.order.total_items -= change;
             this.model.order.total_price -= change * price;
 
@@ -225,7 +255,7 @@ window.tfd.add_module('edit_orders', {
                     quantity: (-1) * quantity,
                     type: 'remove',
                 });
-    
+
                 this.model.changes_undo.push({
                     product_id: product_id,
                     quantity: quantity,
@@ -235,14 +265,14 @@ window.tfd.add_module('edit_orders', {
 
             this.controller.save();
         },
-        
+
         pop_change: function(changes) {
             const change = changes.pop();
-            
+
             if (!change) {
                 return;
             }
-            
+
             if (change.type === 'add') {
                 this.controller.add(change.product_id, change.quantity, true);
             } else {
@@ -258,11 +288,11 @@ window.tfd.add_module('edit_orders', {
                 } else {
                     item.quantity += change.quantity;
                     item.total += change.quantity * price;
-                    
-                    
+
+
                     this.model.order.total_items += change.quantity;
                     this.model.order.total_price += change.quantity * price;
-                    
+
                     window.tfd.inventory.controller.update_stock_for_product(
                         change.product_id,
                         (-1) * change.quantity,
