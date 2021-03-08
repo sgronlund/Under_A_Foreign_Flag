@@ -18,6 +18,7 @@ window.tfd.add_module('inventory', {
     // MODEL
     //
     model: {
+        stock_warning_limit: 5,
         menu_keys: {
             regular: 'on_menu',
             special: 'on_special_menu',
@@ -38,13 +39,6 @@ window.tfd.add_module('inventory', {
     // VIEW
     //
     view: {
-        update_stock: function(product_id) {
-            const stock = this.global.inventory[product_id].stock;
-
-            $(`[data-stock-id="${product_id}"]`).text(stock);
-            $(`[data-stock-input-id="${product_id}"]`).val(stock);
-        },
-
         update_inventory: function() {
             let html = ''
             const inventory = this.global.inventory;
@@ -62,12 +56,14 @@ window.tfd.add_module('inventory', {
 
         create_inventory_item: function(product_id, stock, price, on_menu, on_special_menu) {
             const { nr, namn } = this.global.drinks[product_id];
+            const low_stock = stock <= this.model.stock_warning_limit;
 
             return (`
                 <article class="card box row space-between margin-bottom">
                     <div class="box fill margin-right-lg">
                         <div class="box row">
-                            <p class="inventory-item-id">ID: ${nr}</p>
+                            <p class="card-title-tag inventory-item-id">ID: ${nr}</p>
+                            ${low_stock ? '<p class="card-title-tag inventory_item_low_stock"></p>' : ''}
                             <h4>${namn}</h4>
                         </div>
                         <div class="inventory-item-data box row v-center margin-top-sm">
@@ -227,8 +223,8 @@ window.tfd.add_module('inventory', {
 
         decrease_stock: function(product_id) {
             if (!this.controller.update_stock_for_product(product_id, -1, 0)) {
-                this.view.update_stock(product_id);
-
+                this.view.update_inventory();
+                
                 // Save the updated inventory
                 this.controller.save();
             }
@@ -236,7 +232,7 @@ window.tfd.add_module('inventory', {
 
         increase_stock: function(product_id) {
             if (!this.controller.update_stock_for_product(product_id, 1, 0)) {
-                this.view.update_stock(product_id);
+                this.view.update_inventory();
 
                 // Save the updated inventory
                 this.controller.save();
@@ -301,13 +297,6 @@ window.tfd.add_module('inventory', {
         this.controller.load();
     },
 
-    // =====================================================================================================
-    // DOCUMENT READY EVENT
-    //
-    ready: function() {
-        this.view.update_inventory();
-    },
-    
     // =====================================================================================================
     // CUSTOM SIGNAL HANDLERS
     //

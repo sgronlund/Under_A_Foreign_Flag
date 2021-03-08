@@ -59,7 +59,7 @@ window.tfd.add_module('orders', {
                             <h4 class="order-item-id">
                                 Order #${order_id}
                             </h4>
-                            <p class="order-item-table-id">
+                            <p class="card-title-tag order-item-table-id">
                                 <span class="order_item_table_label"></span>
                                 ${order.table_id}
                             </p>

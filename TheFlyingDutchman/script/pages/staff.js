@@ -56,10 +56,16 @@ window.tfd.add_module('staff', {
     // DOCUMENT READY EVENT
     //
     ready: function() {
+        this.trigger('render_inventory');
         this.trigger('render_orders');
         this.trigger('render_product_dropdown');
 
         this.controller.show_orders();
+        
+        if ($('.inventory_item_low_stock').length > 0) {
+            // Show notification that there are products with low stock
+            window.tfd.notification.controller.show_inventory_low_stock();
+        }
     },
 
     // =====================================================================================================

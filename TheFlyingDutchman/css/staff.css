@@ -13,13 +13,19 @@
     font-size: var(--font-size-lg);
 }
 
-.order-item-table-id,
-.inventory-item-id {
-    background-color: var(--brand-color);
+.card-title-tag {
+    text-align: center;
+    margin-right: var(--spacing);
     border-radius: var(--border-radius-lg);
     padding: 0.2rem 0.4rem;
     font-weight: bold;
+    font-size: 0.7rem;
     color: var(--text-color-brand);
+}
+
+.order-item-table-id,
+.inventory-item-id {
+    background-color: var(--brand-color);
 }
 
 .order-item-table-id {
@@ -41,11 +47,13 @@
     margin-right: var(--spacing-xsm);
 }
 
+.inventory_item_low_stock {
+    color: var(--error-color-text);
+    background: var(--error-color);
+}
+
 .inventory-item-id {
     width: 4.5rem;
-    text-align: center;
-    margin-right: var(--spacing);
-    font-size: 0.7rem;
 }
 
 .inventory-item-data {
@@ -126,7 +134,7 @@ body.subview-completed-orders #btn_completed_orders {
 }
 
 @media screen and (max-width: 1024px) {
-    #header_nav_menu {
+    body.view-orders #header_nav_menu {
         display: flex;
     }
 
