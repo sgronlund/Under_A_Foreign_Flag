@@ -7,6 +7,14 @@
 // the ordinary drinks menu and the order.
 //
 window.tfd.add_module('customer', {
+    global: {
+        table_id: null, 
+    },
+    
+    model: {
+        max_table_id: 18,
+    },
+    
     // =====================================================================================================
     // PAGE ROUTES/VIEWS
     //
@@ -49,6 +57,7 @@ window.tfd.add_module('customer', {
         show_special_drinks: function() {
             this.set_route(this.route.special_drinks);
         },
+        
     },
 
     // =====================================================================================================
@@ -56,6 +65,9 @@ window.tfd.add_module('customer', {
     //
     ready: function() {
         this.controller.show_menu();
+        
+        // Create a unique table id for this session
+        this.global.table_id = Math.floor(Math.random() * this.model.max_table_id);
     },
 
     // =====================================================================================================

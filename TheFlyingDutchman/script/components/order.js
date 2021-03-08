@@ -274,9 +274,6 @@ window.tfd.add_module('order', {
         },
 
         checkout: function() {
-            // TODO: Add dynamic table id?
-            const table_id = 1;
-
             if (!this.model.order.total_price > 0) {
                 console.error('Could not checkout - order is empty');
                 window.tfd.notification.controller.show_order_empty_notification();
@@ -284,7 +281,7 @@ window.tfd.add_module('order', {
             }
 
             // Checkout the order and mark as pending for the staff
-            const order_id = window.tfd.backend.controller.checkout_order(table_id, this.model.order);
+            const order_id = window.tfd.backend.controller.checkout_order(this.global.table_id, this.model.order);
 
             // Clear order
             this.model.order.items = {};
