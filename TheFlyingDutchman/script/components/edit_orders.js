@@ -78,7 +78,7 @@ window.tfd.add_module('edit_orders', {
                         </p>
 
                         <button
-                            class="gray square extra-small no-icon-spacing margin-left"
+                            class="gray square extra-small no-icon-spacing margin-left ${item.gift ? 'is-gift' : ''}"
                             onclick="window.tfd.edit_orders.controller.gift(this, ${item.product_nr})"
                         >
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -133,8 +133,7 @@ window.tfd.add_module('edit_orders', {
             window.tfd.modal.controller.show_edit();
         },
 
-        add: function(product_id, change, should_not_push_change) {
-
+        add: function(product_id, change, change_stack_name) {
             // If no product id is specified, use the dropdown value.
             // This is because we might want to redo/undo changes.
             if (!product_id) {
@@ -143,7 +142,7 @@ window.tfd.add_module('edit_orders', {
             if (!change) {
                 change = 1;
             }
-            console.log(product_id, change, should_not_push_change);
+            
             const price = window.tfd.inventory.controller.get_price_of_product(product_id);
 
             // Maximum of 10 items in the order
@@ -189,9 +188,18 @@ window.tfd.add_module('edit_orders', {
             this.model.order.total_items += change;
             this.model.order.total_price += price * change;
 
-            // When we do changes in undo/redo, we should not push changes
-            if (should_not_push_change) {
-
+            if (change_stack_name === 'undo') {
+                this.model.changes_redo.push({
+                    product_id: product_id,
+                    quantity: change,
+                    type: 'add',
+                });
+            } else if (change_stack_name === 'redo') {
+                this.model.changes_undo.push({
+                    product_id: product_id,
+                    quantity: (-1) * change,
+                    type: 'remove',
+                });
             } else {
                 // Push changes to undo-redo stack
                 this.model.changes_redo.push({
@@ -214,11 +222,37 @@ window.tfd.add_module('edit_orders', {
             // TODO: Remove the product total from order and re-render order card
             // TODO: Should probably display the price in the edit order modal as well
             //       so that it is clear what actually happens.
-
+            if (!this.model.order.items.hasOwnProperty(product_id)) {
+                console.error(`Could not gift invalid product from order: ${product_id}`);
+                return;
+            }
+            
+            const order_item = this.model.order.items[product_id];
+            
+            if (order_item.gift) {
+                const price = window.tfd.inventory.controller.get_price_of_product(product_id);
+                const total = order_item.quantity * price;
+                
+                this.model.order.total_price += total;
+                order_item.total = total;
+                order_item.gift = false;
+            } else {
+                // Update order total
+                this.model.order.total_price -= order_item.total;
+                
+                // Update product total
+                order_item.total = 0;
+                order_item['gift'] = true;
+            }
+            
+            //Renders the updated order
+            this.controller.save()
+            
+            // Change color of gift button to indicate that the product is a gift
             this.view.toggle_gift_button(btn);
         },
 
-        remove: function(product_id, change, should_not_push_change) {
+        remove: function(product_id, change, change_stack_name) {
             if (!this.model.order.items.hasOwnProperty(product_id)) {
                 console.error(`Could not remove invalid product from order: ${product_id}`);
                 return;
@@ -230,8 +264,6 @@ window.tfd.add_module('edit_orders', {
                 change = quantity;
             }
 
-            const price = window.tfd.inventory.controller.get_price_of_product(product_id);
-
             // Increase product stock
             window.tfd.inventory.controller.update_stock_for_product(
                 product_id,
@@ -240,14 +272,24 @@ window.tfd.add_module('edit_orders', {
             );
 
             this.model.order.total_items -= change;
-            this.model.order.total_price -= change * price;
+            this.model.order.total_price -= this.model.order.items[product_id].total;
 
             delete this.model.order.items[product_id];
 
             // TODO: Should the order be removed if it's empty?
 
-            if (should_not_push_change) {
-                //was called from pop
+            if (change_stack_name === 'undo') {
+                this.model.changes_redo.push({
+                    product_id: product_id,
+                    quantity: (-1) * quantity,
+                    type: 'remove',
+                });
+            } else if (change_stack_name === 'redo') {
+                this.model.changes_undo.push({
+                    product_id: product_id,
+                    quantity: quantity,
+                    type: 'add',
+                });
             } else {
                 //Was not called from pop
                 this.model.changes_redo.push({
@@ -266,7 +308,7 @@ window.tfd.add_module('edit_orders', {
             this.controller.save();
         },
 
-        pop_change: function(changes) {
+        pop_change: function(changes, value) {
             const change = changes.pop();
 
             if (!change) {
@@ -274,7 +316,7 @@ window.tfd.add_module('edit_orders', {
             }
 
             if (change.type === 'add') {
-                this.controller.add(change.product_id, change.quantity, true);
+                this.controller.add(change.product_id, change.quantity, value);
             } else {
                 // Item is already removed
                 if (!this.model.order.items.hasOwnProperty(change.product_id)) {
@@ -284,7 +326,7 @@ window.tfd.add_module('edit_orders', {
                 const item = this.model.order.items[change.product_id];
                 const price = window.tfd.inventory.controller.get_price_of_product(change.product_id);
                 if (item.quantity <= Math.abs(change.quantity)) {
-                    this.controller.remove(change.product_id, (-1) * change.quantity, true);
+                    this.controller.remove(change.product_id, (-1) * change.quantity, value);
                 } else {
                     item.quantity += change.quantity;
                     item.total += change.quantity * price;
@@ -304,11 +346,11 @@ window.tfd.add_module('edit_orders', {
         },
 
         undo: function() {
-            this.controller.pop_change(this.model.changes_undo);
+            this.controller.pop_change(this.model.changes_undo, 'undo');
         },
 
         redo: function() {
-            this.controller.pop_change(this.model.changes_redo);
+            this.controller.pop_change(this.model.changes_redo, 'redo');
         },
 
         save: function() {

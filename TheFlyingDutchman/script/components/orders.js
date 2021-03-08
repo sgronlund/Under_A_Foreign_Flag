@@ -211,6 +211,8 @@ window.tfd.add_module('orders', {
             } else {
                 window.tfd.backend.controller.complete_order(data);
             }
+            
+            this.controller.render_all_orders();
         },
     },
 
