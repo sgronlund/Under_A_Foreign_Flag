@@ -1,8 +1,20 @@
+// =====================================================================================================
+// Functions for handling and rendering products
+// =====================================================================================================
+// Authors: Namn, 2020
+//
+// This file contains functions for filtering the products, adding the products to the users order aswell
+// as rendering all the products from the pubs inventory
+//
 window.tfd.add_module('product', {
     // =====================================================================================================
     // MODEL
     //
     model: {
+        current_menu: null,
+        current_container: null,
+        current_full_menu: null,
+        has_filters: false,
         checkbox_ids: {
             gluten: '#gluten',
             koscher: '#koscher',
@@ -10,6 +22,7 @@ window.tfd.add_module('product', {
             alcfree: '#alcfree',
         },
         max_quantity: 10,
+        button_overlay_hide_delay: 1500, // ms
     },
 
     // =====================================================================================================
@@ -25,17 +38,33 @@ window.tfd.add_module('product', {
     // VIEW
     //
     view: {
-        update_products: function(container, products, vip) {
-            let html = "";
-            let total = 0;
+        update_current_menu: function() {
+            this.view.update_products();
 
-            for (const product_id of products) {
+            // Update the total products, since products might be removed
+            // from the menu if the stock is 0.
+            this.view.update_total_products();
+
+            // Reset filter checkboxes if no filters are applied
+            if (!this.model.has_filters) {
+                this.view.reset_filter_checkboxes();
+            }
+        },
+
+        update_total_products: function() {
+            const total = this.model.current_menu.length;
+            this.element.total_products.text(total);
+        },
+
+        update_products: function() {
+            let html = "";
+            const vip = this.model.current_container === this.element.container_special;
+
+            for (const product_id of this.model.current_menu) {
                 html += this.view.create_product(this.global.drinks[product_id], vip);
-                total++;
             }
 
-            container.html(html);
-            this.element.total_products.text(total);
+            this.model.current_container.html(html);
 
             // Reapply the localization data for the current component (and only the current component).
             // It is unnecessary to reapply all localization data.
@@ -46,11 +75,25 @@ window.tfd.add_module('product', {
             $("[data-quantity-id='" + id + "']").val(quantity);
         },
 
+        start_button_animation: function(btn) {
+            const button = $(btn);
+
+            // Add class and show button overlay
+            button.addClass('show-overlay');
+
+            setTimeout(function() {
+                // Remove the class and hide the button overlay after
+                // the delay has passed.
+                button.removeClass('show-overlay');
+            }, this.model.button_overlay_hide_delay);
+        },
+
         reset_product_quantity: function(id) {
             $("[data-quantity-id='" + id + "']").val(1);
         },
-        
+
         reset_filter_checkboxes: function() {
+            // When the users restores the filter we also restore all the filter options to be checked
             $(this.model.checkbox_ids.alcfree).prop('checked', true);
             $(this.model.checkbox_ids.gluten).prop('checked', true);
             $(this.model.checkbox_ids.koscher).prop('checked', true);
@@ -58,7 +101,8 @@ window.tfd.add_module('product', {
         },
 
         create_product: function(product, vip) {
-            const { namn, prisinklmoms } = product;
+            const { namn } = product;
+            const price = window.tfd.inventory.controller.get_price_of_product(product.nr);
             const description = this.view.create_product_description(product);
             const actions = this.view.create_product_actions(product, vip);
 
@@ -66,7 +110,7 @@ window.tfd.add_module('product', {
                 <article class="product card box">
                     <div class="box row space-between v-center margin-bottom">
                         <h4 class="product-title">${namn}</h4>
-                        <p class="product-price">${prisinklmoms} SEK</p>
+                        <p class="product-price">${price} SEK</p>
                     </div>
                     <div class="box v-start fill padding-bottom">
                         <div class="box">${description}</div>
@@ -112,11 +156,17 @@ window.tfd.add_module('product', {
                         </svg>
                     </button>
                 </div>
-                <button class="extra-light small" onclick="window.tfd.product.controller.add_to_order(${nr})">
+                <button class="extra-light small" onclick="window.tfd.product.controller.add_to_order(this, ${nr})">
                     <span class="product_add_to_order_label"></span>
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
+                    <div class="btn-overlay box row center">
+                        <span class="product_added_to_order_label"></span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
                 </button>
             `);
         },
@@ -152,9 +202,9 @@ window.tfd.add_module('product', {
             return parseInt(input_element.val());
         },
 
-        add_to_order: function(id) {
+        add_to_order: function(btn, id) {
             let quantity = this.controller.get_quantity(id);
-            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
+            const max_quantity = window.tfd.inventory.controller.get_stock_of_product(id);
 
             if (quantity > this.model.max_quantity) {
                 // Make sure that we stay below the max quantity of orders
@@ -167,13 +217,18 @@ window.tfd.add_module('product', {
                 quantity = max_quantity;
             }
 
-            this.trigger('add_to_order', id, quantity);
+            // Check if the product could be added to the order
+            if (!window.tfd.order.controller.add(id, quantity)) {
+                return;
+            }
+
+            this.view.start_button_animation(btn);
             this.view.reset_product_quantity(id);
         },
 
         change_quantity: function(id, change) {
             const new_quantity = this.controller.get_quantity(id) + change;
-            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
+            const max_quantity = window.tfd.inventory.controller.get_stock_of_product(id);
 
             if (new_quantity < 1 || new_quantity > max_quantity || new_quantity > this.model.max_quantity) {
                 console.log(`Could not update quantity of product to: ${new_quantity}`);
@@ -190,38 +245,62 @@ window.tfd.add_module('product', {
         decrease_quantity: function(id) {
             this.controller.change_quantity(id, -1);
         },
+
         filter: function(apply_filter) {
-            //const old = this.global.drinks;
             const filters = [];
-            
+
+            // Checks which filters has been unchecked and stores the coresponding functions in an array which will later will be used to filter the current menu.
             if (apply_filter) {
                 for (const key of Object.keys(this.model.checkbox_ids)) {
+                    // Checks which checksbox has been unchecked
                     if (!document.getElementById(key).checked) {
                         if (key === 'koscher') {
                             filters.push(is_koscher);
                         } else if (key === 'tannins') {
                             filters.push(is_tannins)
                         } else if (key === 'gluten') {
-                            filters.push(is_gluten) 
+                            filters.push(is_gluten)
                         } else {
                             filters.push(is_alcohol_free);
                         }
                     }
-                } 
+                }
             } else {
-                this.view.reset_filter_checkboxes();   
+                // If apply_filter is false it means that the user wishes to restore
+                // the orignal menu and we should check all the boxes again.
+                this.view.reset_filter_checkboxes();
             }
-            
+
             if (filters.length > 0) {
-                // TODO: Filtering with both menus
-                //this.view.update_products(this.element.container, {}, false);
-                this.view.update_products(this.element.container, apply_filters(this.global.drinks, this.global.menu, filters), false);
+                // Create new filtered menu based on the full menu and the applied filters
+                this.model.current_menu = apply_filters(
+                    this.global.drinks,
+                    this.model.current_full_menu,
+                    filters
+                );
+
+                this.model.has_filters = true;
             } else {
-                this.view.update_products(this.element.container, this.global.menu, false);
+                // If no filters were chosen we simply render the original menu
+                this.model.current_menu = this.model.current_full_menu;
+                this.model.has_filters = false;
             }
+
+            // Re-render the products with the applied filters
+            this.view.update_current_menu();
+        },
+
+        set_current_menu: function(new_menu, container) {
+            this.model.has_filters = false;
+            this.model.current_menu = new_menu;
+            this.model.current_full_menu = new_menu;
+            this.model.current_container = container;
         },
     },
 
+    // =====================================================================================================
+    // DOCUMENT READY EVENT
+    //
     ready: function() {
         this.view.reset_filter_checkboxes();
     },
@@ -230,18 +309,29 @@ window.tfd.add_module('product', {
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {
+        // Triggered whenever the menu has updated, e.g. when a product
+        // goes out of stock and should be removed from the menu.
         menus_updated: function() {
-            this.view.update_products(
-                this.element.container,
-                this.global.menu,
-                false,
-            );
+            if (!this.model.current_menu) {
+                // The selected menu on load is the default menu
+                this.controller.set_current_menu(this.global.menu, this.element.container);
+            }
 
-            this.view.update_products(
-                this.element.container_special,
-                this.global.special_menu,
-                true,
-            );
+            // When switching menus, the new menu is automatically updated
+            this.view.update_current_menu();
+        },
+
+        // Triggered when the user switches to the "Drinks" subview
+        // on the customer page. These signals must be handled so that
+        // we can update the total items and the filtering target list.
+        route_drinks: function() {
+            this.controller.set_current_menu(this.global.menu, this.element.container);
+            this.view.update_current_menu();
+        },
+
+        route_special_drinks: function() {
+            this.controller.set_current_menu(this.global.special_menu, this.element.container_special);
+            this.view.update_current_menu();
         },
     },
 });

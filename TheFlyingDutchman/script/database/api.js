@@ -78,6 +78,7 @@ function changeBalance(username, newAmount) {
     };
 }
 
+
 // =====================================================================================================
 // Converts empty or invalid strings in the database into '-' to indicate
 // that the information is missing
@@ -120,18 +121,16 @@ function get_beverage_type(category_string) {
 }
 
 // =====================================================================================================
-// Returns a list of objects containing the name and category of each beverage in the database.
-// This function can be used as a recipe for similar functions.
+// Returns a list of objects containing the name and category of each beverage in the a given database.
 //
 function load_drinks(data) {
     // Using a local variable to collect the items.
     const collector = {};
-    // The DB is stored in the variable data, with "spirits" as key element. If you need to select only certain
-    // items, you may introduce filter functions in the loop... see the template within comments.
-    //
+    
+    //Loads all the products from the given data base and formats each drink differently dependently on its type.
     for (let i = 0; i < data.spirits.length; i++) {
         const product = data.spirits[i];
-        collector[product.nr] = filter(product);
+        collector[product.nr] = format(product);
     };
 
 
@@ -149,16 +148,16 @@ function filterBasedOnStrength(strength, data) {
         
         // Checks if the alcohol content of the drink is greater than the supplied strength
         if (percentToNumber(product.alkoholhalt) > strength) {
-            collector[product.nr] = filter(product);
+            collector[product.nr] = format(product);
         };
     };
     return collector;
 }
-
+// Checks if a product contains tannins, i.e. it is a Wine.
 function is_tannins(product) {
     return !product.description.hasOwnProperty('druva');
 }
-
+// Checks if a product contains gluten
 function is_gluten(product) {
     if (product.description.hasOwnProperty('sort')) {
         return !product.description.sort.toLowerCase().includes("vete");
@@ -166,15 +165,17 @@ function is_gluten(product) {
         return true;
     }
 }
-
+// Checks if a product is koscher
 function is_koscher(product) {
     return product.description.koscher === "1";
 }
 
+// Checks if a product has less alchol content than 2.5%
 function is_alcohol_free(product) {
     return percentToNumber(product.description.alkoholhalt) < 2.5;
 }
 
+// Takes a list of filter functions, eg. is_gluten(); is_koscher(), and filters the current menu
 function apply_filters(drinks, menu, filters) {
     const filtered_menu = [];
     
@@ -200,7 +201,7 @@ function apply_filters(drinks, menu, filters) {
 }
 
 // Formats the description/content of a drink based on its type, eg. with a Wine we also include the grape variety.
-function filter(product) {
+function format(product) {
     const description = {
         forpackning: get_beverage_description_string(product.forpackning),
         producent: get_beverage_description_string(product.producent),

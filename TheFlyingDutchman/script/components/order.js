@@ -1,3 +1,10 @@
+// =====================================================================================================
+// Functions for handling and rendering orders.
+// =====================================================================================================
+// Authors: Namn, 2020
+//
+//
+
 window.tfd.add_module('order', {
     // =====================================================================================================
     // MODEL
@@ -35,15 +42,6 @@ window.tfd.add_module('order', {
                 $(document.body).addClass(this.model.body_classes.order_empty);
             } else {
                 $(document.body).removeClass(this.model.body_classes.order_empty);
-            }
-        },
-
-        update_checkout_error: function(show) {
-            // Displays text for insufficient funds
-            if (show) {
-                this.element.insufficient_funds.addClass('show')
-            } else {
-                this.element.insufficient_funds.removeClass('show');
             }
         },
 
@@ -89,7 +87,8 @@ window.tfd.add_module('order', {
 
         create_order_item: function(item) {
             const product = this.global.drinks[item.product_nr];
-            const { nr, namn, prisinklmoms } = product;
+            const { nr, namn } = product;
+            const price = window.tfd.inventory.controller.get_price_of_product(product.nr);
             const description = window.tfd.product.view.create_product_description(product);
 
             return (`
@@ -97,7 +96,7 @@ window.tfd.add_module('order', {
                     <div class="box row space-between v-center margin-bottom">
                         <h4 class="product-title">${namn}</h4>
                         <p class="order-product-price-each">
-                            <span>${prisinklmoms} SEK /</span>
+                            <span>${price} SEK /</span>
                             <span class="order_product_price_each_label"></span>
                         </p>
                     </div>
@@ -143,19 +142,23 @@ window.tfd.add_module('order', {
             }
 
             const product = this.global.drinks[id];
-            const total = product.prisinklmoms * quantity;
-            const max_quantity = window.tfd.backend.controller.get_stock_of_product(id);
+            const price = window.tfd.inventory.controller.get_price_of_product(product.nr);
+            const total = price * quantity;
+            const max_quantity = window.tfd.inventory.controller.get_stock_of_product(id);
 
+            // Makes sure that the quantity of the order cannot exceed 10 total items
             if (this.model.order.total_items + quantity > this.model.max_order_items) {
                 console.log('Could not add item to order - order is full');
-                return;
+                window.tfd.notification.controller.show_order_full_notification();
+                return false;
             }
 
             if (this.model.order.items.hasOwnProperty(id)) {
                 // Make sure that the total quantity in cart and new quantity is in stock
                 if (this.model.order.items[id].quantity + quantity > max_quantity) {
                     console.log('Could not add product to order - exceeds available stock');
-                    return;
+                    window.tfd.notification.controller.show_out_of_stock_notification();
+                    return false;
                 }
 
                 // If the item already exists in the order, simply update the quantity
@@ -173,7 +176,8 @@ window.tfd.add_module('order', {
                 // Make sure that there is enough stock of the product
                 if (quantity > max_quantity) {
                     console.log('Could not add product to order - exceeds available stock');
-                    return;
+                    window.tfd.notification.controller.show_out_of_stock_notification();
+                    return false;
                 }
 
                 // Add new item to order
@@ -195,6 +199,8 @@ window.tfd.add_module('order', {
 
             // Update the total items and amount
             this.view.update_order_details();
+
+            return true;
         },
 
         remove: function(id) {
@@ -231,6 +237,7 @@ window.tfd.add_module('order', {
             // Only allow a total of 10 items (and at least 1) in the order
             if (this.model.order.total_items + change > this.model.max_order_items || item.quantity + change < 1) {
                 console.log(`Could not change quantity - new total out of bounds (0 <= n <= ${this.model.max_order_items})`);
+                window.tfd.notification.controller.show_order_full_notification();
                 return;
             }
 
@@ -240,10 +247,11 @@ window.tfd.add_module('order', {
                 return;
             }
 
-            const price_change = product.prisinklmoms * change;
+            const price = window.tfd.inventory.controller.get_price_of_product(product.nr);
+            const price_change = price * change;
 
             // Increase the total item price in order
-            item.total += price_change
+            item.total += price_change;
             item.quantity += change;
 
             // Update the total order items and price
@@ -265,13 +273,13 @@ window.tfd.add_module('order', {
             this.controller.change_quantity(id, -1);
         },
 
-        // TODO: discuss design, whether this should be one or two functions
-        checkout_bar_or_table: function() {
+        checkout: function() {
             // TODO: Add dynamic table id?
             const table_id = 1;
 
             if (!this.model.order.total_price > 0) {
                 console.error('Could not checkout - order is empty');
+                window.tfd.notification.controller.show_order_empty_notification();
                 return;
             }
 
@@ -288,12 +296,11 @@ window.tfd.add_module('order', {
             this.view.update_order();
             this.view.update_order_details();
 
-            // Hide any previous display of errors
-            this.view.update_checkout_error(false);
-
             // Hide the modal and remove any errors
             window.tfd.modal.controller.hide_error();
             window.tfd.modal.controller.hide();
+
+            window.tfd.notification.controller.show_order_success_notification();
 
             return order_id;
         },
@@ -310,33 +317,21 @@ window.tfd.add_module('order', {
             // Can not checkout when the order is empty
             if (this.model.order.total_price <= 0) {
                 console.error('Could not checkout with balance - order is empty');
+                window.tfd.notification.controller.show_order_empty_notification();
                 return;
             }
 
             // Checks if user can make the purchase with its current balance.
             if (window.tfd.vip.controller.update_balance(total_amount)) {
                 // Get the generated order id
-                const order_id = this.controller.checkout_bar_or_table();
+                const order_id = this.controller.checkout();
 
                 // Complete the order directly, since the payment has already been made using credit
                 window.tfd.backend.controller.complete_order(order_id);
             } else {
                 console.log("Insufficient funds");
-
-                // Style elements to tell user this action was not allowed.
-                this.view.update_checkout_error(true);
-                window.tfd.modal.controller.show_error();
+                window.tfd.notification.controller.show_insufficent_funds_notification();
             }
-        },
-    },
-
-    // =====================================================================================================
-    // CUSTOM SIGNAL HANDLERS
-    //
-    signal: {
-        // Signal for adding a product to the current order
-        add_to_order: function(id, quantity) {
-            this.controller.add(id, quantity);
         },
     },
 });

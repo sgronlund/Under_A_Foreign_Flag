@@ -1,3 +1,8 @@
+// =====================================================================================================
+//  Functions for apply localization and switching languages
+// =====================================================================================================
+// Authors: Namn, 2021
+//
 // The actual contents is loaded in from another file based on the current page
 // These files are located in script/localization/<page name>.js
 // Each localization file exports a 'content' variable with the same format

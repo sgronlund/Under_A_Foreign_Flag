@@ -19,7 +19,6 @@
     <script type="text/javascript" src="script/database/users.js"></script>
     <script type="text/javascript" src="script/database/drinks.js"></script>
     <script type="text/javascript" src="script/database/inventory.js"></script>
-    <script type="text/javascript" src="script/database/tables.js"></script>
     <script type="text/javascript" src="script/database/backend.js"></script>
 
     <!-- COMPONENTS -->
@@ -27,8 +26,12 @@
     <script type="text/javascript" src="script/components/modal.js"></script>
     <script type="text/javascript" src="script/components/login.js"></script>
     <script type="text/javascript" src="script/components/order.js"></script>
+    <script type="text/javascript" src="script/components/orders.js"></script>
     <script type="text/javascript" src="script/components/product.js"></script>
     <script type="text/javascript" src="script/components/theme.js"></script>
+    <script type="text/javascript" src="script/components/inventory.js"></script>
+    <script type="text/javascript" src="script/components/edit_orders.js"></script>
+    <script type="text/javascript" src="script/components/notification.js"></script>
 
     <!-- LOCALIZATION -->
     <script type="text/javascript" src="script/i18n/flag.js"></script>
@@ -39,18 +42,34 @@
     <script type="text/javascript" src="script/i18n/product.js"></script>
     <script type="text/javascript" src="script/i18n/special_drink.js"></script>
     <script type="text/javascript" src="script/i18n/staff.js"></script>
+    <script type="text/javascript" src="script/i18n/orders.js"></script>
+    <script type="text/javascript" src="script/i18n/inventory.js"></script>
+    <script type="text/javascript" src="script/i18n/notification.js"></script>
 
     <!-- CURRENT PAGE -->
     <script type="text/javascript" src="script/pages/staff.js"></script>
     <link href="css/staff.css" rel="stylesheet" type="text/css">
 </head>
 
-<body class="view-orders">
+<body>
+    <div id="notification_container">
+        <div id="notification">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4
+                         0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                />
+            </svg>
+            <p id="notification_message"></p>
+        </div>
+    </div>
+
     <header class="page-header container-wrapper text-white">
         <div class="container">
             <section class="box row v-center space-between padding-lg separator-bottom-light">
                 <div class="box v-center">
-                    <h1 class="logo">The Flying Dutchman</h1>
+                    <a href="index.html"><h1 class="logo">The Flying Dutchman</h1></a>
+                    <h3 id="slogan" class="slogan"></h3>
                 </div>
                 <div class="box row v-center">
                     <button id="btn_theme" class="light no-icon-spacing" onclick="window.tfd.theme.controller.toggle()">
@@ -65,7 +84,7 @@
                     <button id="btn_lang" class="margin-left" onclick="window.tfd.localization.controller.toggle()">
                         <img id="flag" src="">
                     </button>
-                    <button id="security_button" class="error no-icon-spacing margin-left">
+                    <button id="security_button" class="error no-icon-spacing margin-left" onclick="window.tfd.staff.view.security_notification()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67
@@ -81,45 +100,59 @@
     <!-- SUB HEADER -->
     <section class="nav-header container-wrapper text-white">
         <div class="container" id="header_nav_menu">
-            <section class="sub-header box row v-center align-end">
-                <button class="brand no-radius padding-h-lg fill-height" onclick="window.tfd.modal.controller.show_filter()">
-                    <span id="btn_filter_text"></span>
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6
-                                 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                        />
-                    </svg>
-                </button>
+            <section class="sub-header box row v-center space-between">
+                <nav class="box row v-center fill fill-height">
+                    <button
+                        id="btn_pending_orders"
+                        class="underline margin-right"
+                        onclick="window.tfd.staff.controller.show_pending_orders()"
+                    ></button>
+                    <button
+                        id="btn_completed_orders"
+                        class="underline"
+                        type="button"
+                        onclick="window.tfd.staff.controller.show_completed_orders()"
+                    ></button>
+                </nav>
             </section>
         </div>
     </section>
 
     <main class="container-wrapper">
         <!--TABLE VIEW-->
-        <div class="container box row" id="table_view">
+        <div class="container box row padding-lg" id="table_view">
             <!-- TABLE VIEW -->
-            <div id="tables_view" class="padding"></div>
+            <div id="tables_view"></div>
         </div>
-        
+
         <!--ORDERS VIEW-->
-        <div class="container box row" id="orders_view">
+        <div class="container box row padding-lg" id="orders_view">
             <!--PENDING ORDERS -->
-            <section id="pending_orders" class="itme-grid box fill"></section>
-            
+            <div class="orders-view-list box fill margin-right-lg">
+                <h3 id="pending_orders_title">Pending orders</h3>
+                <section
+                    id="pending_orders"
+                    class="box fill-width fill-height"
+                    ondragover="window.tfd.orders.controller.allowDrop(event)"
+                    ondrop="window.tfd.orders.controller.drop(event)"
+                ></section>
+            </div>
+
             <!--COMPLETED ORDERS -->
-            <section id="completed_orders" class="item-grid box fill"></section>
+            <div class="orders-view-list box fill margin-left-lg">
+                <h3 id="completed_orders_title">Completed orders</h3>
+                <section
+                    id="completed_orders"
+                    class="box fill-width fill-height"
+                    ondrop="window.tfd.orders.controller.drop(event)"
+                    ondragover="window.tfd.orders.controller.allowDrop(event)"
+                ></section>
+            </div>
         </div>
-       
+
        <!--INVENTORY VIEW-->
-        <div class="container box row" id="inventory_view">
+        <div class="container box padding-lg" id="inventory_view">
             <!--INVENTORY VIEW CONTENT-->
-        </div>
-        
-        <!--MENU VIEW-->
-        <div class="container box row margin-top" id="menu_view">
-            <!--MENU VIEW CONTENT-->
-            <section id="menu" class="item-grid fill"></section>
         </div>
     </main>
 
@@ -128,16 +161,6 @@
         <nav class="container-wrapper">
             <div class="container">
                 <div class="box row center padding-v-sm padding-h-lg">
-                    <button id="btn_tables" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_tables()">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 
-                                     2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"
-                            />
-                        </svg>
-                        <span id="btn_tables_text"></span>
-                    </button>
-                    
                     <button id="btn_inventory" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_inventory()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -155,15 +178,6 @@
                         </svg>
                         <span id="btn_orders_text"></span>
                     </button>
-                    <button id="btn_menu" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_menu()">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2
-                                     2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-                            />
-                        </svg>
-                        <span id="btn_menu_text"></span>
-                    </button>
                     <button id="btn_logout" class="menu-item fill icon-left" onclick="window.tfd.login.controller.logout()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -177,16 +191,54 @@
         </nav>
     </footer>
 
-    <!--ORDER MODAL-->
-    <div class="overlay modal-root" id="order_modal">
+    <!-- EDIT MODAL-->
+    <div class="overlay modal-root" id="edit_modal">
         <div class="overlay event-handler modal-event-hide"></div>
-        <div class="card modal modal-lg">
+        <div class="card modal modal-xlg">
             <div class="modal-top">
-                <p id="order_modal_title" class="modal-title"></p>
+                <p class="modal-title">
+                    <span id="edit_modal_title"></span>
+                    <span id="edit_modal_order_id"></span>
+                </p>
                 <button class="modal-close modal-event-hide" type="button">&#10799;</button>
             </div>
+            <!-- TODO: Add option to put product on the house, change quantity in order and edit price of product -->
+            <div class="modal-content">
+                <label id="edit_order_contents_label" for="edit_order_contents"> contents</label>
+                <ol class="box fill margin-bottom" id="edit_order_contents">
+                    <!--TODO: Use existing order contents renderer from orders.js and add remove icon on the left side of each item -->
+                </ol>
 
-            <div class="modal-content" id="order_modal_content"></div>
+                <label for="add_products" id="add_products_label"></label>
+                <div class="box row v-center fill-width">
+                    <div class="select-container fill margin-right">
+                        <select id="add_products"></select>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <button class="brand small square no-icon-spacing" onclick="window.tfd.edit_orders.controller.add()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="box row fill-width margin-top-lg padding-top separator-top">
+                    <button class="gray fill margin-right icon-left" onclick="window.tfd.edit_orders.controller.undo()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"></path>
+                        </svg>
+                        <span id="btn_edit_order_undo">Undo</span>
+                    </button>
+                    <button class="extra-light fill" onclick="window.tfd.edit_orders.controller.redo()">
+                        <span id="btn_edit_order_redo">Redo</span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </body>

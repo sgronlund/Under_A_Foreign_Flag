@@ -38,7 +38,7 @@
 #btn_checkout,
 #header_nav_order,
 #checkout_vip_actions,
-#order_empty_label,
+#order_empty_container,
 #btn_special_drinks,
 body.view-order #header_nav_menu,
 body.logged-in #btn_vip_login {
@@ -51,7 +51,7 @@ body.view-order #header_nav_order,
 body.view-order #btn_checkout,
 body.logged-in #checkout_vip_actions,
 body.logged-in #btn_special_drinks,
-body.view-order.order-empty #order_empty_label {
+body.view-order.order-empty #order_empty_container {
     display: flex;
 }
 
@@ -75,11 +75,23 @@ body.view-menu.subview-special-drinks #btn_special_drinks {
     font-size: var(--font-size);
 }
 
-#order_empty_label {
+#order_empty_message {
     margin-top: 2rem;
+    background-color: var(--background-color-highlight);
+    padding: var(--spacing);
+    border-radius: var(--border-radius-lg);
+}
+
+#order_empty_label {
     font-weight: bold;
     font-size: var(--font-size-sm);
     color: var(--text-color-default);
+}
+
+#order_empty_illustration {
+    margin-top: 5vh;
+    margin-bottom: var(--spacing);
+    height: 40vh;
 }
 
 body.view-menu #btn_menu,
@@ -135,23 +147,14 @@ span.error_message.show {
     }
 }
 
-/* For tablets */
-@media screen and (max-width: 800px) {
-    #vip_footer_content {
-        flex-direction: column;
-    }
-
-    .credit-container {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .product-description-order {
+/* For mobile devices */
+@media screen and (max-width: 740px) {
+    #menu,
+    #special_drinks {
         grid-template-columns: 1fr;
     }
 
-    #menu,
-    #special_drinks {
+    .product-description-order {
         grid-template-columns: 1fr;
     }
 }

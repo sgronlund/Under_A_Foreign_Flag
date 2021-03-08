@@ -1,10 +1,19 @@
+// =====================================================================================================
+// Backend functions for the orders, inventory and menus.
+// =====================================================================================================
+// Authors: Namn, 2021
+//
+// This file contains functions which handles the stock of the items in the pubs inventory, i.e. updating the
+// inventory if an item has run out of stock, aswell as saving the orders handled by system.
+//
+
+
 window.tfd.add_module('backend', {
     // =====================================================================================================
     // GLOBAL MODEL
     //
     global: {
         drinks: null,
-        inventory: null,
         menu: [],
         special_menu: [],
         orders: {},
@@ -46,7 +55,6 @@ window.tfd.add_module('backend', {
 
             // Load drinks from database and store in global model
             this.global.drinks = load_drinks(DRINKS);
-            this.global.inventory = INVENTORY;
         },
 
         save: function() {
@@ -59,18 +67,6 @@ window.tfd.add_module('backend', {
             window.localStorage.setItem(this.model.storage_keys.next_order_id, this.model.next_order_id);
         },
 
-        get_stock_of_product: function(product_id) {
-            // Since orders that have been checked out decrease the stock of a product,
-            // we only have to check the available stock in the inventory.
-            if (!this.global.inventory.hasOwnProperty(product_id)) {
-                // No stock if the product does not exist
-                console.error(`Could not get stock of invalid product id: ${product_id}`);
-                return 0;
-            }
-
-            return this.global.inventory[product_id].stock;
-        },
-
         update_menus: function() {
             if (!this.global.inventory) {
                 console.error('Inventory database has not been loaded!');
@@ -78,8 +74,12 @@ window.tfd.add_module('backend', {
             }
 
             // Reset the menu's to account for changes to the inventory
-            this.global.menu = [];
-            this.global.special_menu = [];
+            // The menu arrays might have saved references in other variables
+            // which means that they won't get the updated menu unless the read
+            // from the global variable again. By setting the length property,
+            // we mutate the original array (and therefore any other references).
+            this.global.menu.length = 0;
+            this.global.special_menu.length = 0;
 
             for (const product_id of Object.keys(this.global.inventory)) {
                 const item = this.global.inventory[product_id];
@@ -104,30 +104,6 @@ window.tfd.add_module('backend', {
             this.trigger('menus_updated');
         },
 
-        update_stock_for_product: function(product_id, change) {
-            const inventory_item = this.global.inventory[product_id];
-
-            // Update the quantity in stock.
-            // For simplicity, we assume that orders are always valid
-            // and do not exceed the current stock of a product.
-            // This should be checked before a product is even added to the order.
-            //
-            // To make this function more generalized, we add the change in stock
-            // to the existing stock. This way we can both increase and decrease the
-            // stock by simply passing in the difference, e.g. -10.
-            inventory_item.stock += change;
-
-            // Item will no longer be available, so we must make sure to update the
-            // menu to reflect this.
-            if (inventory_item.stock <= 0) {
-                return true;
-            }
-
-            // Product is still in stock, return false to indicate that
-            // a menu update is not required for this product.
-            return false;
-        },
-
         update_inventory_for_order: function(order) {
             // We only have to update and re-render the menu iff
             // a product in the order has a stock of 0 after decreasing.
@@ -141,7 +117,7 @@ window.tfd.add_module('backend', {
                 // be set to true.
                 //
                 // We must make sure to multiply the quantity with -1 to decrease the stock.
-                if (this.controller.update_stock_for_product(product_id, (-1) * order_item.quantity)) {
+                if (window.tfd.inventory.controller.update_stock_for_product(product_id, (-1) * order_item.quantity), 1) {
                     should_update_menus = true;
                 }
             }
@@ -199,9 +175,27 @@ window.tfd.add_module('backend', {
             this.controller.save();
         },
 
+        // Undo a order completion
+        uncomplete_order: function(order_id) {
+            // If no order with the specified table_id and order_id exists
+            if (!this.global.completed_orders.hasOwnProperty(order_id)) {
+                console.error(`Could not uncomplete order with order id: ${order_id} - invalid order id`);
+                return;
+            }
+
+            // Mark order as complete
+            this.global.orders[order_id] = this.global.completed_orders[order_id];
+
+            // Remove the order from the pending orders list
+            delete this.global.completed_orders[order_id];
+
+            // Save the current state
+            this.controller.save();
+        },
+
         complete_special_drink_selection: function(product_id) {
             // Check if the stock update causes the product to be out of stock
-            if (this.controller.update_stock_for_product(product_id, -1)) {
+            if (window.tfd.inventory.controller.update_stock_for_product(product_id, -1), 1) {
                 this.controller.update_menus();
             }
         },

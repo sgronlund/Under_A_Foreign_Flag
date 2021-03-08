@@ -1,18 +1,19 @@
 /* Import base styles */
 @import url('base.css');
 
+header {
+    margin-top: 5rem;
+    text-align: center;
+    background-color: transparent;
+}
+
 main {
     height: 100%;
-    justify-content: space-around;
+    justify-content: flex-start;
     display: flex;
     flex-direction: column;
     align-items: center;
 
-}
-
-header {
-    margin-top: 5rem;
-    text-align: center;
 }
 
 body {
@@ -32,12 +33,22 @@ body {
 }
 
 .start-buttons {
+    margin-top: 10vh;
     width: var(--modal-width);
 }
 
-#start {
-    width: 30%;
-    min-width: calc(var(--content-min-width) * 0.9);
+#boat {
+    position: absolute;
+    top: 30vh;
+    height: 60vh;
+    z-index: -1;
+    opacity: 0.2;
+}
+
+#beer {
+    position: absolute;
+    bottom: 10vh;
+    height: 50vh;
 }
 
 #login-form {

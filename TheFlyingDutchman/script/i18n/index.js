@@ -1,6 +1,6 @@
 window.tfd.localization.controller.add('index', {
     keys: ['login','guest'],
-    alt_keys: ['start'],
+    alt_keys: ['beer', 'boat'],
     placeholder_keys: [],
     src_keys: [],
 
@@ -15,7 +15,8 @@ window.tfd.localization.controller.add('index', {
             login: 'Login',
         },
         alt: {
-            start: 'Two sausages on a plate',
+            beer: 'Two glasses of beer',
+            boat: 'A boat in the sunset',
         },
     },
     sv : {
@@ -24,7 +25,8 @@ window.tfd.localization.controller.add('index', {
             login: 'Logga in',
         },
         alt: {
-            start: 'Två korvar på en tallrik',
+            beer: 'Två glas med öl',
+            boat: 'En båt i solnedgången',
         },
     }
 });
