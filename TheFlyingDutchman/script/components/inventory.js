@@ -288,6 +288,10 @@ window.tfd.add_module('inventory', {
                 ev.target.checked
             );
         },
+        
+        add_to_inventory: function() {
+            
+        }
     },
 
     // =====================================================================================================

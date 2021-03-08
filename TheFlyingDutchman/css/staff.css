@@ -101,7 +101,8 @@ button.is-gift {
     color: white;
 }
 
-#header_nav_menu {
+#orders_nav_menu,
+#inventory_nav_menu {
     display: none;
 }
 
@@ -124,7 +125,8 @@ body.view-inventory #btn_inventory {
 body.view-menu #menu_view,
 body.view-tables #table_view,
 body.view-orders #orders_view,
-body.view-inventory #inventory_view {
+body.view-inventory #inventory_view,
+body.view-inventory #inventory_nav_menu {
     display: flex;
 }
 
@@ -134,7 +136,7 @@ body.subview-completed-orders #btn_completed_orders {
 }
 
 @media screen and (max-width: 1024px) {
-    body.view-orders #header_nav_menu {
+    body.view-orders #orders_nav_menu {
         display: flex;
     }
 

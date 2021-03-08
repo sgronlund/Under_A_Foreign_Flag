@@ -12,6 +12,7 @@ window.tfd.localization.controller.add('staff', {
         'add_products_label',
         'btn_edit_order_undo',
         'btn_edit_order_redo',
+        'btn_inventory_add_product'
     ],
     alt_keys: [],
     placeholder_keys: [],
@@ -36,6 +37,7 @@ window.tfd.localization.controller.add('staff', {
             add_products_label: 'Add product',
             btn_edit_order_undo: 'Undo',
             btn_edit_order_redo: 'Redo',
+            btn_inventory_add_product: 'Add product',
         }
     },
     sv : {
@@ -53,6 +55,7 @@ window.tfd.localization.controller.add('staff', {
             btn_edit_order_undo: 'Ångra',
             btn_edit_order_redo: 'Gör om',
             empty_order_list: 'Den här listan är tom!',
+            btn_inventory_add_product: 'Lägg till vara',
         }
     }
 });

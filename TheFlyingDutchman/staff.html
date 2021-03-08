@@ -97,9 +97,9 @@
         </div>
     </header>
 
-    <!-- SUB HEADER -->
     <section class="nav-header container-wrapper text-white">
-        <div class="container" id="header_nav_menu">
+        <!-- ORDERS SUB HEADER -->
+        <div class="container" id="orders_nav_menu">
             <section class="sub-header box row v-center space-between">
                 <nav class="box row v-center fill fill-height">
                     <button
@@ -114,6 +114,18 @@
                         onclick="window.tfd.staff.controller.show_completed_orders()"
                     ></button>
                 </nav>
+            </section>
+        </div>
+    
+        <!-- INVENTORY SUB HEADER -->
+        <div class="container" id="inventory_nav_menu">
+            <section class="sub-header box row v-center align-end">
+                <button class="brand no-radius fill-height" onclick="window.tfd.modal.controller.show_add_to_inventory()">
+                    <span id="btn_inventory_add_product"></span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                </button>
             </section>
         </div>
     </section>
@@ -206,7 +218,7 @@
             <div class="modal-content">
                 <label id="edit_order_contents_label" for="edit_order_contents"> contents</label>
                 <ol class="box fill margin-bottom" id="edit_order_contents">
-                    <!--TODO: Use existing order contents renderer from orders.js and add remove icon on the left side of each item -->
+                    <!--Dynamically rendered-->
                 </ol>
 
                 <label for="add_products" id="add_products_label"></label>
@@ -241,6 +253,23 @@
             </div>
         </div>
     </div>
+    
+    <!-- INVENTORY MODAL-->
+    <div class="overlay modal-root" id="inventory_add_modal">
+        <div class="overlay event-handler modal-event-hide"></div>
+        <div class="card modal modal-lg">
+            <div class="modal-top">
+                <p class="modal-title">
+                    <span id="inventory_add_modal_title"></span>
+                </p>
+                <button class="modal-close modal-event-hide" type="button">&#10799;</button>
+            </div>
+            
+            <!-- TODO: Add option to put product on the house, change quantity in order and edit price of product -->
+            <div class="modal-content">
+                 
+            </div>
+        </div>
 </body>
 
 </html>
