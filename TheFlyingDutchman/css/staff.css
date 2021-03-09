@@ -107,6 +107,7 @@ button.is-gift {
 }
 
 body.view-menu #btn_menu,
+body.view-users #btn_users,
 body.view-orders #btn_orders,
 body.view-tables #btn_tables,
 body.view-inventory #btn_inventory {
@@ -116,6 +117,7 @@ body.view-inventory #btn_inventory {
 
 #menu_view,
 #table_view,
+#users_view,
 #orders_view,
 #inventory_view {
     padding-bottom: var(--footer-height-offset);
@@ -123,6 +125,7 @@ body.view-inventory #btn_inventory {
 }
 
 body.view-menu #menu_view,
+body.view-users #users_view,
 body.view-tables #table_view,
 body.view-orders #orders_view,
 body.view-inventory #inventory_view,

@@ -25,6 +25,7 @@
     <script type="text/javascript" src="script/components/localization.js"></script>
     <script type="text/javascript" src="script/components/modal.js"></script>
     <script type="text/javascript" src="script/components/login.js"></script>
+    <script type="text/javascript" src="script/components/users.js"></script>
     <script type="text/javascript" src="script/components/order.js"></script>
     <script type="text/javascript" src="script/components/orders.js"></script>
     <script type="text/javascript" src="script/components/product.js"></script>
@@ -116,7 +117,7 @@
                 </nav>
             </section>
         </div>
-    
+
         <!-- INVENTORY SUB HEADER -->
         <div class="container" id="inventory_nav_menu">
             <section class="sub-header box row v-center align-end">
@@ -131,10 +132,9 @@
     </section>
 
     <main class="container-wrapper">
-        <!--TABLE VIEW-->
-        <div class="container box row padding-lg" id="table_view">
-            <!-- TABLE VIEW -->
-            <div id="tables_view"></div>
+        <!--USERS VIEW-->
+        <div class="container box row padding-lg" id="users_view">
+            <div id="users"></div>
         </div>
 
         <!--ORDERS VIEW-->
@@ -189,6 +189,15 @@
                             />
                         </svg>
                         <span id="btn_orders_text"></span>
+                    </button>
+                    <button id="btn_users" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_users()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0
+                                     0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                            />
+                        </svg>
+                        <span id="btn_users_text"></span>
                     </button>
                     <button id="btn_logout" class="menu-item fill icon-left" onclick="window.tfd.login.controller.logout()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -253,7 +262,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- INVENTORY MODAL-->
     <div class="overlay modal-root" id="inventory_add_modal">
         <div class="overlay event-handler modal-event-hide"></div>
@@ -264,10 +273,10 @@
                 </p>
                 <button class="modal-close modal-event-hide" type="button">&#10799;</button>
             </div>
-            
+
             <!-- TODO: Add option to put product on the house, change quantity in order and edit price of product -->
             <div class="modal-content">
-                 
+
             </div>
         </div>
 </body>
