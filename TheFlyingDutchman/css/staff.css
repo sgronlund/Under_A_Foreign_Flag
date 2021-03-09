@@ -19,7 +19,7 @@
     border-radius: var(--border-radius-lg);
     padding: 0.2rem 0.4rem;
     font-weight: bold;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: var(--text-color-brand);
 }
 
@@ -56,40 +56,30 @@
     width: 4.5rem;
 }
 
-.inventory-item-data {
+.inventory-item-description {
     font-size: var(--font-size-sm);
-}
-
-.inventory-item-stock {
-    width: 7.5rem;
-}
-
-.inventory-item-price {
-    width: 12rem;
-    text-align: center;
-}
-
-.inventory-item-price-input {
-    width: 5rem;
-    font-size: var(--font-size-sm);
-    font-weight: bold;
-    color: var(--price-color-text);
-    text-align: center;
-    padding: var(--spacing-xsm);
-    margin: 0 var(--spacing-xsm);
-}
-
-.inventory-item-availability {
+    flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    flex: 1;
-    max-width: 11rem;
+    margin-right: var(--spacing);
 }
 
-.inventory-item-availability > input {
-    margin-left: var(--spacing-sm);
+.inventory-item-description:last-of-type {
+    margin-right: 0;
+}
+
+.inventory_item_stock_text {
+    flex: 1;
+}
+
+.inventory-item-stock {
+    flex: 1;
+}
+
+.inventory-item-stock > input {
+    text-align: center;
 }
 
 #edit_order_contents {
