@@ -134,7 +134,7 @@ window.tfd.add_module('inventory', {
                             ` : ''
                         }
                     </div>
-                    <div class="box row v-center fill-width margin-top-lg">
+                    <div class="inventory-item-data box row v-center fill-width margin-top-lg">
                         <div class="inventory-item-description">
                             <div class="input-container unit-spacing fill">
                                 <label class="inventory_item_stock_text fill margin-right"></label>

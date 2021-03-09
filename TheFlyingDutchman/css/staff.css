@@ -129,6 +129,17 @@ body.subview-completed-orders #btn_completed_orders {
 }
 
 @media screen and (max-width: 1024px) {
+    .inventory-item-data {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-row-gap: var(--spacing);
+        grid-column-gap: var(--spacing);
+    }
+
+    .inventory-item-data .inventory-item-description {
+        margin: 0;
+    }
+
     body.view-orders #orders_nav_menu {
         display: flex;
     }
