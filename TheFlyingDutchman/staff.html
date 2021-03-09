@@ -265,9 +265,71 @@
                 <button class="modal-close modal-event-hide" type="button">&#10799;</button>
             </div>
             
-            <!-- TODO: Add option to put product on the house, change quantity in order and edit price of product -->
+            <!-- Pris, namn, kosher, forpackning, producent, alkoholhalt-->
             <div class="modal-content">
-                 
+                <div class="box row fill-width">
+                    <div class="box fill-width margin-right">
+                        <label for="inventory_name_input" id="inventory_name_input_label">Namn</label>
+                        <input type="text" id="inventory_name_input" />
+                    </div>
+                    <div class="box">
+                        <label for="inventory_price_input" id="inventory_price_input_label">Pris</label>
+                        <input type="number" id="inventory_price_input" min="0" />
+                    </div>
+                </div>
+                
+                
+                <label for="inventory_add_type_select" id="inventory_add_type_select_label">Typ</label>
+                <div class="select-container fill">
+                    <select id="inventory_add_type_select" onchange="window.tfd.inventory.controller.set_product_add_type()">
+                        <option id="option_beer" value="beer">Öl</option>
+                        <option id="option_wine" value="wine">Vin</option>
+                        <option id="option_other" value="other">Annat</option>
+                    </select> 
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+                
+                <div class="box row fill-width v-center margin-top margin-bottom-sm">
+                    <div class="box fill">
+                        <label for="inventory_forpackning_input" id="inventory_forpackning_input_label">Förpackning</label>
+                        <div class="select-container fill">
+                            <select id="inventory_forpackning_input">
+                                    <option id="option_can" value="Burk">Burk</option>
+                                    <option id="option_bottle" value="Flaska">Flaska</option>
+                                    <option id="option_box" value="Box">Box</option>
+                            </select>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="box fill margin-left">
+                        <label for="inventory_alkoholhalt_input" id="inventory_alkoholhalt_input_label">Alkoholhalt</label>
+                        <input type="number" step="0.1" id="inventory_alkoholhalt_input" />
+                    </div>
+                    
+                    <div class="box margin-left">
+                        <label class="" for="inventory_koscher_input" id="inventory_koscher_input_label">Koscher</label>
+                        <div class="filter-item box center">
+                            <input type="checkbox" id="inventory_koscher_input" />
+                        </div>
+                    </div>
+                </div>
+                
+                <label for="inventory_producent_input" id="inventory_producent_input_label">Producent</label>
+                <input type="text" id="inventory_producent_input" />
+            
+                <div id="inventory_add_dynamic_inputs"></div>
+                
+                <button class="extra-light fill-width margin-top-lg" onclick="window.tfd.inventory.controller.add()">
+                    <span id="btn_inventory_add_product_save"></span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </button>
             </div>
         </div>
 </body>

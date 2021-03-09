@@ -57,6 +57,7 @@ window.tfd.add_module('staff', {
     //
     ready: function() {
         this.trigger('render_inventory');
+        this.trigger('render_inventory_modal');
         this.trigger('render_orders');
         this.trigger('render_product_dropdown');
 
