@@ -33,6 +33,7 @@ window.tfd.add_module('modal', {
         order_modal: '#order_modal',
         edit_modal: '#edit_modal',
         inventory_add_modal: '#inventory_add_modal',
+        account_modal: '#account_modal'
         
     },
 
@@ -112,6 +113,11 @@ window.tfd.add_module('modal', {
         
         show_add_to_inventory: function() {
             this.controller.show(this.element.inventory_add_modal);
+        },
+
+        show_account_modal: function() {
+            console.log("adsdd")
+            this.controller.show(this.element.account_modal);
         },
 
         show_error: function() {
