@@ -116,7 +116,6 @@ window.tfd.add_module('modal', {
         },
 
         show_account_modal: function() {
-            console.log("adsdd")
             this.controller.show(this.element.account_modal);
         },
 

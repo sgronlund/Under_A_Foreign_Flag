@@ -32,7 +32,13 @@ window.tfd.localization.controller.add('staff', {
         'option_can',
         'option_beer',
         'option_wine',
-        'pption_other',
+        'option_other',
+        'account_modal_title',
+        'btn_account_text',
+        'username_input_label',
+        'balance_input_label',
+        'btn_update_balance',
+
     ],
     alt_keys: [],
     placeholder_keys: [],
@@ -78,6 +84,11 @@ window.tfd.localization.controller.add('staff', {
             option_beer:'Beer',
             option_wine:'Wine',
             option_other: 'Other',
+            account_modal_title: 'Update account balance',
+            btn_account_text: 'Update balance',
+            username_input_label: 'Username',
+            balance_input_label: 'Add to account',
+            btn_update_balance: 'Update account balance',
         }
     },
     sv : {
@@ -115,6 +126,11 @@ window.tfd.localization.controller.add('staff', {
             option_beer:'Öl',
             option_wine:'Vin',
             option_other: 'Annat',
+            account_modal_title: 'Uppdatera saldo',
+            btn_account_text: 'Uppdatera saldo',
+            username_input_label: 'Användarnamn',
+            balance_input_label: 'Lägg till i saldo',
+            btn_update_balance: 'Uppdatera saldo',
         }
     }
 });

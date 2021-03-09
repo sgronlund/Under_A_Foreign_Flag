@@ -173,6 +173,12 @@
         <nav class="container-wrapper">
             <div class="container">
                 <div class="box row center padding-v-sm padding-h-lg">
+                    <button id="btn_account" class="menu-item fill icon-left margin-right" onclick="window.tfd.modal.controller.show_account_modal()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <span id="btn_account_text"></span>
+                    </button>
                     <button id="btn_inventory" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_inventory()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -214,7 +220,6 @@
                 </p>
                 <button class="modal-close modal-event-hide" type="button">&#10799;</button>
             </div>
-            <!-- TODO: Add option to put product on the house, change quantity in order and edit price of product -->
             <div class="modal-content">
                 <label id="edit_order_contents_label" for="edit_order_contents"> contents</label>
                 <ol class="box fill margin-bottom" id="edit_order_contents">
@@ -264,8 +269,6 @@
                 </p>
                 <button class="modal-close modal-event-hide" type="button">&#10799;</button>
             </div>
-            
-            <!-- Pris, namn, kosher, forpackning, producent, alkoholhalt-->
             <div class="modal-content">
                 <div class="box row fill-width">
                     <div class="box fill-width margin-right">
@@ -333,8 +336,30 @@
             </div>
         </div>
     </div>
-
-    
+    <div class="overlay modal-root" id="account_modal">
+        <div class="overlay event-handler modal-event-hide"></div>
+        <div class="card modal modal-lg">
+            <div class="modal-top">
+                <p class="modal-title">
+                    <span id="account_modal_title"></span>
+                </p>
+                <button class="modal-close modal-event-hide" type="button">&#10799;</button>
+            </div>
+            <div class="modal-content">
+                <div>
+                    <label for="username_input" id="username_input_label"></label>
+                    <input type="text" id="username_input" />
+                    <label for="balance_input" id="balance_input_label"></label>
+                    <input type="number" min=0 id="balance_input" />
+                    <button class="extra-light fill-width margin-top-lg">
+                        <span id="btn_update_balance"></span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>                
+        </div>
+    </div>
 </body>
-
 </html>
