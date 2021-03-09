@@ -19,12 +19,20 @@ window.tfd.add_module('inventory', {
     //
     model: {
         stock_warning_limit: 5,
+        current_product_add_type: 'beer',
+        custom_products: {},
         menu_keys: {
             regular: 'on_menu',
             special: 'on_special_menu',
         },
+        product_types: {
+            beer: 'beer',
+            wine: 'wine',
+            other: 'other',
+        },
         storage_keys: {
             inventory: 'inventory',
+            custom_products: 'custom_products',
         },
     },
 
@@ -33,6 +41,14 @@ window.tfd.add_module('inventory', {
     //
     element: {
         inventory_container: '#inventory_view',
+        inventory_forpackning_input: '#inventory_forpackning_input',
+        inventory_add_type_select: '#inventory_add_type_select',
+        inventory_alkoholhalt_input: '#inventory_alkoholhalt_input',
+        inventory_koscher_input: '#inventory_koscher_input',
+        inventory_producent_input: '#inventory_producent_input',
+        inventory_name_input: '#inventory_name_input',
+        inventory_price_input: '#inventory_price_input',
+        inventory_add_dynamic_inputs: '#inventory_add_dynamic_inputs',
     },
 
     // =====================================================================================================
@@ -52,6 +68,44 @@ window.tfd.add_module('inventory', {
             this.element.inventory_container.html(html);
 
             window.tfd.localization.view.update_localization_component('inventory');
+        },
+        
+        update_inventory_add_modal: function() {
+            const inputs = this.view.create_type_inputs();    
+            
+            this.element.inventory_add_dynamic_inputs.html(inputs);
+            
+            // Update translations for labels of input boxes 
+            window.tfd.localization.view.update_localization_component('staff');
+        },
+        
+        create_type_inputs: function() {
+            if (this.model.current_product_add_type === this.model.product_types.wine) {
+                return (`
+                    <div class="box row fill-width margin-top">
+                        <div class="box fill-width margin-right">
+                            <label for="inventory_grape_input" id="inventory_grape_input_label"></label>
+                            <input type="text" id="inventory_grape_input" />
+                        </div>
+                        
+                        <div class="box">
+                            <label for="inventory_year_input" id="inventory_year_input_label"></label>
+                            <input type="number" step="1" min="1800" max="${new Date().getFullYear()}" id="inventory_year_input" />
+                        </div>
+                    </div>
+                    
+                    <label for="inventory_type_input" id="inventory_type_input_label"></label>
+                    <input type="text" id="inventory_type_input" />
+                `);
+            }
+                
+            return (`
+                <label for="inventory_sort_input" id="inventory_sort_input_label"></label>
+                <input type="text" id="inventory_sort_input" />
+                
+                <label for="inventory_origin_input" id="inventory_origin_input_label"></label>
+                <input type="text" id="inventory_origin_input" />
+            `);
         },
 
         create_inventory_item: function(product_id, stock, price, on_menu, on_special_menu) {
@@ -129,6 +183,7 @@ window.tfd.add_module('inventory', {
         load: function() {
             // Load inventory from localStorage and merge with the default inventory in INVENTORY
             const inventory = window.localStorage.getItem(this.model.storage_keys.inventory);
+            const custom_products = window.localStorage.getItem(this.model.storage_keys.custom_products);
 
             if (!inventory) {
                 // If no inventory is saved, use the default inventory
@@ -136,11 +191,19 @@ window.tfd.add_module('inventory', {
             } else {
                 this.global.inventory = JSON.parse(inventory);
             }
+            
+            if (custom_products) {
+                this.model.custom_products = JSON.parse(custom_products);
+                Object.assign(this.global.drinks, this.model.custom_products);
+            }
         },
 
         save: function() {
             // Save the current inventory
             window.localStorage.setItem(this.model.storage_keys.inventory, JSON.stringify(this.global.inventory));
+            
+            // Save any added custom products
+            window.localStorage.setItem(this.model.storage_keys.custom_products, JSON.stringify(this.model.custom_products));
         },
 
         update_stock_for_product: function(product_id, change, min) {
@@ -203,6 +266,58 @@ window.tfd.add_module('inventory', {
             }
 
             return parseFloat(this.global.drinks[product_id].prisinklmoms);
+        },
+        
+        add: function() {
+            const type = this.element.inventory_add_type_select.val();
+            
+            const largest_id = parseInt(Object.keys(this.global.drinks).reduce((x, y) => x.length > y.length ? x : y));
+            const new_id = largest_id + 1;
+            
+            const new_product = {
+                nr: new_id.toString(),
+                namn: this.element.inventory_name_input.val(),
+                prisinklmoms: parseFloat(this.element.inventory_price_input.val()),
+                koscher: this.element.inventory_koscher_input.prop('checked') ? '1' : '0',
+                description: {
+                    forpackning: this.element.inventory_forpackning_input.val(),
+                    producent: this.element.inventory_producent_input.val(),
+                    alkoholhalt: this.element.inventory_alkoholhalt_input.val() + '%',
+                },
+            };
+            
+            if (type === this.model.product_types.wine) {
+                new_product.description['typ'] = $('#inventory_type_input').val();
+                new_product.description['argang'] = $('#inventory_year_input').val();
+                new_product.description['druva'] = $('#inventory_grape_input').val();
+            } else {
+                new_product.description['ursprunglandnamn'] = $('#inventory_origin_input').val();
+                new_product.description['sort'] = $('#inventory_sort_input').val();
+            }
+            
+            console.log(new_product);
+            
+            // Add to list of custom products that should be saved
+            this.model.custom_products[new_id] = new_product;
+            
+            // Save to global drinks list
+            this.global.drinks[new_id] = new_product;
+            
+            // Save to inventory so that it can be displayed
+            this.global.inventory[new_id] = {
+                stock: 0,
+                on_menu: false,
+                on_special_menu: false,
+            };
+            
+            // Re-render inventory 
+            this.view.update_inventory();
+            
+            // Hide the modal
+            window.tfd.modal.controller.hide();
+            
+            // Save new product to localStorage
+            this.controller.save();
         },
 
         remove: function(product_id) {
@@ -289,9 +404,17 @@ window.tfd.add_module('inventory', {
             );
         },
         
-        add_to_inventory: function() {
+        set_product_add_type: function() {
+            const selected_type = this.element.inventory_add_type_select.val();
             
-        }
+            if (!selected_type) {
+                this.model.current_product_add_type = this.model.product_types.beer;
+            } else {
+                this.model.current_product_add_type = selected_type;
+            }
+            
+            this.view.update_inventory_add_modal();
+        },
     },
 
     // =====================================================================================================
@@ -300,13 +423,17 @@ window.tfd.add_module('inventory', {
     init: function() {
         this.controller.load();
     },
-
+    
     // =====================================================================================================
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {
         render_inventory: function() {
             this.view.update_inventory();
+        },
+        
+        render_inventory_modal: function() {
+            this.controller.set_product_add_type();
         },
     },
 });

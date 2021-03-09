@@ -550,10 +550,6 @@ body.dark .card {
     padding-top: var(--spacing);
 }
 
-.modal-content > input {
-    width: 100%;
-}
-
 /* OVERLAYS */
 .overlay {
     top: 0;
@@ -582,12 +578,12 @@ body.dark .card {
 
 /* INPUTS */
 input {
-    height: var(--button-height);
+    width: 100%;
     font-family: 'Noto Sans', sans-serif;
     font-size: var(--font-size-sm);
     color: var(--text-color-default);
     background-color: var(--background-color-default);
-    padding: var(--spacing-md) var(--spacing-sm);
+    padding: var(--spacing-sm);
     box-sizing: border-box;
     border: 2px solid var(--border-color-dark);
     border-radius: var(--border-radius);
@@ -738,9 +734,8 @@ a {
     align-items: center;
     justify-content: space-between;
     padding: var(--spacing-sm) var(--spacing);
-    border: 1px solid var(--border-color-dark);
+    border: 2px solid var(--border-color-dark);
     border-radius: var(--border-radius);
-    margin-bottom: var(--spacing-md);
 }
 
 .filter-item > label {

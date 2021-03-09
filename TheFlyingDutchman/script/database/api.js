@@ -230,9 +230,6 @@ function format(product) {
         prisinklmoms: parseFloat(product.prisinklmoms), // Convert to float
         koscher: product.koscher,
         description,
-        
-        // Indicates if a product is only for VIP guests
-        vip: product.vip == true,
     };
     
     return filtered;
