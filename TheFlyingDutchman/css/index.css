@@ -35,12 +35,14 @@ body {
 .start-buttons {
     margin-top: 10vh;
     width: var(--modal-width);
+    z-index: 2;
 }
 
 #boat {
     position: absolute;
-    top: 30vh;
-    height: 60vh;
+    bottom: 10vh;
+    width: 90vw;
+    max-height: 60vh;
     z-index: -1;
     opacity: 0.2;
 }

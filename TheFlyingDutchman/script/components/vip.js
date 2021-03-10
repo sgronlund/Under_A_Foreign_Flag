@@ -35,7 +35,7 @@ window.tfd.add_module('vip', {
             const balance = creditSEK ? creditSEK : 0;
 
             this.element.user_name.text(fullname);
-            this.element.user_credit.text(balance + " SEK");
+            this.element.user_credit.text(balance.toFixed(2) + " SEK");
         },
 
         update_special_drink_modal: function() {
@@ -95,26 +95,37 @@ window.tfd.add_module('vip', {
 
             if (this.controller.update_balance(price)) {
                 this.controller.generate_special_drink_code();
+                
+                // Update the global user details and the VIP footer
+                this.controller.update_current_user();
 
                 // Decrease stock of the selected drink
                 window.tfd.backend.controller.complete_special_drink_selection(nr);
             }
         },
+        
+        update_current_user: function() {
+            if (!this.global.logged_in) {
+                return;
+            }
+            
+            this.global.user_details = userDetails(this.global.user_details.username); // Fetches new data from database
+            
+            this.view.update_footer(); //Updates the view, showing the new balance
+        },
 
-        update_balance: function(price) {
+        update_balance: function(user_details, change) {
             //Calculates the new balanced based on a price, this price can be any form of transaction
-            const current_balance = this.global.user_details.creditSEK;
-            const updated_balance = current_balance - price;
+            const current_balance = user_details.creditSEK;
+            const updated_balance = parseFloat(current_balance) + parseFloat(change);
 
             if (updated_balance < 0) {
                 return false;
-            } else {
-                changeBalance(this.global.user_details.username, updated_balance); //Updates the database
-                this.global.user_details = userDetails(this.global.user_details.username); //Fetches new data from database
-
-                this.view.update_footer(); //Updates the view, showing the new balance
-                return true;
-            }
+            } 
+            
+            window.tfd.backend.controller.change_balance(user_details, updated_balance);
+            
+            return true;
         },
     },
 
@@ -128,6 +139,6 @@ window.tfd.add_module('vip', {
 
         logout: function() {
             this.view.update_footer();
-        }
+        },
     }
 });

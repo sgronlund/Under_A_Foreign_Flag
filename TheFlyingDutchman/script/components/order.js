@@ -11,6 +11,7 @@ window.tfd.add_module('order', {
     //
     model: {
         max_order_items: 10,
+        max_table_id: 18,
         order: {
             items: {},
             total_items: 0,
@@ -274,9 +275,6 @@ window.tfd.add_module('order', {
         },
 
         checkout: function() {
-            // TODO: Add dynamic table id?
-            const table_id = 1;
-
             if (!this.model.order.total_price > 0) {
                 console.error('Could not checkout - order is empty');
                 window.tfd.notification.controller.show_order_empty_notification();
@@ -284,7 +282,7 @@ window.tfd.add_module('order', {
             }
 
             // Checkout the order and mark as pending for the staff
-            const order_id = window.tfd.backend.controller.checkout_order(table_id, this.model.order);
+            const order_id = window.tfd.backend.controller.checkout_order(this.global.table_id, this.model.order);
 
             // Clear order
             this.model.order.items = {};
@@ -322,9 +320,12 @@ window.tfd.add_module('order', {
             }
 
             // Checks if user can make the purchase with its current balance.
-            if (window.tfd.vip.controller.update_balance(total_amount)) {
+            if (window.tfd.vip.controller.update_balance(this.global.user_details, (-1) * total_amount)) {
                 // Get the generated order id
                 const order_id = this.controller.checkout();
+                
+                // Update global user details with new balance and update VIP footer balance
+                window.tfd.vip.controller.update_current_user();
 
                 // Complete the order directly, since the payment has already been made using credit
                 window.tfd.backend.controller.complete_order(order_id);

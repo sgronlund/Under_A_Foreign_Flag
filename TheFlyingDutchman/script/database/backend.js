@@ -6,8 +6,6 @@
 // This file contains functions which handles the stock of the items in the pubs inventory, i.e. updating the
 // inventory if an item has run out of stock, aswell as saving the orders handled by system.
 //
-
-
 window.tfd.add_module('backend', {
     // =====================================================================================================
     // GLOBAL MODEL
@@ -25,12 +23,14 @@ window.tfd.add_module('backend', {
     //
     model: {
         next_order_id: 0,
+        balances: {},
         storage_keys: {
             order: {
                 orders: 'orders',
                 completed_orders: 'completed_orders',
             },
             next_order_id: 'next_order_id',
+            balances: 'balances',
         },
     },
 
@@ -52,6 +52,25 @@ window.tfd.add_module('backend', {
             if (next_order_id) {
                 this.model.next_order_id = parseInt(next_order_id);
             }
+            
+            // Load user balances
+            const balances = window.localStorage.getItem(this.model.storage_keys.balances);
+            
+            if (balances) {
+                this.model.balances = JSON.parse(balances);
+            }
+            
+            for (const user_id of Object.keys(this.model.balances)) {
+                const user = DB.account.find(function(user) {
+                    return user.user_id == user_id;
+                });
+                
+                if (!user) {
+                    continue;
+                }
+                
+                user.creditSEK = this.model.balances[user_id];
+            }
 
             // Load drinks from database and store in global model
             this.global.drinks = load_drinks(DRINKS);
@@ -65,6 +84,9 @@ window.tfd.add_module('backend', {
 
             // Save the next order id so that we do not create duplicate order id's after reload
             window.localStorage.setItem(this.model.storage_keys.next_order_id, this.model.next_order_id);
+            
+            // Save custom balances
+            window.localStorage.setItem(this.model.storage_keys.balances, JSON.stringify(this.model.balances));
         },
 
         update_menus: function() {
@@ -198,6 +220,15 @@ window.tfd.add_module('backend', {
             if (window.tfd.inventory.controller.update_stock_for_product(product_id, -1), 1) {
                 this.controller.update_menus();
             }
+        },
+        
+        change_balance: function(user_details, new_balance) {
+            changeBalance(user_details.username, new_balance); //Updates the database
+            
+            this.model.balances[user_details.user_id] = new_balance;
+            
+            // Save the update model to localStorage
+            this.controller.save();
         },
     },
 

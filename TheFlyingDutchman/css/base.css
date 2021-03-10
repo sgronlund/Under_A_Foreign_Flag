@@ -59,8 +59,9 @@
     --box-shadow-footer: 0px -3px 20px rgba(0, 0, 0, 0.1);
     --box-shadow-card: 1px 2px 10px rgba(0, 0, 0, 0.08);
 
+    --footer-z-index: 8;
+    --header-z-index: 9;
     --overlay-z-index: 10;
-    --footer-z-index: 9;
     --lang-button-z-index: 11;
     --theme-button-z-index: 11;
     --security-button-z-index: 11;
@@ -104,6 +105,7 @@ header {
     background-color: var(--background-color);
     box-shadow: var(--box-shadow-header);
     position: sticky;
+    z-index: var(--header-z-index);
     top: 0;
 }
 
@@ -548,10 +550,6 @@ body.dark .card {
     padding-top: var(--spacing);
 }
 
-.modal-content > input {
-    width: 100%;
-}
-
 /* OVERLAYS */
 .overlay {
     top: 0;
@@ -580,12 +578,12 @@ body.dark .card {
 
 /* INPUTS */
 input {
-    height: var(--button-height);
+    width: 100%;
     font-family: 'Noto Sans', sans-serif;
     font-size: var(--font-size-sm);
     color: var(--text-color-default);
     background-color: var(--background-color-default);
-    padding: var(--spacing-md) var(--spacing-sm);
+    padding: var(--spacing-sm);
     box-sizing: border-box;
     border: 2px solid var(--border-color-dark);
     border-radius: var(--border-radius);
@@ -723,6 +721,8 @@ a {
     -moz-appearance:textfield;
 }
 
+/*  For some input's that use type="number", we do not
+    want to see the native browser spinner controls */
 .no-spinner::-webkit-outer-spin-button,
 .no-spinner::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -730,24 +730,72 @@ a {
 }
 
 /* FILTERING */
-.filter-item {
+.input-container {
+    height: var(--button-height-sm);
+    box-sizing: border-box;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     padding: var(--spacing-sm) var(--spacing);
-    border: 1px solid var(--border-color-dark);
+    border: 2px solid var(--border-color-dark);
     border-radius: var(--border-radius);
-    margin-bottom: var(--spacing-md);
+    position: relative;
 }
 
-.filter-item > label {
+.input-container.unit-spacing {
+    padding-right: 4rem;
+}
+
+.input-container label {
     margin: 0;
 }
 
-.filter-item > input {
+.input-container input {
+    border: none;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin-left: var(--spacing-sm);
+}
+
+.input-container input[type="checkbox"] {
     height: 1rem;
     width: 1rem;
+}
+
+.input-container .input-value-unit {
+    height: 100%;
+    width: 2rem;
+    background-color: var(--border-color);
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0 var(--spacing);
+    font-weight: bold;
+    z-index: 2;
+}
+
+footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: var(--background-color-highlight);
+    box-shadow: var(--box-shadow-footer);
+    z-index: var(--footer-z-index);
+    color: var(--text-color-default);
+}
+
+/* PRODUCTS */
+.product-price, .order-product-price {
+    font-size: var(--font-size-sm);
+    font-weight: bold;
+    color: var(--price-color-text);
+    min-width: 6rem;
+    text-align: right;
 }
 
 footer {
