@@ -25,6 +25,7 @@
     <script type="text/javascript" src="script/components/localization.js"></script>
     <script type="text/javascript" src="script/components/modal.js"></script>
     <script type="text/javascript" src="script/components/login.js"></script>
+    <script type="text/javascript" src="script/components/users.js"></script>
     <script type="text/javascript" src="script/components/order.js"></script>
     <script type="text/javascript" src="script/components/orders.js"></script>
     <script type="text/javascript" src="script/components/product.js"></script>
@@ -116,7 +117,7 @@
                 </nav>
             </section>
         </div>
-    
+
         <!-- INVENTORY SUB HEADER -->
         <div class="container" id="inventory_nav_menu">
             <section class="sub-header box row v-center align-end">
@@ -131,10 +132,9 @@
     </section>
 
     <main class="container-wrapper">
-        <!--TABLE VIEW-->
-        <div class="container box row padding-lg" id="table_view">
-            <!-- TABLE VIEW -->
-            <div id="tables_view"></div>
+        <!--USERS VIEW-->
+        <div class="container box row padding-lg" id="users_view">
+            <div id="users"></div>
         </div>
 
         <!--ORDERS VIEW-->
@@ -173,12 +173,6 @@
         <nav class="container-wrapper">
             <div class="container">
                 <div class="box row center padding-v-sm padding-h-lg">
-                    <button id="btn_account" class="menu-item fill icon-left margin-right" onclick="window.tfd.modal.controller.show_account_modal()">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                        <span id="btn_account_text"></span>
-                    </button>
                     <button id="btn_inventory" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_inventory()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -195,6 +189,22 @@
                             />
                         </svg>
                         <span id="btn_orders_text"></span>
+                    </button>
+                    <!-- TODO: Which one? -->
+                    <!-- <button id="btn_users" class="menu-item fill icon-left margin-right" onclick="window.tfd.staff.controller.show_users()"> -->
+                    <!--     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> -->
+                    <!--         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" -->
+                    <!--               d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 -->
+                    <!--                  0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" -->
+                    <!--         /> -->
+                    <!--     </svg> -->
+                    <!--     <span id="btn_users_text"></span> -->
+                    <!-- </button> -->
+                    <button id="btn_account" class="menu-item fill icon-left margin-right" onclick="window.tfd.modal.controller.show_account_modal()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <span id="btn_account_text"></span>
                     </button>
                     <button id="btn_logout" class="menu-item fill icon-left" onclick="window.tfd.login.controller.logout()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -258,7 +268,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- INVENTORY MODAL-->
     <div class="overlay modal-root" id="inventory_add_modal">
         <div class="overlay event-handler modal-event-hide"></div>
@@ -269,6 +279,8 @@
                 </p>
                 <button class="modal-close modal-event-hide" type="button">&#10799;</button>
             </div>
+
+            <!-- Pris, namn, kosher, forpackning, producent, alkoholhalt-->
             <div class="modal-content">
                 <div class="box row fill-width">
                     <div class="box fill-width margin-right">
@@ -280,20 +292,20 @@
                         <input type="number" id="inventory_price_input" min="0" />
                     </div>
                 </div>
-                
-                
+
+
                 <label for="inventory_add_type_select" id="inventory_add_type_select_label">Typ</label>
                 <div class="select-container fill">
                     <select id="inventory_add_type_select" onchange="window.tfd.inventory.controller.set_product_add_type()">
                         <option id="option_beer" value="beer">Öl</option>
                         <option id="option_wine" value="wine">Vin</option>
                         <option id="option_other" value="other">Annat</option>
-                    </select> 
+                    </select>
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </div>
-                
+
                 <div class="box row fill-width v-center margin-top margin-bottom-sm">
                     <div class="box fill">
                         <label for="inventory_forpackning_input" id="inventory_forpackning_input_label">Förpackning</label>
@@ -308,25 +320,25 @@
                             </svg>
                         </div>
                     </div>
-                    
+
                     <div class="box fill margin-left">
                         <label for="inventory_alkoholhalt_input" id="inventory_alkoholhalt_input_label">Alkoholhalt</label>
                         <input type="number" step="0.1" id="inventory_alkoholhalt_input" />
                     </div>
-                    
+
                     <div class="box margin-left">
                         <label class="" for="inventory_koscher_input" id="inventory_koscher_input_label">Koscher</label>
-                        <div class="filter-item box center">
+                        <div class="input-container box center">
                             <input type="checkbox" id="inventory_koscher_input" />
                         </div>
                     </div>
                 </div>
-                
+
                 <label for="inventory_producent_input" id="inventory_producent_input_label">Producent</label>
                 <input type="text" id="inventory_producent_input" />
-            
+
                 <div id="inventory_add_dynamic_inputs"></div>
-                
+
                 <button class="extra-light fill-width margin-top-lg" onclick="window.tfd.inventory.controller.add()">
                     <span id="btn_inventory_add_product_save"></span>
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -358,7 +370,7 @@
                         </svg>
                     </button>
                 </div>
-            </div>                
+            </div>
         </div>
     </div>
 </body>

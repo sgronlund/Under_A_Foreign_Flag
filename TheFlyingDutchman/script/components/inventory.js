@@ -69,16 +69,16 @@ window.tfd.add_module('inventory', {
 
             window.tfd.localization.view.update_localization_component('inventory');
         },
-        
+
         update_inventory_add_modal: function() {
-            const inputs = this.view.create_type_inputs();    
-            
+            const inputs = this.view.create_type_inputs();
+
             this.element.inventory_add_dynamic_inputs.html(inputs);
-            
-            // Update translations for labels of input boxes 
+
+            // Update translations for labels of input boxes
             window.tfd.localization.view.update_localization_component('staff');
         },
-        
+
         create_type_inputs: function() {
             if (this.model.current_product_add_type === this.model.product_types.wine) {
                 return (`
@@ -87,22 +87,22 @@ window.tfd.add_module('inventory', {
                             <label for="inventory_grape_input" id="inventory_grape_input_label"></label>
                             <input type="text" id="inventory_grape_input" />
                         </div>
-                        
+
                         <div class="box">
                             <label for="inventory_year_input" id="inventory_year_input_label"></label>
                             <input type="number" step="1" min="1800" max="${new Date().getFullYear()}" id="inventory_year_input" />
                         </div>
                     </div>
-                    
+
                     <label for="inventory_type_input" id="inventory_type_input_label"></label>
                     <input type="text" id="inventory_type_input" />
                 `);
             }
-                
+
             return (`
                 <label for="inventory_sort_input" id="inventory_sort_input_label"></label>
                 <input type="text" id="inventory_sort_input" />
-                
+
                 <label for="inventory_origin_input" id="inventory_origin_input_label"></label>
                 <input type="text" id="inventory_origin_input" />
             `);
@@ -113,63 +113,66 @@ window.tfd.add_module('inventory', {
             const low_stock = stock <= this.model.stock_warning_limit;
 
             return (`
-                <article class="card box row space-between margin-bottom">
-                    <div class="box fill margin-right-lg">
-                        <div class="box row">
+                <article class="card box space-between margin-bottom">
+                    <div class="box row space-between">
+                        <div class="box row v-center">
                             <p class="card-title-tag inventory-item-id">ID: ${nr}</p>
                             ${low_stock ? '<p class="card-title-tag inventory_item_low_stock"></p>' : ''}
                             <h4>${namn}</h4>
                         </div>
-                        <div class="inventory-item-data box row v-center margin-top-sm">
-                            <p class="inventory-item-stock separator-right">
-                                <span class="inventory_item_stock_text">Stock:</span>
-                                <span data-stock-id="${product_id}" class="bold">${stock}</span>
-                                <span class="inventory_item_stock_pcs_text"></span>
-                            </p>
-                            <p class="inventory-item-price separator-right">
-                                <span class="inventory_item_price_text">Price:</span>
-                                <input type="number" min="0" value="${price}" step="0.01"
-                                       class="inventory-item-price-input no-spinner"
-                                       onchange="window.tfd.inventory.controller.update_price(event, ${product_id})"
-                                />
-                                <span class="product-price">SEK</span>
-                            </p>
-                            <p class="inventory-item-availability separator-right">
-                                <span class="inventory_item_menu_text">On menu:</span>
-                                <input type="checkbox" ${on_menu && 'checked'}
-                                       onchange="window.tfd.inventory.controller.change_on_menu(event, ${product_id})"
-                                />
-                            </p>
-                            <p class="inventory-item-availability separator-right">
-                                <span class="inventory_item_special_menu_text">On special menu:</span>
-                                <input type="checkbox" ${on_special_menu && 'checked'}
-                                       onfocusout="window.tfd.inventory.controller.change_on_special_menu(event, ${product_id})"
-                                />
-                            </p>
-                        </div>
-                    </div>
-                    <div class="box row v-center">
-                        <button class="gray small square no-icon-spacing" onclick="window.tfd.inventory.controller.decrease_stock(${product_id})">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                            </svg>
-                        </button>
-                        <input type="number" class="product-quantity no-spinner" data-stock-input-id="${product_id}" value="${stock}" min="0" />
-                        <button class="gray small square no-icon-spacing" onclick="window.tfd.inventory.controller.increase_stock(${product_id})">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </button>
+
                         ${this.global.is_manager ? `
                             <button class="extra-light small margin-left" onclick="window.tfd.inventory.controller.remove(${product_id})">
                                 <span class="inventory_item_remove_text">Remove</span>
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5
+                                             4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                    />
                                 </svg>
                             </button>
                             ` : ''
                         }
+                    </div>
+                    <div class="inventory-item-data box row v-center fill-width margin-top-lg">
+                        <div class="inventory-item-description">
+                            <div class="input-container unit-spacing fill">
+                                <label class="inventory_item_stock_text fill margin-right"></label>
+                                <input
+                                    type="number"
+                                    onchange="window.tfd.inventory.controller.update_stock(this, ${product_id})"
+                                    value="${stock}"
+                                    min="0"
+                                />
+                                <p class="input-value-unit inventory_item_stock_pcs_text"></p>
+                            </div>
+                        </div>
+                        <div class="inventory-item-description">
+                            <div class="input-container fill">
+                                <label class="inventory_item_price_text">Price:</label>
+                                <input type="number" min="0" value="${price}" step="0.01"
+                                       class="inventory-item-price-input no-spinner"
+                                       onchange="window.tfd.inventory.controller.update_price(event, ${product_id})"
+                                />
+                                <p class="input-value-unit">SEK</p>
+                            </div>
+                        </div>
+                        <div class="inventory-item-description">
+                            <div class="input-container fill">
+                                <label class="inventory_item_menu_text">On menu:</label>
+                                <input type="checkbox" ${on_menu && 'checked'}
+                                       onchange="window.tfd.inventory.controller.change_on_menu(event, ${product_id})"
+                                />
+                            </div>
+                        </div>
+                        <div class="inventory-item-description">
+                            <div class="input-container fill">
+                                <label class="inventory_item_special_menu_text">On special menu:</label>
+                                <input type="checkbox" ${on_special_menu && 'checked'}
+                                       onfocusout="window.tfd.inventory.controller.change_on_special_menu(event, ${product_id})"
+                                />
+                            </div>
+                        </div>
                     </div>
                 </article>
            `);
@@ -191,7 +194,7 @@ window.tfd.add_module('inventory', {
             } else {
                 this.global.inventory = JSON.parse(inventory);
             }
-            
+
             if (custom_products) {
                 this.model.custom_products = JSON.parse(custom_products);
                 Object.assign(this.global.drinks, this.model.custom_products);
@@ -201,7 +204,7 @@ window.tfd.add_module('inventory', {
         save: function() {
             // Save the current inventory
             window.localStorage.setItem(this.model.storage_keys.inventory, JSON.stringify(this.global.inventory));
-            
+
             // Save any added custom products
             window.localStorage.setItem(this.model.storage_keys.custom_products, JSON.stringify(this.model.custom_products));
         },
@@ -267,13 +270,13 @@ window.tfd.add_module('inventory', {
 
             return parseFloat(this.global.drinks[product_id].prisinklmoms);
         },
-        
+
         add: function() {
             const type = this.element.inventory_add_type_select.val();
-            
+
             const largest_id = parseInt(Object.keys(this.global.drinks).reduce((x, y) => x.length > y.length ? x : y));
             const new_id = largest_id + 1;
-            
+
             const new_product = {
                 nr: new_id.toString(),
                 namn: this.element.inventory_name_input.val(),
@@ -285,7 +288,7 @@ window.tfd.add_module('inventory', {
                     alkoholhalt: this.element.inventory_alkoholhalt_input.val() + '%',
                 },
             };
-            
+
             if (type === this.model.product_types.wine) {
                 new_product.description['typ'] = $('#inventory_type_input').val();
                 new_product.description['argang'] = $('#inventory_year_input').val();
@@ -294,28 +297,28 @@ window.tfd.add_module('inventory', {
                 new_product.description['ursprunglandnamn'] = $('#inventory_origin_input').val();
                 new_product.description['sort'] = $('#inventory_sort_input').val();
             }
-            
+
             console.log(new_product);
-            
+
             // Add to list of custom products that should be saved
             this.model.custom_products[new_id] = new_product;
-            
+
             // Save to global drinks list
             this.global.drinks[new_id] = new_product;
-            
+
             // Save to inventory so that it can be displayed
             this.global.inventory[new_id] = {
                 stock: 0,
                 on_menu: false,
                 on_special_menu: false,
             };
-            
-            // Re-render inventory 
+
+            // Re-render inventory
             this.view.update_inventory();
-            
+
             // Hide the modal
             window.tfd.modal.controller.hide();
-            
+
             // Save new product to localStorage
             this.controller.save();
         },
@@ -336,17 +339,17 @@ window.tfd.add_module('inventory', {
             this.controller.save();
         },
 
-        decrease_stock: function(product_id) {
-            if (!this.controller.update_stock_for_product(product_id, -1, 0)) {
-                this.view.update_inventory();
-                
-                // Save the updated inventory
-                this.controller.save();
+        update_stock: function(input, product_id) {
+            // TODO: Debounce this shit
+            if (!input) {
+                console.error('Could not update stock of product - invalid input element');
+                return;
             }
-        },
 
-        increase_stock: function(product_id) {
-            if (!this.controller.update_stock_for_product(product_id, 1, 0)) {
+            const previous_stock = this.controller.get_stock_of_product(product_id);
+            const change = parseInt($(input).val()) - previous_stock;
+
+            if (!this.controller.update_stock_for_product(product_id, change, 0)) {
                 this.view.update_inventory();
 
                 // Save the updated inventory
@@ -403,16 +406,16 @@ window.tfd.add_module('inventory', {
                 ev.target.checked
             );
         },
-        
+
         set_product_add_type: function() {
             const selected_type = this.element.inventory_add_type_select.val();
-            
+
             if (!selected_type) {
                 this.model.current_product_add_type = this.model.product_types.beer;
             } else {
                 this.model.current_product_add_type = selected_type;
             }
-            
+
             this.view.update_inventory_add_modal();
         },
     },
@@ -423,7 +426,7 @@ window.tfd.add_module('inventory', {
     init: function() {
         this.controller.load();
     },
-    
+
     // =====================================================================================================
     // CUSTOM SIGNAL HANDLERS
     //
@@ -431,7 +434,7 @@ window.tfd.add_module('inventory', {
         render_inventory: function() {
             this.view.update_inventory();
         },
-        
+
         render_inventory_modal: function() {
             this.controller.set_product_add_type();
         },

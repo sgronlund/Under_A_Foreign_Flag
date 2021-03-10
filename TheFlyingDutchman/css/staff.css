@@ -19,7 +19,7 @@
     border-radius: var(--border-radius-lg);
     padding: 0.2rem 0.4rem;
     font-weight: bold;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: var(--text-color-brand);
 }
 
@@ -56,40 +56,30 @@
     width: 4.5rem;
 }
 
-.inventory-item-data {
+.inventory-item-description {
     font-size: var(--font-size-sm);
-}
-
-.inventory-item-stock {
-    width: 7.5rem;
-}
-
-.inventory-item-price {
-    width: 12rem;
-    text-align: center;
-}
-
-.inventory-item-price-input {
-    width: 5rem;
-    font-size: var(--font-size-sm);
-    font-weight: bold;
-    color: var(--price-color-text);
-    text-align: center;
-    padding: var(--spacing-xsm);
-    margin: 0 var(--spacing-xsm);
-}
-
-.inventory-item-availability {
+    flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    flex: 1;
-    max-width: 11rem;
+    margin-right: var(--spacing);
 }
 
-.inventory-item-availability > input {
-    margin-left: var(--spacing-sm);
+.inventory-item-description:last-of-type {
+    margin-right: 0;
+}
+
+.inventory_item_stock_text {
+    flex: 1;
+}
+
+.inventory-item-stock {
+    flex: 1;
+}
+
+.inventory-item-stock > input {
+    text-align: center;
 }
 
 #edit_order_contents {
@@ -107,6 +97,7 @@ button.is-gift {
 }
 
 body.view-menu #btn_menu,
+body.view-users #btn_users,
 body.view-orders #btn_orders,
 body.view-tables #btn_tables,
 body.view-inventory #btn_inventory {
@@ -116,6 +107,7 @@ body.view-inventory #btn_inventory {
 
 #menu_view,
 #table_view,
+#users_view,
 #orders_view,
 #inventory_view {
     padding-bottom: var(--footer-height-offset);
@@ -123,6 +115,7 @@ body.view-inventory #btn_inventory {
 }
 
 body.view-menu #menu_view,
+body.view-users #users_view,
 body.view-tables #table_view,
 body.view-orders #orders_view,
 body.view-inventory #inventory_view,
@@ -136,6 +129,17 @@ body.subview-completed-orders #btn_completed_orders {
 }
 
 @media screen and (max-width: 1024px) {
+    .inventory-item-data {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-row-gap: var(--spacing);
+        grid-column-gap: var(--spacing);
+    }
+
+    .inventory-item-data .inventory-item-description {
+        margin: 0;
+    }
+
     body.view-orders #orders_nav_menu {
         display: flex;
     }
