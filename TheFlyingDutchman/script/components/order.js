@@ -11,6 +11,7 @@ window.tfd.add_module('order', {
     //
     model: {
         max_order_items: 10,
+        max_table_id: 18,
         order: {
             items: {},
             total_items: 0,
@@ -319,9 +320,12 @@ window.tfd.add_module('order', {
             }
 
             // Checks if user can make the purchase with its current balance.
-            if (window.tfd.vip.controller.update_balance(total_amount)) {
+            if (window.tfd.vip.controller.update_balance(this.global.user_details, (-1) * total_amount)) {
                 // Get the generated order id
                 const order_id = this.controller.checkout();
+                
+                // Update global user details with new balance and update VIP footer balance
+                window.tfd.vip.controller.update_current_user();
 
                 // Complete the order directly, since the payment has already been made using credit
                 window.tfd.backend.controller.complete_order(order_id);

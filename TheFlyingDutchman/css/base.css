@@ -721,6 +721,8 @@ a {
     -moz-appearance:textfield;
 }
 
+/*  For some input's that use type="number", we do not
+    want to see the native browser spinner controls */
 .no-spinner::-webkit-outer-spin-button,
 .no-spinner::-webkit-inner-spin-button {
     -webkit-appearance: none;

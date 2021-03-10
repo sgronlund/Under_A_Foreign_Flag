@@ -35,6 +35,7 @@ body {
 .start-buttons {
     margin-top: 10vh;
     width: var(--modal-width);
+    z-index: 2;
 }
 
 #boat {

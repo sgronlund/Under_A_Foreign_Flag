@@ -27,6 +27,8 @@ window.tfd.add_module('notification', {
             insufficient_funds: 'notification_insufficent_funds',
             order_success: 'notification_order_success',
             low_stock: 'notification_inventory_low_stock',
+            user_not_found: 'notification_user_not_found',
+            balance_update_success: 'notification_balance_update_success',
         },
         hide_delay: 3000, // ms
         hide_timeout: null,
@@ -113,9 +115,17 @@ window.tfd.add_module('notification', {
         show_inventory_low_stock: function() {
             this.controller.show(this.model.message_keys.low_stock, true);
         },
-
+        
         show_order_success_notification: function() {
             this.controller.show(this.model.message_keys.order_success, false);
+        },
+        
+        show_balance_update_failure_notification: function() {
+            this.controller.show(this.model.message_keys.user_not_found, true);
+        },
+        
+        show_balance_update_success_notification: function() {
+            this.controller.show(this.model.message_keys.balance_update_success, false);
         },
     },
 });
