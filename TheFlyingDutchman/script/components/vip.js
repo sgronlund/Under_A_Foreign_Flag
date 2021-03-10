@@ -29,11 +29,13 @@ window.tfd.add_module('vip', {
             if (!this.global.logged_in) {
                 return;
             }
-
+            
+            // Gets all details of the currently logged in VIP user
             const { first_name, last_name, creditSEK } = this.global.user_details;
             const fullname = first_name + " " + last_name;
             const balance = creditSEK ? creditSEK : 0;
 
+            // Add details of user to the footer
             this.element.user_name.text(fullname);
             this.element.user_credit.text(balance.toFixed(2) + " SEK");
         },
@@ -44,9 +46,11 @@ window.tfd.add_module('vip', {
                 return;
             }
 
+            // Get details of the selected special drink
             const { namn } = this.model.selected_drink;
             const price = window.tfd.inventory.controller.get_price_of_product(this.model.selected_drink.nr);
 
+            // Renders the name and price of the special drink when the drink is selected
             this.element.special_drink_name.text(namn);
             this.element.special_drink_price.text(price + ' SEK');
 

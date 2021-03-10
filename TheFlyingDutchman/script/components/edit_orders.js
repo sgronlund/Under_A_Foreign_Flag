@@ -219,9 +219,6 @@ window.tfd.add_module('edit_orders', {
         },
 
         gift: function(btn, product_id) {
-            // TODO: Remove the product total from order and re-render order card
-            // TODO: Should probably display the price in the edit order modal as well
-            //       so that it is clear what actually happens.
             if (!this.model.order.items.hasOwnProperty(product_id)) {
                 console.error(`Could not gift invalid product from order: ${product_id}`);
                 return;
@@ -275,9 +272,7 @@ window.tfd.add_module('edit_orders', {
             this.model.order.total_price -= this.model.order.items[product_id].total;
 
             delete this.model.order.items[product_id];
-
-            // TODO: Should the order be removed if it's empty?
-
+            
             if (change_stack_name === 'undo') {
                 this.model.changes_redo.push({
                     product_id: product_id,

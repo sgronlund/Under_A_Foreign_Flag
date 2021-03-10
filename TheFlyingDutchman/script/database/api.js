@@ -184,8 +184,9 @@ function apply_filters(drinks, menu, filters) {
         let passes_filters = true;
         const product = drinks[product_id];
         
-        // Apply filters to product
+        
         for (const filter of filters) {
+            // Checks if current products passes all filters
             if (!filter(product)) {
                 passes_filters = false; 
             }

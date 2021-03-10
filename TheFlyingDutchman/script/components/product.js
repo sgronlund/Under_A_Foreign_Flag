@@ -72,6 +72,7 @@ window.tfd.add_module('product', {
         },
 
         update_product_quantity: function(id, quantity) {
+            //Updates the input field of a product card based on the id of the card.
             $("[data-quantity-id='" + id + "']").val(quantity);
         },
 
@@ -89,6 +90,7 @@ window.tfd.add_module('product', {
         },
 
         reset_product_quantity: function(id) {
+            // Restores the input field of a product card, i.e. if a amount just was added to the users order
             $("[data-quantity-id='" + id + "']").val(1);
         },
 
@@ -192,13 +194,15 @@ window.tfd.add_module('product', {
     //
     controller: {
         get_quantity: function(id) {
+            // Find the card we're trying to get the value from.
             const input_element = $("[data-quantity-id='" + id + "']");
 
             if (!input_element) {
                 console.error(`Could not find quantity input with id: ${id}`);
                 return;
             }
-
+            
+            // Returns the current value of the card
             return parseInt(input_element.val());
         },
 
@@ -330,6 +334,7 @@ window.tfd.add_module('product', {
             this.view.update_current_menu();
         },
 
+        
         route_special_drinks: function() {
             this.controller.set_current_menu(this.global.special_menu, this.element.container_special);
             this.view.update_current_menu();

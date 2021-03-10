@@ -75,6 +75,9 @@ window.tfd.add_module('customer', {
     //
     signal: {
         logout: function() {
+            // When we logout, we must make sure to hide the "VIP" section of the menu
+            // by switching to the regular menu. This will not change the current view,
+            // since the drinks and special drinks tab is a subview of the menu view.
             this.controller.show_drinks();
         },
     },

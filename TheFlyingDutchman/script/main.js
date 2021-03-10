@@ -23,6 +23,7 @@ window.tfd = {
     __routes: {},
 
     // Private model
+    // Contains helper variables for changing views
     __model: {
         current_view: null,
         current_subview: null,
@@ -82,6 +83,7 @@ window.tfd = {
         if (module.hasOwnProperty('controller')) {
             // Go through each defined controller function
             for (const fn_name of Object.keys(module.controller)) {
+                // Save the controller function to the global module namespace
                 this[name].controller[fn_name] = module.controller[fn_name].bind(context);
             }
         }
@@ -89,6 +91,7 @@ window.tfd = {
         if (module.hasOwnProperty('view')) {
             // Go through each defined view function
             for (const fn_name of Object.keys(module.view)) {
+                // Save the view function to the global module namespace
                 this[name].view[fn_name] = module.view[fn_name].bind(context);
             }
         }
@@ -103,6 +106,8 @@ window.tfd = {
         // Check if the module has registered a document ready event handler
         if (module.hasOwnProperty('ready')) {
             this.add_ready_callback(
+                // Make sure to bind the context so that 'this' works as expected.
+                // Since events are handled using jQuery, the context will be overwritten
                 module.ready.bind(context)
             );
         }
@@ -175,6 +180,7 @@ window.tfd = {
             return;
         }
 
+        // Save the callback
         this.__ready_callbacks.push(callback);
     },
 
@@ -240,10 +246,14 @@ window.tfd = {
         for (const name of this.__registered_modules) {
             const module = this[name];
 
+            // Skip modules without the element key
             if (!module.element) {
                 continue;
             }
 
+            // Replace the value of each element key in the module
+            // with the actual jQuery element lookup result.
+            // This way, elements can be accessed using 'this.element.<name>'.
             for (const key of Object.keys(module.element)) {
                 this[name].element[key] = $(this[name].element[key]);
             }
@@ -259,6 +269,7 @@ window.tfd = {
             return;
         }
 
+        // Execute each ready callback
         for (const callback of this.__ready_callbacks) {
             callback();
         }
@@ -271,6 +282,8 @@ window.tfd = {
             $(document).on(key, function(_, ...args) {
                 // Execute each signal callback
                 for (const fn of window.tfd.__signals[key]) {
+                    // Run the event handler with all (if any) arguments
+                    // passed into it
                     fn(...args);
                 }
             });

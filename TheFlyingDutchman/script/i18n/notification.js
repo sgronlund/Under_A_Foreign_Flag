@@ -14,11 +14,7 @@ window.tfd.localization.controller.add('notification', {
     placeholder_keys: [],
     src_keys: [],
 
-    // We use one JSON substructure for each language. If we have
-    // many different languages and a large set of strings we might
-    // need to store a JSON file for each language to be loaded on
-    // request.
-    //
+    
     en: {
         default: {
             notification_order_full: 'Could not add product - order is full',
