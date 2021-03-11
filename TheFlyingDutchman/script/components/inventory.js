@@ -161,7 +161,7 @@ window.tfd.add_module('inventory', {
                                 <label class="inventory_item_price_text">Price:</label>
                                 <input type="number" min="0" value="${price}" step="0.01"
                                        class="inventory-item-price-input no-spinner"
-                                       onchange="window.tfd.inventory.controller.update_price(event, ${product_id})"
+                                       onchange="window.tfd.inventory.controller.update_price(this, ${product_id})"
                                 />
                                 <p class="input-value-unit">SEK</p>
                             </div>
@@ -170,7 +170,7 @@ window.tfd.add_module('inventory', {
                             <div class="input-container fill">
                                 <label class="inventory_item_menu_text">On menu:</label>
                                 <input type="checkbox" ${on_menu && 'checked'}
-                                       onchange="window.tfd.inventory.controller.change_on_menu(event, ${product_id})"
+                                       onchange="window.tfd.inventory.controller.change_on_menu(this, ${product_id})"
                                 />
                             </div>
                         </div>
@@ -178,7 +178,7 @@ window.tfd.add_module('inventory', {
                             <div class="input-container fill">
                                 <label class="inventory_item_special_menu_text">On special menu:</label>
                                 <input type="checkbox" ${on_special_menu && 'checked'}
-                                       onfocusout="window.tfd.inventory.controller.change_on_special_menu(event, ${product_id})"
+                                       onfocusout="window.tfd.inventory.controller.change_on_special_menu(this, ${product_id})"
                                 />
                             </div>
                         </div>
@@ -283,9 +283,21 @@ window.tfd.add_module('inventory', {
         add: function() {
             const type = this.element.inventory_add_type_select.val();
 
-            const largest_id = parseInt(Object.keys(this.global.drinks).reduce((x, y) => x.length > y.length ? x : y));
+            // Finds the product with the shortest id, so that we can generate
+            // a new id that is unique. This is done by iterating through the keys
+            // of all drinks and then reducing it to a single value by comparing the lengths.
+            const largest_id = parseInt(Object.keys(this.global.drinks).reduce(
+                (x, y) => x.length > y.length ? x : y)
+            );
+
+            // Add one to the largest id to get a unique one
             const new_id = largest_id + 1;
 
+            // Create a new product and add all shared keys.
+            // E.g. wine and beer have different description keys, so they must be
+            // added based on the type.
+            //
+            // Note that we currently do not validate the types of any of the passed in values.
             const new_product = {
                 nr: new_id.toString(),
                 namn: this.element.inventory_name_input.val(),
@@ -298,6 +310,9 @@ window.tfd.add_module('inventory', {
                 },
             };
 
+            // Here we will extract the values of the input boxes that are created dynamically
+            // based on the selected product type. Since they are not static, we can not
+            // cache them using the 'element' key of the module.
             if (type === this.model.product_types.wine) {
                 new_product.description['typ'] = $('#inventory_type_input').val();
                 new_product.description['argang'] = $('#inventory_year_input').val();
@@ -306,8 +321,6 @@ window.tfd.add_module('inventory', {
                 new_product.description['ursprunglandnamn'] = $('#inventory_origin_input').val();
                 new_product.description['sort'] = $('#inventory_sort_input').val();
             }
-
-            console.log(new_product);
 
             // Add to list of custom products that should be saved
             this.model.custom_products[new_id] = new_product;
@@ -349,15 +362,18 @@ window.tfd.add_module('inventory', {
         },
 
         update_stock: function(input, product_id) {
-            // TODO: Debounce this shit
+            // This function should be debounced to prevent unnecessary saves.
             if (!input) {
                 console.error('Could not update stock of product - invalid input element');
                 return;
             }
 
+            // Since the function for updating stock takes in the change, not the new stock
+            // we must calculate it ourselves.
             const previous_stock = this.controller.get_stock_of_product(product_id);
             const change = parseInt($(input).val()) - previous_stock;
 
+            // Check if the stock can be updated. It ill fail if the stock goes under 0.
             if (!this.controller.update_stock_for_product(product_id, change, 0)) {
                 this.view.update_inventory();
 
@@ -366,9 +382,7 @@ window.tfd.add_module('inventory', {
             }
         },
 
-        update_price: function(ev, product_id) {
-            const input = ev.target;
-
+        update_price: function(input, product_id) {
             if (!this.global.inventory.hasOwnProperty(product_id)) {
                 console.error(`Could not update price of invalid product: ${product_id}`);
                 return;
@@ -400,31 +414,36 @@ window.tfd.add_module('inventory', {
             this.controller.save();
         },
 
-        change_on_menu: function(ev, product_id) {
+        change_on_menu: function(checkbox, product_id) {
             this.controller.change_availability(
                 product_id,
                 this.model.menu_keys.regular,
-                ev.target.checked
+                checkbox.checked
             );
         },
 
-        change_on_special_menu: function(ev, product_id) {
+        change_on_special_menu: function(checkbox, product_id) {
             this.controller.change_availability(
                 product_id,
                 this.model.menu_keys.special,
-                ev.target.checked
+                checkbox.checked
             );
         },
 
+        // Updates the type of product that the user wants to add.
+        // This is needed to render the correct inputs in the creation modal.
         set_product_add_type: function() {
+            // Get the selected type
             const selected_type = this.element.inventory_add_type_select.val();
 
             if (!selected_type) {
+                // Default to adding a beer
                 this.model.current_product_add_type = this.model.product_types.beer;
             } else {
                 this.model.current_product_add_type = selected_type;
             }
 
+            // Update the modal
             this.view.update_inventory_add_modal();
         },
     },
