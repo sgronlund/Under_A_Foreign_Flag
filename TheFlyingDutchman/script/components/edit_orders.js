@@ -40,7 +40,7 @@ window.tfd.add_module('edit_orders', {
 
             // We must make sure the localization when editing the order,
             // since content is dynamically added and removed.
-            window.tfd.localization.view.update_localization_component('orders');
+            window.tfd.localization.controller.update_component('orders');
         },
 
         update_dropdown: function() {
@@ -142,7 +142,7 @@ window.tfd.add_module('edit_orders', {
             if (!change) {
                 change = 1;
             }
-            
+
             const price = window.tfd.inventory.controller.get_price_of_product(product_id);
 
             // Maximum of 10 items in the order
@@ -223,28 +223,28 @@ window.tfd.add_module('edit_orders', {
                 console.error(`Could not gift invalid product from order: ${product_id}`);
                 return;
             }
-            
+
             const order_item = this.model.order.items[product_id];
-            
+
             if (order_item.gift) {
                 const price = window.tfd.inventory.controller.get_price_of_product(product_id);
                 const total = order_item.quantity * price;
-                
+
                 this.model.order.total_price += total;
                 order_item.total = total;
                 order_item.gift = false;
             } else {
                 // Update order total
                 this.model.order.total_price -= order_item.total;
-                
+
                 // Update product total
                 order_item.total = 0;
                 order_item['gift'] = true;
             }
-            
+
             //Renders the updated order
             this.controller.save()
-            
+
             // Change color of gift button to indicate that the product is a gift
             this.view.toggle_gift_button(btn);
         },
@@ -272,7 +272,7 @@ window.tfd.add_module('edit_orders', {
             this.model.order.total_price -= this.model.order.items[product_id].total;
 
             delete this.model.order.items[product_id];
-            
+
             if (change_stack_name === 'undo') {
                 this.model.changes_redo.push({
                     product_id: product_id,

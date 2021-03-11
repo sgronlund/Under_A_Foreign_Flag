@@ -80,7 +80,7 @@ window.tfd.add_module('notification', {
             }.bind(this), this.model.hide_delay);
 
             // Set the notification message
-            window.tfd.localization.view.update_localization_component('notification');
+            window.tfd.localization.controller.update_component('notification');
         },
     },
 
@@ -115,15 +115,15 @@ window.tfd.add_module('notification', {
         show_inventory_low_stock: function() {
             this.controller.show(this.model.message_keys.low_stock, true);
         },
-        
+
         show_order_success_notification: function() {
             this.controller.show(this.model.message_keys.order_success, false);
         },
-        
+
         show_balance_update_failure_notification: function() {
             this.controller.show(this.model.message_keys.user_not_found, true);
         },
-        
+
         show_balance_update_success_notification: function() {
             this.controller.show(this.model.message_keys.balance_update_success, false);
         },

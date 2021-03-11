@@ -67,7 +67,7 @@ window.tfd.add_module('inventory', {
 
             this.element.inventory_container.html(html);
 
-            window.tfd.localization.view.update_localization_component('inventory');
+            window.tfd.localization.controller.update_component('inventory');
         },
 
         update_inventory_add_modal: function() {
@@ -76,7 +76,7 @@ window.tfd.add_module('inventory', {
             this.element.inventory_add_dynamic_inputs.html(inputs);
 
             // Update translations for labels of input boxes
-            window.tfd.localization.view.update_localization_component('staff');
+            window.tfd.localization.controller.update_component('staff');
         },
 
         create_type_inputs: function() {

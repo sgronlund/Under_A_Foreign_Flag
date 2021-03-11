@@ -68,7 +68,7 @@ window.tfd.add_module('product', {
 
             // Reapply the localization data for the current component (and only the current component).
             // It is unnecessary to reapply all localization data.
-            window.tfd.localization.view.update_localization_component('product');
+            window.tfd.localization.controller.update_component('product');
         },
 
         update_product_quantity: function(id, quantity) {
@@ -201,7 +201,7 @@ window.tfd.add_module('product', {
                 console.error(`Could not find quantity input with id: ${id}`);
                 return;
             }
-            
+
             // Returns the current value of the card
             return parseInt(input_element.val());
         },
@@ -334,7 +334,6 @@ window.tfd.add_module('product', {
             this.view.update_current_menu();
         },
 
-        
         route_special_drinks: function() {
             this.controller.set_current_menu(this.global.special_menu, this.element.container_special);
             this.view.update_current_menu();

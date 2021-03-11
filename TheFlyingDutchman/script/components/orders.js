@@ -38,7 +38,7 @@ window.tfd.add_module('orders', {
             }
 
             // Update order localization strings, since the content is dynamic
-            window.tfd.localization.view.update_localization_component('orders');
+            window.tfd.localization.controller.update_component('orders');
         },
 
         create_order_details: function(orders, order_id) {
@@ -211,7 +211,7 @@ window.tfd.add_module('orders', {
             } else {
                 window.tfd.backend.controller.complete_order(data);
             }
-            
+
             this.controller.render_all_orders();
         },
     },

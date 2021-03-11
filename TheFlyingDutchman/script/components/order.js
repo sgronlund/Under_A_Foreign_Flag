@@ -59,7 +59,7 @@ window.tfd.add_module('order', {
             }
 
             this.element.container.html(html);
-            window.tfd.localization.view.update_localization_component('product');
+            window.tfd.localization.controller.update_component('product');
         },
 
         update_order_details: function() {
@@ -323,7 +323,7 @@ window.tfd.add_module('order', {
             if (window.tfd.vip.controller.update_balance(this.global.user_details, (-1) * total_amount)) {
                 // Get the generated order id
                 const order_id = this.controller.checkout();
-                
+
                 // Update global user details with new balance and update VIP footer balance
                 window.tfd.vip.controller.update_current_user();
 

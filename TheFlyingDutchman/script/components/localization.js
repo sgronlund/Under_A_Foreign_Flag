@@ -17,10 +17,12 @@ window.tfd.add_module('localization', {
             english: 'en',
             swedish: 'sv',
         },
-        text_key: 'default',
-        alt_key: 'alt',
-        src_key: 'src',
-        placeholder_key: 'placeholder',
+        type_keys: {
+            text: 'default',
+            alt: 'alt',
+            src: 'src',
+            placeholder: 'placeholder',
+        },
         storage_key: 'language',
     },
 
@@ -28,14 +30,14 @@ window.tfd.add_module('localization', {
     // VIEW
     //
     view: {
-        update_localization_component: function(key) {
+        update_component: function(id) {
             // Contains other information, e.g. the id's and prefix
-            const data = this.model.content[key];
+            const data = this.model.content[id];
 
             // Contains all the strings for the current language
             const lang_data = data[this.model.current_language];
 
-            if (!data) {
+            if (!data || !lang_data) {
                 return;
             }
 
@@ -44,27 +46,27 @@ window.tfd.add_module('localization', {
 
             // Updates all ids with their specific string content
             for (const idx of data.keys) {
-                $(prefix + idx).text(lang_data[this.model.text_key][idx]);
+                $(prefix + idx).text(lang_data[this.model.type_keys.text][idx]);
             }
 
             // Updates all alt-texts with their specific string content
             for (const idx of data.alt_keys) {
-                $(prefix + idx).attr('alt', lang_data[this.model.alt_key][idx]);
+                $(prefix + idx).attr('alt', lang_data[this.model.type_keys.alt][idx]);
             }
 
             // Updates all placeholder attributes with their specific string content
             for (const idx of data.placeholder_keys) {
-                $(prefix + idx).attr('placeholder', lang_data[this.model.placeholder_key][idx]);
+                $(prefix + idx).attr('placeholder', lang_data[this.model.type_keys.placeholder][idx]);
             }
 
             for (const idx of data.src_keys) {
-                $(prefix + idx).attr('src', lang_data[this.model.src_key][idx]);
+                $(prefix + idx).attr('src', lang_data[this.model.type_keys.src][idx]);
             }
         },
 
-        update_localization: function() {
-            for (const key of Object.keys(this.model.content)) {
-                this.view.update_localization_component(key);
+        update: function() {
+            for (const id of Object.keys(this.model.content)) {
+                this.view.update_component(id);
             }
         },
     },
@@ -85,11 +87,18 @@ window.tfd.add_module('localization', {
             this.controller.set(saved_language);
         },
 
-        set: function(language) {
-            window.localStorage.setItem(this.model.storage_key, language);
+        save: function() {
+            window.localStorage.setItem(this.model.storage_key, this.model.current_language);
+        },
 
+        set: function(language) {
             this.model.current_language = language;
-            this.view.update_localization();
+
+            // Save current language to localStorage
+            this.controller.save();
+
+            // Update the page localization strings
+            this.view.update();
         },
 
         toggle: function() {
@@ -107,6 +116,24 @@ window.tfd.add_module('localization', {
             }
 
             this.model.content[id] = data;
+        },
+
+        // This function is used to update the strings of just a certain component,
+        // i.e. one of the files in the 'script/i18n' directory. We do this since the
+        // performance of finding and changing all strings is slow and generally we only want to
+        // update a small subset of the available translation strings
+        update_component: function(id) {
+            if (!id) {
+                return;
+            }
+
+            // Check if we have a registered component with that id
+            if (!this.model.content.hasOwnProperty(id)) {
+                console.error(`Could not find localization component: ${id} - did you forget to import it?`);
+                return;
+            }
+
+            this.view.update_component(id);
         },
     },
 

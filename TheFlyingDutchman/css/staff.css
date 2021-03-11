@@ -53,7 +53,7 @@
 }
 
 .inventory-item-id {
-    width: 4.5rem;
+    min-width: 4.5rem;
 }
 
 .inventory-item-description {
