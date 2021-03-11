@@ -47,6 +47,12 @@
     margin-right: var(--spacing-xsm);
 }
 
+#inventory_total_items {
+    font-size: var(--font-size-sm);
+    margin-left: var(--spacing-lg);
+    color: var(--text-color-light);
+}
+
 .inventory_item_low_stock {
     color: var(--error-color-text);
     background: var(--error-color);

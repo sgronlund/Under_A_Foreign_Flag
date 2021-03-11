@@ -120,7 +120,11 @@
 
         <!-- INVENTORY SUB HEADER -->
         <div class="container" id="inventory_nav_menu">
-            <section class="sub-header box row v-center align-end">
+            <section class="sub-header box row v-center space-between">
+                <p id="inventory_total_items">
+                    <span id="inventory_total_items_text"></span>
+                    <span id="inventory_total_items_value"></span>
+                </p>
                 <button class="brand no-radius fill-height" onclick="window.tfd.modal.controller.show_add_to_inventory()">
                     <span id="btn_inventory_add_product"></span>
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

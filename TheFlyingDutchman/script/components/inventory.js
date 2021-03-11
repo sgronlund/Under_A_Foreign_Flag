@@ -41,6 +41,7 @@ window.tfd.add_module('inventory', {
     //
     element: {
         inventory_container: '#inventory_view',
+        inventory_total_items: '#inventory_total_items_value',
         inventory_forpackning_input: '#inventory_forpackning_input',
         inventory_add_type_select: '#inventory_add_type_select',
         inventory_alkoholhalt_input: '#inventory_alkoholhalt_input',
@@ -57,16 +58,24 @@ window.tfd.add_module('inventory', {
     view: {
         update_inventory: function() {
             let html = ''
+            let total = 0;
             const inventory = this.global.inventory;
 
             for (const key of Object.keys(inventory)) {
                 const { stock, on_menu, on_special_menu } = inventory[key];
                 const price = this.controller.get_price_of_product(key);
                 html += this.view.create_inventory_item(key, stock, price, on_menu, on_special_menu);
+                total++;
             }
 
+            // Update the text with the total number of items in inventory
+            this.element.inventory_total_items.text(total);
+
+            // Render every inventory item
             this.element.inventory_container.html(html);
 
+            // Make sure to update the localization strings of the dynamic
+            // inventory item cards.
             window.tfd.localization.controller.update_component('inventory');
         },
 
