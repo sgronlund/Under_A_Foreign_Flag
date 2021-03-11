@@ -1,6 +1,6 @@
 window.tfd.localization.controller.add('customer', {
     keys: [
-        'title',
+        'title_customer',
         'btn_drinks',
         'btn_special_drinks',
         'btn_checkout_text',
@@ -25,7 +25,7 @@ window.tfd.localization.controller.add('customer', {
     
     en: {
         default: {
-            title: 'The Flying Dutchman - Customer',
+            title_customer: 'The Flying Dutchman - Customer',
             btn_drinks: 'Drinks',
             btn_special_drinks: 'Special drinks',
             btn_checkout_text: 'Checkout',
@@ -46,7 +46,7 @@ window.tfd.localization.controller.add('customer', {
     },
     sv : {
         default: {
-            title: 'The Flying Dutchman - Kund',
+            title_customer: 'The Flying Dutchman - Kund',
             btn_drinks: 'Dryck',
             btn_special_drinks: 'Speciella drycker',
             btn_checkout_text: 'Till kassan',

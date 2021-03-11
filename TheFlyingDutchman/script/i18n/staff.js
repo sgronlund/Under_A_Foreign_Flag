@@ -1,5 +1,6 @@
 window.tfd.localization.controller.add('staff', {
     keys: [
+        'title_staff',
         'btn_pending_orders',
         'btn_completed_orders',
         'btn_tables_text',
@@ -48,6 +49,7 @@ window.tfd.localization.controller.add('staff', {
     
     en: {
         default: {
+            title_staff: 'The Flying Dutchman - Staff',
             btn_pending_orders: 'Pending orders',
             btn_completed_orders: 'Completed orders',
             btn_tables_text: 'Tables',
@@ -91,6 +93,7 @@ window.tfd.localization.controller.add('staff', {
     },
     sv : {
         default: {
+            title_staff: 'The Flying Dutchman - Personal',
             btn_pending_orders: 'Väntande ordrar',
             btn_completed_orders: 'Färdiga ordrar',
             btn_tables_text: 'Bordsplacering',
