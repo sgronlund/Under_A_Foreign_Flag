@@ -6,7 +6,6 @@ window.tfd.localization.controller.add('staff', {
         'btn_tables_text',
         'btn_inventory_text',
         'btn_orders_text',
-        'btn_users_text',
         'pending_orders_title',
         'completed_orders_title',
         'edit_modal_title',
@@ -46,7 +45,7 @@ window.tfd.localization.controller.add('staff', {
     placeholder_keys: [],
     src_keys: [],
 
-    
+
     en: {
         default: {
             title_staff: 'The Flying Dutchman - Staff',
@@ -55,7 +54,6 @@ window.tfd.localization.controller.add('staff', {
             btn_tables_text: 'Tables',
             btn_inventory_text: 'Inventory',
             btn_orders_text: 'Orders',
-            btn_users_text: 'Customers',
             completed_orders_title: 'Completed orders',
             pending_orders_title: 'Pending orders',
             edit_modal_title: 'Edit',
@@ -85,7 +83,7 @@ window.tfd.localization.controller.add('staff', {
             option_wine:'Wine',
             option_other: 'Other',
             account_modal_title: 'Update account balance',
-            btn_account_text: 'Update balance',
+            btn_account_text: 'Credits',
             username_input_label: 'Username',
             balance_input_label: 'Add to account',
             btn_update_balance: 'Update account balance',
@@ -99,7 +97,6 @@ window.tfd.localization.controller.add('staff', {
             btn_tables_text: 'Bordsplacering',
             btn_inventory_text: 'Lager',
             btn_orders_text: 'Beställningar',
-            btn_users_text: 'Kunder',
             completed_orders_title: 'Avslutade beställningar',
             pending_orders_title: 'Väntande beställningar',
             edit_modal_title: 'Redigera',
@@ -129,7 +126,7 @@ window.tfd.localization.controller.add('staff', {
             option_wine:'Vin',
             option_other: 'Annat',
             account_modal_title: 'Uppdatera saldo',
-            btn_account_text: 'Uppdatera saldo',
+            btn_account_text: 'Krediter',
             username_input_label: 'Användarnamn',
             balance_input_label: 'Lägg till i saldo',
             btn_update_balance: 'Uppdatera saldo',
