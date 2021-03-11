@@ -40,8 +40,11 @@
 #checkout_vip_actions,
 #order_empty_container,
 #btn_special_drinks,
-body.view-order #header_nav_menu,
-body.logged-in #btn_vip_login {
+#special_drink_code,
+#special_drink_container.show-code #special_drink_info,
+#special_drink_container.show-code #special_drink_confirm,
+body.logged-in #btn_vip_login,
+body.view-order #header_nav_menu {
     display: none;
 }
 
@@ -51,7 +54,8 @@ body.view-order #header_nav_order,
 body.view-order #btn_checkout,
 body.logged-in #checkout_vip_actions,
 body.logged-in #btn_special_drinks,
-body.view-order.order-empty #order_empty_container {
+body.view-order.order-empty #order_empty_container,
+#special_drink_container.show-code #special_drink_code {
     display: flex;
 }
 
@@ -110,35 +114,6 @@ body.view-order #btn_order {
     font-size: 2.5rem;
     border-radius: var(--border-radius);
     letter-spacing: var(--spacing-sm);
-}
-
-#special_drink_code,
-#special_drink_container.show-code #special_drink_info,
-#special_drink_container.show-code #special_drink_confirm {
-    display: none;
-}
-
-#special_drink_container.show-code #special_drink_code {
-    display: flex;
-}
-
-.error button.brand,
-.error button.brand:focus,
-.error button.brand:active {
-    border: solid 3px var(--error-color);
-    color: var(--error-color-light);
-}
-
-span.error_message {
-    display: none;
-    text-align: center;
-    color: var(--error-color-light);
-}
-
-span.error_message.show {
-    display: flex;
-    flex-direction: column;
-    margin-top: var(--spacing);
 }
 
 @media screen and (max-width: 1050px) {

@@ -29,11 +29,11 @@ window.tfd.add_module('vip', {
             if (!this.global.logged_in) {
                 return;
             }
-            
+
             // Gets all details of the currently logged in VIP user
             const { first_name, last_name, creditSEK } = this.global.user_details;
             const fullname = first_name + " " + last_name;
-            const balance = creditSEK ? creditSEK : 0;
+            const balance = creditSEK ? parseFloat(creditSEK) : 0;
 
             // Add details of user to the footer
             this.element.user_name.text(fullname);
@@ -99,7 +99,7 @@ window.tfd.add_module('vip', {
 
             if (this.controller.update_balance(price)) {
                 this.controller.generate_special_drink_code();
-                
+
                 // Update the global user details and the VIP footer
                 this.controller.update_current_user();
 
@@ -107,14 +107,14 @@ window.tfd.add_module('vip', {
                 window.tfd.backend.controller.complete_special_drink_selection(nr);
             }
         },
-        
+
         update_current_user: function() {
             if (!this.global.logged_in) {
                 return;
             }
-            
+
             this.global.user_details = userDetails(this.global.user_details.username); // Fetches new data from database
-            
+
             this.view.update_footer(); //Updates the view, showing the new balance
         },
 
@@ -125,10 +125,10 @@ window.tfd.add_module('vip', {
 
             if (updated_balance < 0) {
                 return false;
-            } 
-            
+            }
+
             window.tfd.backend.controller.change_balance(user_details, updated_balance);
-            
+
             return true;
         },
     },

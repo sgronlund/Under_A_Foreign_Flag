@@ -140,10 +140,6 @@ body.subview-completed-orders #btn_completed_orders {
         margin: 0;
     }
 
-    body.view-orders #orders_nav_menu {
-        display: flex;
-    }
-
     #orders_view {
         flex-direction: column;
     }
@@ -165,6 +161,7 @@ body.subview-completed-orders #btn_completed_orders {
         display: none;
     }
 
+    body.view-orders #orders_nav_menu,
     body.subview-pending-orders #pending_orders,
     body.subview-completed-orders #completed_orders {
         display: flex;
