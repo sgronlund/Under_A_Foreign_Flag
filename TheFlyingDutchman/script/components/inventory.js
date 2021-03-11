@@ -144,18 +144,20 @@ window.tfd.add_module('inventory', {
                         }
                     </div>
                     <div class="inventory-item-data box row v-center fill-width margin-top-lg">
-                        <div class="inventory-item-description">
-                            <div class="input-container unit-spacing fill">
-                                <label class="inventory_item_stock_text fill margin-right"></label>
-                                <input
-                                    type="number"
-                                    onchange="window.tfd.inventory.controller.update_stock(this, ${product_id})"
-                                    value="${stock}"
-                                    min="0"
-                                />
-                                <p class="input-value-unit inventory_item_stock_pcs_text"></p>
-                            </div>
-                        </div>
+                        ${this.global.is_manager ? `
+                            <div class="inventory-item-description">
+                                <div class="input-container unit-spacing fill">
+                                    <label class="inventory_item_stock_text fill margin-right"></label>
+                                    <input
+                                        type="number"
+                                        onchange="window.tfd.inventory.controller.update_stock(this, ${product_id})"
+                                        value="${stock}"
+                                        min="0"
+                                    />
+                                    <p class="input-value-unit inventory_item_stock_pcs_text"></p>
+                                </div>
+                            </div>` : ''
+                        }
                         <div class="inventory-item-description">
                             <div class="input-container fill">
                                 <label class="inventory_item_price_text">Price:</label>
