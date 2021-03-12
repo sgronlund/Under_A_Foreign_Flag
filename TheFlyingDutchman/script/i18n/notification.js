@@ -9,6 +9,7 @@ window.tfd.localization.controller.add('notification', {
         'notification_inventory_low_stock',
         'notification_user_not_found',
         'notification_balance_update_success',
+        'notification_exceed_quantity',
     ],
     alt_keys: [],
     placeholder_keys: [],
@@ -25,6 +26,7 @@ window.tfd.localization.controller.add('notification', {
             notification_inventory_low_stock: 'One or more products are low in stock!',
             notification_user_not_found: 'User does not exist!',
             notification_balance_update_success: 'Balance updated!',
+            notification_exceed_quantity: 'Cannot increase above max quantity!',
         },
     },
     sv : {
@@ -37,6 +39,7 @@ window.tfd.localization.controller.add('notification', {
             notification_inventory_low_stock: 'En eller fler produkter börjar ta slut i lager!',
             notification_user_not_found: 'Användare finns ej!',
             notification_balance_update_success: 'Saldo uppdaterat!',
+            notification_exceed_quantity: 'Du kan ha max 10 produkter!',
         },
     }
 });

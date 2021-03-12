@@ -234,9 +234,14 @@ window.tfd.add_module('product', {
             const new_quantity = this.controller.get_quantity(id) + change;
             const max_quantity = window.tfd.inventory.controller.get_stock_of_product(id);
 
-            if (new_quantity < 1 || new_quantity > max_quantity || new_quantity > this.model.max_quantity) {
+            // Make sure that we do not exceed the available stock
+            if (new_quantity > max_quantity) {
                 window.tfd.notification.controller.show_out_of_stock_notification();
-                console.log(`Could not update quantity of product to: ${new_quantity}`);
+                return;
+            } else if (new_quantity > this.model.max_quantity) {
+                window.tfd.notification.controller.show_order_exceed_quantity_notification();
+                return;
+            } else if (new_quantity < 1) {
                 return;
             }
 
