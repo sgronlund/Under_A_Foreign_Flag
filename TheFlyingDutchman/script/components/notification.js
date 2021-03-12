@@ -1,7 +1,12 @@
 // =====================================================================================================
 //  Functions for showing notifications
 // =====================================================================================================
-// Authors: Namn, 2021
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021  
+//
 //
 // This functionality is resused on every page. Notifications are used to notify the user of when something
 // goes wrong, e.g. when an add to order failed. On the staff-page, notifications are e.g. used to show when a

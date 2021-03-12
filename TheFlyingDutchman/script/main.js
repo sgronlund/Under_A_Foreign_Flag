@@ -1,3 +1,25 @@
+// =====================================================================================================
+// Functions for creating modules
+// =====================================================================================================
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021    
+//
+// To prevent large and unorganized files we created a module system 
+// where each feature/functionality is a "module". Theses modules serve as both separation of concers 
+// as well as enforcing a MVC approach. It also gives us a few helper functions that makes the managment of
+// multiple modules easier.
+//
+// Some of the features that will be available to all modules is:
+// - Custom signal handling using 'this.trigger'
+// - A shared document ready event handler
+// - An easy way to register views and subviews to render specific content based on navigation menu selection
+// - Cached element lookups 
+// - Functions registered by the module will be available using the 'window.tfd.<module>' namespace
+// - Create global shared model data 
+//
 window.tfd = {
     // =====================================================================================================
     // PUBLIC FIELDS

@@ -1,3 +1,17 @@
+// =====================================================================================================
+//  Functions for rendering the content of the orders in the staff view
+// =====================================================================================================
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021  
+//
+//
+// These function allow the user to add and or remove products from a order in the system as well as
+// undoing or redoing these actions.
+//
+
 window.tfd.add_module('edit_orders', {
     // =====================================================================================================
     // MODEL

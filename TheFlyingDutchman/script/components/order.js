@@ -1,8 +1,14 @@
 // =====================================================================================================
-// Functions for handling and rendering orders.
+// Functions for handling and rendering orders in the customer view.
 // =====================================================================================================
-// Authors: Namn, 2020
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021  
 //
+// These functions handle adding and removing from the orders aswell as checking them out. 
+// 
 //
 
 window.tfd.add_module('order', {

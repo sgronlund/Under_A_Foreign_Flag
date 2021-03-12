@@ -1,7 +1,12 @@
 // =====================================================================================================
 //  Functions for apply localization and switching languages
 // =====================================================================================================
-// Authors: Namn, 2021
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021  
+//
 //
 // The actual contents is loaded in from another file based on the current page
 // These files are located in script/localization/<page name>.js

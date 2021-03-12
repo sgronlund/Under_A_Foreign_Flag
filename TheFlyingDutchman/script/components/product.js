@@ -1,7 +1,11 @@
 // =====================================================================================================
 // Functions for handling and rendering products
 // =====================================================================================================
-// Authors: Namn, 2020
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021    
 //
 // This file contains functions for filtering the products, adding the products to the users order aswell
 // as rendering all the products from the pubs inventory
@@ -234,7 +238,7 @@ window.tfd.add_module('product', {
             const new_quantity = this.controller.get_quantity(id) + change;
             const max_quantity = window.tfd.inventory.controller.get_stock_of_product(id);
 
-            // Make sure that we do not exceed the available stock
+            // Make sure that we do not exceed the available stock, exceed the maximum and or the minimum stock
             if (new_quantity > max_quantity) {
                 window.tfd.notification.controller.show_out_of_stock_notification();
                 return;

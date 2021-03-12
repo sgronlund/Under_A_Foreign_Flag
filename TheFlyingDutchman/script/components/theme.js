@@ -1,7 +1,11 @@
 // =====================================================================================================
 // Functions for switching and rendering between color schemes
 // =====================================================================================================
-// Authors: Namn, 2020
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021  
 //
 // This file contains functions switching color scheme, currently the options are dark or light mode. 
 // To change press the sun/moon button in any view to swtich between them.

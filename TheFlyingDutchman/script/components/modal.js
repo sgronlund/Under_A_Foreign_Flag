@@ -1,7 +1,12 @@
 // =====================================================================================================
 // Functions for updating and rendering the modal
 // =====================================================================================================
-// Authors: Namn, 2020
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021  
+//
 //
 // This file contains functions for handling and rendering the modal, i.e. the "popup" window, which is
 // shown eg. when to user logs in or filters the products.

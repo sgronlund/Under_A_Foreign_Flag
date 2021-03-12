@@ -1,10 +1,14 @@
 // =====================================================================================================
-//  Functions for rendering the menu and the special drinks menu
+// Functions specific to the start page
 // =====================================================================================================
-// Authors: Namn, 2021
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021    
 //
-// Theses functions render the different views/options the customer can access, i.e. the special drinks menu (if the customer is VIP),
-// the ordinary drinks menu and the order.
+// Theses functions render the different views/options the customer can access, 
+// i.e. the special drinks menu (if the customer is VIP), the ordinary drinks menu and the order.
 //
 window.tfd.add_module('customer', {
     global: {

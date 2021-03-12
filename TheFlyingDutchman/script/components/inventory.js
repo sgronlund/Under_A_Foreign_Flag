@@ -1,7 +1,12 @@
 // =====================================================================================================
 //  Functions for rendering and handling the pubs inventory
 // =====================================================================================================
-// Authors: Namn, 2021
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021  
+//
 //
 // These function allow the inventory to see which items are in the different menus, remove and add different
 // items from the inventory and update the stock on items currently in inventory

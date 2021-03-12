@@ -1,9 +1,21 @@
+// =====================================================================================================
+// Functions specific to the staff page
+// =====================================================================================================
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021    
+//
+// This file registers the available routes that can be navigated to using the menu, as well as 
+// triggering signals that will render the data that is needed by the page. 
+//
 window.tfd.add_module('staff', {
     // =====================================================================================================
     // PAGE ROUTES/VIEWS
     //
     route: {
-                orders: {
+        orders: {
             body_class: 'view-orders',
             subview: {
                 pending_orders: {

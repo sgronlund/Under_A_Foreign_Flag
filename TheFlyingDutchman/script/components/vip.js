@@ -1,3 +1,15 @@
+// =====================================================================================================
+// Functions for functionality only accessible to VIP customer
+// =====================================================================================================
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021  
+//
+// This file contains functions for rendering and updating the VIP customer balance as well as handling the special drink
+// and the codes they generate
+//
 window.tfd.add_module('vip', {
     // =====================================================================================================
     // MODEL

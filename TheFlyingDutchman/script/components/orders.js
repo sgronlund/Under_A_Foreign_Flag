@@ -1,13 +1,17 @@
+// =====================================================================================================
+// Functions for the orders shown in the staff view
+// =====================================================================================================
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021  
+//
+// This file contains functions for rendering and completing the orders which the staff can see when logged in.
+// The drag and drop functionality for the orders are also available here.
+// 
+//
 window.tfd.add_module('orders', {
-    // =====================================================================================================
-    // MODEL
-    //
-    model: {
-        num_tables: 9,
-        table_numbering_start: 1,
-        selected_table: null,
-    },
-
     // =====================================================================================================
     // DOCUMENT ELEMENTS
     //

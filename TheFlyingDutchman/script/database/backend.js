@@ -1,10 +1,14 @@
 // =====================================================================================================
 // Backend functions for the orders, inventory and menus.
 // =====================================================================================================
-// Authors: Namn, 2021
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021  
 //
-// This file contains functions which handles the stock of the items in the pubs inventory, i.e. updating the
-// inventory if an item has run out of stock, aswell as saving the orders handled by system.
+// This file contains functions for doing most of the backend actions which store different type of structure
+// in localStorage to be able to save changes done in different views
 //
 window.tfd.add_module('backend', {
     // =====================================================================================================

@@ -1,7 +1,12 @@
 // =====================================================================================================
 //  Functions for logging in and out
 // =====================================================================================================
-// Authors: Namn, 2021
+// Authors: Fredrik Engstrand, 2021
+//          Dante Grenholm, 2021
+//          Sebastian Grönlund, 2021
+//          Hampus Sandqvist, 2021
+//          Kevin Hormiz, 2021  
+//
 //
 // This functionality is resused on every page where a user can login. At the moment redirection is also handled here,
 // however at some point we'll only have a single html-page and no redirection can be done
