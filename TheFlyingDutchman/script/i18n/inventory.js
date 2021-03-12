@@ -8,6 +8,7 @@ window.tfd.localization.controller.add('inventory', {
         'inventory_item_remove_text',
         'inventory_item_price_text',
         'inventory_item_low_stock',
+        'inventory_item_no_stock',
     ],
     alt_keys: [],
     placeholder_keys: [],
@@ -23,6 +24,7 @@ window.tfd.localization.controller.add('inventory', {
             inventory_item_special_menu_text: 'VIP menu:',
             inventory_item_remove_text: 'Remove',
             inventory_item_low_stock: 'Low stock',
+            inventory_item_no_stock: 'No stock',
 
         }
     },
@@ -35,6 +37,7 @@ window.tfd.localization.controller.add('inventory', {
             inventory_item_special_menu_text: 'VIP menyn:',
             inventory_item_remove_text: 'Ta bort',
             inventory_item_low_stock: 'Få kvar i lager',
+            inventory_item_no_stock: 'Slut i lager',
         }
     }
 });

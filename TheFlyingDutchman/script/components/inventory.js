@@ -120,13 +120,22 @@ window.tfd.add_module('inventory', {
         create_inventory_item: function(product_id, stock, price, on_menu, on_special_menu) {
             const { nr, namn } = this.global.drinks[product_id];
             const low_stock = stock <= this.model.stock_warning_limit;
-
+            const no_stock = stock === 0;
+            
             return (`
                 <article class="card box space-between margin-bottom">
                     <div class="box row space-between">
                         <div class="box row v-center">
                             <p class="card-title-tag inventory-item-id">ID: ${nr}</p>
-                            ${low_stock ? '<p class="card-title-tag inventory_item_low_stock"></p>' : ''}
+                            ${ (() => {
+                                if (no_stock) {
+                                    return '<p class="card-title-tag inventory_item_no_stock"></p>';
+                                } else if (low_stock) {
+                                    return '<p class="card-title-tag inventory_item_low_stock"></p>';
+                                } else {
+                                    return '';
+                                }
+                            })()}
                             <h4>${namn}</h4>
                         </div>
 
