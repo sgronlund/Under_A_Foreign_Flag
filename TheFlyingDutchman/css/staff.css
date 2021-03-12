@@ -134,7 +134,7 @@ body.subview-completed-orders #btn_completed_orders {
     border-bottom-color: var(--brand-color);
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1100px) {
     .inventory-item-data {
         display: grid;
         grid-template-columns: 1fr 1fr;

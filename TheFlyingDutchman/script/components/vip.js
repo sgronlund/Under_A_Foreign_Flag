@@ -97,7 +97,7 @@ window.tfd.add_module('vip', {
             const { nr } = this.model.selected_drink;
             const price = window.tfd.inventory.controller.get_price_of_product(this.model.selected_drink.nr);
 
-            if (this.controller.update_balance(price)) {
+            if (this.controller.update_balance(this.global.user_details, (-1) * price)) {
                 this.controller.generate_special_drink_code();
 
                 // Update the global user details and the VIP footer
@@ -105,6 +105,8 @@ window.tfd.add_module('vip', {
 
                 // Decrease stock of the selected drink
                 window.tfd.backend.controller.complete_special_drink_selection(nr);
+            } else {
+                window.tfd.notification.controller.show_insufficent_funds_notification();
             }
         },
 
