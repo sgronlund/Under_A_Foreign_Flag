@@ -47,12 +47,12 @@ window.tfd.add_module('order', {
         },
 
         update_order: function() {
-            let html = "";
-
             if (this.model.order.total_items === 0) {
                 this.element.container.html('');
                 return;
             }
+
+            let html = "";
 
             for (const item of Object.values(this.model.order.items)) {
                 html += this.view.create_order_item(item);
@@ -74,7 +74,7 @@ window.tfd.add_module('order', {
                 return;
             }
 
-            total_amount.text(this.model.order.total_price + " SEK");
+            total_amount.text(this.model.order.total_price.toFixed(2) + " SEK");
             total_items.text(this.model.order.total_items);
             total_items_header.text(this.model.order.total_items);
         },
@@ -125,7 +125,7 @@ window.tfd.add_module('order', {
                                 </svg>
                             </button>
                         </div>
-                        <h3 class="order-product-price">${item.total} SEK</h3>
+                        <h3 class="order-product-price">${item.total.toFixed(2)} SEK</h3>
                     </div>
                 </article>
             `);
@@ -235,16 +235,30 @@ window.tfd.add_module('order', {
             const item = this.model.order.items[id];
             const product = this.global.drinks[item.product_nr];
 
+            // Get the available stock of the product
+            const stock = window.tfd.inventory.controller.get_stock_of_product(id);
+
+            // Make sure that there are enough available stock left of the product.
+            // If we are decreasing the quantity, there is no need to verify the remaining stock.
+            if (item.quantity >= stock && change > 0) {
+                // Show notification
+                window.tfd.notification.controller.show_out_of_stock_notification();
+                return;
+            }
+
             // Only allow a total of 10 items (and at least 1) in the order
-            if (this.model.order.total_items + change > this.model.max_order_items || item.quantity + change < 1) {
-                console.log(`Could not change quantity - new total out of bounds (0 <= n <= ${this.model.max_order_items})`);
+            if (this.model.order.total_items + change > this.model.max_order_items) {
                 window.tfd.notification.controller.show_order_full_notification();
                 return;
             }
 
-            // If the new quantity is 0, remove the item
-            if (this.model.order.total_items + change == 0) {
-                this.controller.remove(id);
+            // Make sure that the quantity is above or equal to 1.
+            // This is done to prevent the user from accidentally removing
+            // an item from the order.
+            if (item.quantity + change < 1) {
+                // No real need for displaying a notification here. If the
+                // user wants to remove the item, the button can be used.
+                console.log('Could not change quantity to value below 1');
                 return;
             }
 
