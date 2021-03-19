@@ -53,6 +53,7 @@ window.tfd.add_module('order', {
         },
 
         update_order: function() {
+            
             if (this.model.order.total_items === 0) {
                 this.element.container.html('');
                 return;

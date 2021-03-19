@@ -95,7 +95,9 @@ window.tfd.add_module('vip', {
         select_special_drink: function(id) {
             // Reset generated code
             this.model.generated_code = null;
+            // Stores the currently chosen drink as the selected special drink 
             this.model.selected_drink = this.global.drinks[id];
+            // Renders the special drink modal
             this.view.update_special_drink_modal();
             window.tfd.modal.controller.show_special_drink();
         },
@@ -106,9 +108,11 @@ window.tfd.add_module('vip', {
                 return;
             }
 
+            // Gets the product id and price of the currently chosen special drink
             const { nr } = this.model.selected_drink;
             const price = window.tfd.inventory.controller.get_price_of_product(this.model.selected_drink.nr);
-
+            
+            // Tries to update the balance of the user and if it should fail displays an error notification
             if (this.controller.update_balance(this.global.user_details, (-1) * price)) {
                 this.controller.generate_special_drink_code();
 
@@ -137,10 +141,13 @@ window.tfd.add_module('vip', {
             const current_balance = user_details.creditSEK;
             const updated_balance = parseFloat(current_balance) + parseFloat(change);
 
+            // Do not allow balances below 0.
+            // If the change results in a balance below 0, we ignore it
             if (updated_balance < 0) {
                 return false;
             }
 
+            // Update the balance for the user
             window.tfd.backend.controller.change_balance(user_details, updated_balance);
 
             return true;

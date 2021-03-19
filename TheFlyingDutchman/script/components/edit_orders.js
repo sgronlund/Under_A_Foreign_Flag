@@ -44,6 +44,7 @@ window.tfd.add_module('edit_orders', {
             let html = '';
             const contents = this.model.order.items;
 
+            // Loop through each product in the order
             for (const item of Object.values(contents)) {
                 html += this.view.create_order_item(item);
             }
@@ -61,19 +62,25 @@ window.tfd.add_module('edit_orders', {
             let html = '';
             const items = this.global.inventory;
 
+            // Loop through each product key in inventory
             for(const key of Object.keys(items)) {
+                // Get the product data for the product key
                 const product = this.global.drinks[key];
                 html += this.view.create_dropdown_option(product);
             }
 
+            // Update the dropdown menu with all product names in inventory
             this.element.dropdown.html(html);
         },
 
         toggle_gift_button: function(btn) {
+            // Toggles the state of the gift button based on whether or not
+            // it is on the house
             $(btn).toggleClass(this.model.classes.is_gift);
         },
 
         create_dropdown_option: function(product) {
+            // Creates a dropdown option containing the product name
             return (`
                 <option value="${product.nr}">${product.namn}</option>
             `);
@@ -82,6 +89,7 @@ window.tfd.add_module('edit_orders', {
         create_order_item: function(item) {
             const { namn } = this.global.drinks[item.product_nr];
 
+            // Creates an item in an order in the edit modal
             return (`
                 <li>
                     <div class="box row v-center fill-width margin-bottom-sm">
@@ -125,7 +133,8 @@ window.tfd.add_module('edit_orders', {
     //
     controller: {
         edit: function(order_id, list_name) {
-            // Save the order that we are currently editing
+            // Save the order that we are currently editing and
+            // update the model so that we render the correct order(s)
             if (list_name === 'orders') {
                 this.model.orders = this.global.orders;
                 this.model.order = this.global.orders[order_id];
@@ -134,6 +143,7 @@ window.tfd.add_module('edit_orders', {
                 this.model.order = this.global.completed_orders[order_id];
             }
 
+            // Update the selected order
             this.model.order_id = order_id;
 
             // Reset the changes of any previous edits
@@ -153,10 +163,13 @@ window.tfd.add_module('edit_orders', {
             if (!product_id) {
                 product_id = this.element.dropdown.val();
             }
+            
+            // Make sure that the change is not 0 or undefined
             if (!change) {
                 change = 1;
             }
 
+            // Get the price of a product
             const price = window.tfd.inventory.controller.get_price_of_product(product_id);
 
             // Maximum of 10 items in the order
@@ -165,6 +178,7 @@ window.tfd.add_module('edit_orders', {
                 return;
             }
 
+            // Make sure that the order contains the selected product id
             if (this.model.order.items.hasOwnProperty(product_id)) {
                 // Update the quantity and total price of the order item
                 const { quantity, total } = this.model.order.items[product_id];
@@ -179,6 +193,7 @@ window.tfd.add_module('edit_orders', {
                     return;
                 }
 
+                // Update the currently selected order
                 this.model.order.items[product_id] = {
                     product_nr: product_id,
                     total: price + product_price,
@@ -193,6 +208,7 @@ window.tfd.add_module('edit_orders', {
                 };
             }
 
+            // Update the stock for the selected product
             window.tfd.inventory.controller.update_stock_for_product(
                 product_id,
                 (-1) * (change),
@@ -202,6 +218,10 @@ window.tfd.add_module('edit_orders', {
             this.model.order.total_items += change;
             this.model.order.total_price += price * change;
 
+            // Changes should be pushed to different lists depending on the caller.
+            // If we call this function from an undo, we should not push a change
+            // to the undo stack, only the redo stack. The same goes for redo.
+            // If no list is specified, we assume that it is not called by an undo, nor redo.
             if (change_stack_name === 'undo') {
                 this.model.changes_redo.push({
                     product_id: product_id,
@@ -215,7 +235,6 @@ window.tfd.add_module('edit_orders', {
                     type: 'remove',
                 });
             } else {
-                // Push changes to undo-redo stack
                 this.model.changes_redo.push({
                     product_id: product_id,
                     quantity: change,
@@ -240,11 +259,17 @@ window.tfd.add_module('edit_orders', {
 
             const order_item = this.model.order.items[product_id];
 
+            // The gift button works as a toggle, so we check if the product that we clicked 
+            // the gift button on is already a gift. If it is, we reapply the price of the product to
+            // the order total. If not, we remove the product total from the order total.
             if (order_item.gift) {
                 const price = window.tfd.inventory.controller.get_price_of_product(product_id);
                 const total = order_item.quantity * price;
 
+                // Update the total price of the order
                 this.model.order.total_price += total;
+                
+                // Update the product in the order
                 order_item.total = total;
                 order_item.gift = false;
             } else {
@@ -268,9 +293,11 @@ window.tfd.add_module('edit_orders', {
                 console.error(`Could not remove invalid product from order: ${product_id}`);
                 return;
             }
-
+    
+            // Get the current product quantity in the order
             const { quantity } = this.model.order.items[product_id];
 
+            // Make sure that the change is not 0 or undefined
             if (!change) {
                 change = quantity;
             }
@@ -282,11 +309,17 @@ window.tfd.add_module('edit_orders', {
                 0
             );
 
+            // Update the order total
             this.model.order.total_items -= change;
             this.model.order.total_price -= this.model.order.items[product_id].total;
 
+            // Delete the product from the order
             delete this.model.order.items[product_id];
 
+            // Changes should be pushed to different lists depending on the caller.
+            // If we call this function from an undo, we should not push a change
+            // to the undo stack, only the redo stack. The same goes for redo.
+            // If no list is specified, we assume that it is not called by an undo, nor redo.
             if (change_stack_name === 'undo') {
                 this.model.changes_redo.push({
                     product_id: product_id,
@@ -314,16 +347,26 @@ window.tfd.add_module('edit_orders', {
                 });
             }
 
+            // Save the order to localStorage
             this.controller.save();
         },
 
+        // Removes a change object from either the undo or redo stack.
+        // Every action that alters the order in the edit modal will produce a "change"
+        // that is pushed to both the undo and redo stack and contains the data needed to
+        // reverse the action. This function simply removes the latest undo/redo change from a 
+        // stack and applies the changes to reverse/reapply the action.
         pop_change: function(changes, value) {
+            // Pop the first change of the stack on the changes list
             const change = changes.pop();
 
+            // Make sure that we had at least one change in the stack
             if (!change) {
                 return;
             }
 
+            // Check the type of change. Add means that applying the change should increase (add) 
+            // to the order
             if (change.type === 'add') {
                 this.controller.add(change.product_id, change.quantity, value);
             } else {
@@ -334,16 +377,20 @@ window.tfd.add_module('edit_orders', {
 
                 const item = this.model.order.items[change.product_id];
                 const price = window.tfd.inventory.controller.get_price_of_product(change.product_id);
+                
+                // If the change will remove more quantity than there currently is in the order,
+                // we can simply remove the product (you can not have negative quantities or 0)
                 if (item.quantity <= Math.abs(change.quantity)) {
                     this.controller.remove(change.product_id, (-1) * change.quantity, value);
                 } else {
+                    // Update the product total 
                     item.quantity += change.quantity;
                     item.total += change.quantity * price;
-
 
                     this.model.order.total_items += change.quantity;
                     this.model.order.total_price += change.quantity * price;
 
+                    // Update the stock for product
                     window.tfd.inventory.controller.update_stock_for_product(
                         change.product_id,
                         (-1) * change.quantity,
@@ -351,14 +398,18 @@ window.tfd.add_module('edit_orders', {
                     );
                 }
             }
+            
+            // Update the order in localStorage with the new changes
             this.controller.save();
         },
 
         undo: function() {
+            // Undo the previous action
             this.controller.pop_change(this.model.changes_undo, 'undo');
         },
 
         redo: function() {
+            // Redo the previous action
             this.controller.pop_change(this.model.changes_redo, 'redo');
         },
 
@@ -373,6 +424,7 @@ window.tfd.add_module('edit_orders', {
             window.tfd.backend.controller.save();
             window.tfd.inventory.controller.save();
 
+            // Render the edit modal with the update order
             this.view.update_edit_modal();
         },
     },
@@ -381,7 +433,11 @@ window.tfd.add_module('edit_orders', {
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {
+        // Triggered when the inventory updates to make sure
+        // that the dropdown contains the latest product names. 
+        // E.g. when a product is added to inventory or a product goes out of stock
         render_product_dropdown: function() {
+            // Update the dropdown contents
             this.view.update_dropdown();
         },
     },

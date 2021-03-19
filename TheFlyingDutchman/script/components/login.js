@@ -57,6 +57,7 @@ window.tfd.add_module('login', {
     //
     view: {
         update_body: function() {
+            // Checks if a user is logged in and adds a specific class to show user specific elements
             if (this.global.logged_in) {
                 $(document.body).addClass(this.model.classes.logged_in);
             } else {
@@ -65,6 +66,7 @@ window.tfd.add_module('login', {
         },
 
         reset_input_fields: function() {
+            // resets the input fields for the login
             this.element.username.val('');
             this.element.password.val('');
         },
@@ -77,14 +79,17 @@ window.tfd.add_module('login', {
         // Loads the currently logged in user from sessionStorage
         load: function() {
             const username = window.sessionStorage.getItem(this.model.storage_key);
-
+            // if no one was stored in localStorage logout the user 
             if (!username) {
                 this.controller.logout();
                 return;
             }
 
+            // Get the details of the logged in user
             const details = userDetails(username);
 
+            // Save the user details to the global state so taht other modules 
+            // can use them to check if logged in, etc.
             this.controller.set_user_data(details);
         },
 
@@ -110,10 +115,14 @@ window.tfd.add_module('login', {
 
             // Redirects the user to the right page according to their credentials
             if (credentials == this.model.permissions.vip) {
+                // If the user is a VIP and is not on the customer page, e.g. the staff page,
+                // redirect to the customer page
                 if (this.model.current_href != this.model.pages.customer) {
                     window.location.href = this.model.pages.customer;
                 }
             } else {
+                // If a staff user is not on the staff page, e.g. the customer page, 
+                // redirect to the staff page
                 if (this.model.current_href != this.model.pages.staff) {
                     window.location.href = this.model.pages.staff;
                 }
@@ -136,6 +145,7 @@ window.tfd.add_module('login', {
                 // Redirect if needed
                 this.controller.redirect();
 
+                // Reset the input fields and hide the modal
                 this.view.reset_input_fields();
                 window.tfd.modal.controller.hide();
                 return;
@@ -145,6 +155,7 @@ window.tfd.add_module('login', {
         },
 
         set_logged_in_user: function(details) {
+            // Checks if a valid user is logged in
             if (!details) {
                 console.log('User is logged in, but not as a valid user');
                 this.controller.logout();
@@ -156,17 +167,25 @@ window.tfd.add_module('login', {
             // Update model
             this.controller.set_user_data(details);
 
+            // Apply body classes to show certain elements that require authentication
             this.view.update_body();
+            
+            // Trigger a login event so that e.g. the VIP footer can be rendered
             this.trigger('login');
         },
 
         logout: function() {
+            // Removes the user details
             window.sessionStorage.clear();
 
+            // Restores the values for the user
             this.global.logged_in = false;
             this.global.user_details = null;
-
+            
+            // Re-renders the body
             this.view.update_body();
+            
+            // Triggers an logout event so that we can hide user specific elements
             this.trigger('logout');
         },
     },

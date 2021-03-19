@@ -11,10 +11,16 @@
 // i.e. the special drinks menu (if the customer is VIP), the ordinary drinks menu and the order.
 //
 window.tfd.add_module('customer', {
+    // =====================================================================================================
+    // GLOBAL MODEL
+    //
     global: {
         table_id: null, 
     },
     
+    // =====================================================================================================
+    // MODEL
+    //
     model: {
         max_table_id: 18,
     },
@@ -68,6 +74,7 @@ window.tfd.add_module('customer', {
     // DOCUMENT READY EVENT
     //
     ready: function() {
+        // Render the menu on load
         this.controller.show_menu();
         
         // Create a unique table id for this session

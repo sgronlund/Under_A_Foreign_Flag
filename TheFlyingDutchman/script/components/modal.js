@@ -76,6 +76,8 @@ window.tfd.add_module('modal', {
     // CONTROLLER
     //
     controller: {
+        // Renders the chose modal new_modal 
+        // This function is called by every functions named "show_..." listed below
         show: function(new_modal) {
             //Updates the current modal with a new one and store the previous version
             this.model.previous_modal = this.model.current_modal;
@@ -84,6 +86,7 @@ window.tfd.add_module('modal', {
             // Hide any previous errors
             this.model.has_error = false;
 
+            // Rerender the current modal based on the model
             this.view.update_current_modal();
             this.view.update_current_modal_error();
         },
@@ -143,7 +146,8 @@ window.tfd.add_module('modal', {
         const click_handler = this.controller.hide;
 
         // Find all elements within a modal overlay that should hide
-        // the overlay on click.
+        // the overlay on click. This is so that we do not have to manually 
+        // set the close click handlers for every modal
         $('.modal-event-hide').each(function() {
             // Find the closest parent modal root
             const modal_root = $(this).parents('.modal-root').first();
@@ -154,6 +158,8 @@ window.tfd.add_module('modal', {
                 return;
             }
 
+            // We can only automatically apply the click handlers if the parent modal has an id that 
+            // can be targeted
             if (!modal_root.attr('id')) {
                 console.error(`Modal root is missing the id attribute: ${modal_root}`);
                 return;

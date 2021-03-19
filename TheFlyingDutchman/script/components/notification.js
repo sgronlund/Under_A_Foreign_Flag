@@ -95,11 +95,19 @@ window.tfd.add_module('notification', {
     // CONTROLLER
     //
     controller: {
+        
+        // Updates the notification container and renders the message
+        // This function is called by all functions below called "show_...."
         show: function(message_key, error) {
+            
+            // Sets error field to apply specific class if the notifcation is an error notification
             this.model.is_error = error;
+            // Stores the previous notification 
             this.model.previous_message_key = this.model.current_message_key;
+            // Updates the notification message
             this.model.current_message_key = message_key;
 
+            // Update the selected notification based on the model
             this.view.update_notification();
         },
 

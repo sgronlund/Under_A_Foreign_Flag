@@ -66,10 +66,13 @@ window.tfd.add_module('inventory', {
             let total = 0;
             const inventory = this.global.inventory;
 
+            // Create an inventory item for each product in the inventory
             for (const key of Object.keys(inventory)) {
                 const { stock, on_menu, on_special_menu } = inventory[key];
                 const price = this.controller.get_price_of_product(key);
                 html += this.view.create_inventory_item(key, stock, price, on_menu, on_special_menu);
+                
+                // Keep track of the number of items so that it can be rendered in the header of the inventory page
                 total++;
             }
 
@@ -87,6 +90,7 @@ window.tfd.add_module('inventory', {
         update_inventory_add_modal: function() {
             const inputs = this.view.create_type_inputs();
 
+            // Add the generated input fields to the modal
             this.element.inventory_add_dynamic_inputs.html(inputs);
 
             // Update translations for labels of input boxes
@@ -94,6 +98,8 @@ window.tfd.add_module('inventory', {
         },
 
         create_type_inputs: function() {
+            // Creates the add modal input fields based on the selected beverage type.
+            // E.g. wine and beer have different fields. 
             if (this.model.current_product_add_type === this.model.product_types.wine) {
                 return (`
                     <div class="box row fill-width margin-top">
@@ -127,6 +133,7 @@ window.tfd.add_module('inventory', {
             const low_stock = stock <= this.model.stock_warning_limit;
             const no_stock = stock === 0;
             
+            // Creates a product in the inventory that will be rendered in a list
             return (`
                 <article class="card box space-between margin-bottom">
                     <div class="box row space-between">
@@ -220,8 +227,14 @@ window.tfd.add_module('inventory', {
                 this.global.inventory = JSON.parse(inventory);
             }
 
+            // Custom products are stored separately since they are not part of the original database.
+            // If we have created custom products they must be added to the global drinks model so that 
+            // we can extract product data based on the product id.
             if (custom_products) {
+                // Parse the JSON string from localStorage
                 this.model.custom_products = JSON.parse(custom_products);
+                
+                // Assign will set all keys in custom products in the global drinks model 
                 Object.assign(this.global.drinks, this.model.custom_products);
             }
         },
@@ -421,6 +434,7 @@ window.tfd.add_module('inventory', {
         },
 
         change_availability: function(product_id, menu_key, available) {
+            // We store in a global structure which products are on which menu, if a ID is false we dont not render it on the menu
             const inventory_item = this.global.inventory[product_id];
 
             // Update the availability on one of the menus
@@ -431,6 +445,7 @@ window.tfd.add_module('inventory', {
         },
 
         change_on_menu: function(checkbox, product_id) {
+            // Updates the availability of a product on the special menu
             this.controller.change_availability(
                 product_id,
                 this.model.menu_keys.regular,
@@ -439,6 +454,7 @@ window.tfd.add_module('inventory', {
         },
 
         change_on_special_menu: function(checkbox, product_id) {
+            // Updates the availability of a product on the special menu
             this.controller.change_availability(
                 product_id,
                 this.model.menu_keys.special,
@@ -456,6 +472,7 @@ window.tfd.add_module('inventory', {
                 // Default to adding a beer
                 this.model.current_product_add_type = this.model.product_types.beer;
             } else {
+                // Otherwise, use the selected value in the dropdown
                 this.model.current_product_add_type = selected_type;
             }
 
@@ -468,6 +485,7 @@ window.tfd.add_module('inventory', {
     // MODULE INIT
     //
     init: function() {
+        // Load the inventory from localStorage on load
         this.controller.load();
     },
 
@@ -475,10 +493,12 @@ window.tfd.add_module('inventory', {
     // CUSTOM SIGNAL HANDLERS
     //
     signal: {
+        // Triggered whenever the inventory has updated, e.g. out of stock, add to inventory.
         render_inventory: function() {
             this.view.update_inventory();
         },
 
+        // Updates the inventory modal by setting the default add beverage type
         render_inventory_modal: function() {
             this.controller.set_product_add_type();
         },

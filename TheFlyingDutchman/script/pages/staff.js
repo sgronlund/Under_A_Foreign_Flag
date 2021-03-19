@@ -117,6 +117,7 @@ window.tfd.add_module('staff', {
     //
     signal: {
         logout: function() {
+            // Only logged in users are allowed on the staff page
             window.location.href = 'index.html'
         },
     }

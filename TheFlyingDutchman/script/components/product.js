@@ -56,6 +56,7 @@ window.tfd.add_module('product', {
         },
 
         update_total_products: function() {
+            // Renders the amount of products on the menu 
             const total = this.model.current_menu.length;
             this.element.total_products.text(total);
         },

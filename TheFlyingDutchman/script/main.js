@@ -328,14 +328,17 @@ window.tfd = {
     // Updates the current route by removing previous route body classes
     // and applying new ones.
     __update_body_classes: function() {
+        // Remove the previous view class
         if (this.__model.previous_view) {
             $(document.body).removeClass(this.__model.previous_view);
         }
 
+        // Remove the previous subview class
         if (this.__model.previous_subview) {
             $(document.body).removeClass(this.__model.previous_subview);
         }
 
+        // Check if we have a subview for the currently selected view
         if (this.__model.current_subview) {
             // Batch classes together to prevent multiple layout rerenders
             $(document.body).addClass([
@@ -343,6 +346,7 @@ window.tfd = {
                 this.__model.current_subview,
             ]);
         } else {
+            // The current view has no subview, add only view body class
             $(document.body).addClass(this.__model.current_view);
         }
     },

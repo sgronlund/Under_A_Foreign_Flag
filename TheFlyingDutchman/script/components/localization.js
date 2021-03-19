@@ -70,6 +70,8 @@ window.tfd.add_module('localization', {
         },
 
         update: function() {
+            // Loop through each localization component and update the strings defined 
+            // by the component. All of these components can be seen in the 'script/i18n' directory.
             for (const id of Object.keys(this.model.content)) {
                 this.view.update_component(id);
             }
@@ -89,10 +91,12 @@ window.tfd.add_module('localization', {
                 return;
             }
 
+            // Update the selected language and render the strings
             this.controller.set(saved_language);
         },
 
         save: function() {
+            // Save the selected language to localStorage
             window.localStorage.setItem(this.model.storage_key, this.model.current_language);
         },
 
@@ -107,6 +111,7 @@ window.tfd.add_module('localization', {
         },
 
         toggle: function() {
+            // Switches between the two available languages
             if (this.model.current_language == this.model.languages.english) {
                 this.controller.set(this.model.languages.swedish);
             } else {
@@ -120,6 +125,8 @@ window.tfd.add_module('localization', {
                 return;
             }
 
+            // Save the localization data into the model so that it can be used when setting
+            // the language
             this.model.content[id] = data;
         },
 
@@ -146,6 +153,7 @@ window.tfd.add_module('localization', {
     // DOCUMENT READY EVENT
     //
     ready: function() {
+        // Load the selected language from localStorage
         this.controller.load();
     },
 });

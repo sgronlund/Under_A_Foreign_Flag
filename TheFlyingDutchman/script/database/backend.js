@@ -60,10 +60,13 @@ window.tfd.add_module('backend', {
             // Load user balances
             const balances = window.localStorage.getItem(this.model.storage_keys.balances);
             
+            // Checks if any balance has been updated from staff, i.e. we've stored a object in localStorage
             if (balances) {
                 this.model.balances = JSON.parse(balances);
             }
             
+            // When updating the user balance from the staff view we store this change in localStorage
+            // Iterates through all the stored balance changes and update each balance for the corresponding user
             for (const user_id of Object.keys(this.model.balances)) {
                 const user = DB.account.find(function(user) {
                     return user.user_id == user_id;
